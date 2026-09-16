@@ -1,0 +1,149 @@
+# =============================================================================
+# AdaptEd AI — .gitignore
+# Place at repo root. Covers backend/ and frontend/.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# SECRETS — the most important lines in this file
+# -----------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+!.env.local.example
+*.pem
+*.key
+secrets.json
+credentials.json
+service-account*.json
+
+# -----------------------------------------------------------------------------
+# Python
+# -----------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib60/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+.hypothesis/
+.ruff_cache/
+.mypy_cache/
+.dmypy.json
+
+# -----------------------------------------------------------------------------
+# Project data — user uploads, vectors, local DB
+# -----------------------------------------------------------------------------
+data/
+backend/data/
+uploads/
+backend/uploads/
+chroma/
+chroma_db/
+chroma_store/
+backend/chroma*/
+*.sqlite
+*.sqlite3
+*.db
+adapted.db
+
+# Model caches (should live in ~/.cache, but just in case)
+.cache/
+models/
+*.bin
+*.safetensors
+*.onnx
+
+# -----------------------------------------------------------------------------
+# Node / Next.js
+# -----------------------------------------------------------------------------
+node_modules/
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+.next/
+out/
+build/
+dist/
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Next.js / Vercel
+.vercel
+next-env.d.ts
+*.tsbuildinfo
+
+# Test coverage
+/coverage
+
+# -----------------------------------------------------------------------------
+# Editors & OS
+# -----------------------------------------------------------------------------
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json.example
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# -----------------------------------------------------------------------------
+# Logs & temp
+# -----------------------------------------------------------------------------
+*.log
+logs/
+tmp/
+temp/
+*.tmp
+*.bak
+*.orig
+
+# -----------------------------------------------------------------------------
+# Keep empty directories the app expects at runtime
+# -----------------------------------------------------------------------------
+!data/.gitkeep
+!data/uploads/.gitkeep
+!data/chroma/.gitkeep
