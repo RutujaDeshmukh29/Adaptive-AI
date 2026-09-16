@@ -105,7 +105,7 @@ While Rutuja sleeps, you do UI work only — never logic:
 
 ---
 
-## 🧠 Manthan — AI Prompt & Content Lead
+## 🧠 Prathamesh — AI Prompt & Content Lead
 
 **Your workspace is Google AI Studio and a text editor.** You never need the coding laptop. Everything you produce is tested *before* it reaches the codebase — which is why prompt bugs will not cost Rutuja debugging time at 3am.
 
@@ -185,7 +185,7 @@ If Gemini rate-limits during the live demo, this file is the reason the demo con
 
 ---
 
-## 📋 Prathamesh — Project Manager & Demo Lead
+## 📋Manthan — Project Manager & Demo Lead
 
 **You do not need to write code to be the reason this team wins.** Hackathons are lost to time, not to technical difficulty. You own time.
 
