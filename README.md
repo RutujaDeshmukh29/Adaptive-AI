@@ -1144,8 +1144,8 @@ Multilingual AI learning · Mobile app · Teacher portal · Institutional dashbo
 |---|---|---|
 | **Rutuja Deshmukh** | Lead Developer & Architect | All code, architecture, integration, the machine we build on |
 | **Rajshree Patil** | Co-Developer & QA Lead | Pair programming, manual testing, API testing, seed data, takes the keyboard during breaks |
-| **Manthan Hingmire** | AI Prompt & Content Lead | All Gemini prompts, question banks, fallback content, test PDFs, demo copy |
-| **Prathamesh Gadakh** | Project Manager & Demo Lead | Timeline, checklist, blockers, PPT updates, submission, demo narration, judge Q&A |
+| **Prathamesh Gadakh** | AI Prompt & Content Lead | All Gemini prompts, question banks, fallback content, test PDFs, demo copy |
+| **Manthan Hingmire** | Project Manager & Demo Lead | Timeline, checklist, blockers, PPT updates, submission, demo narration, judge Q&A |
 
 Hour-by-hour assignments: **`docs/02_TEAM_ROLES_AND_TASKS.md`**
 
