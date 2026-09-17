@@ -1,26 +1,25 @@
-import google.generativeai as genai
 import json
+import time
 from app.config import settings
 from app.utils.json_parse import safe_json
-
 from groq import Groq
 
-genai.configure(api_key=settings.GEMINI_API_KEY)
+# Optional Gemini support
+try:
+    import google.generativeai as genai
+    if settings.GEMINI_API_KEY:
+        genai.configure(api_key=settings.GEMINI_API_KEY)
+        chat_model = genai.GenerativeModel(settings.GEMINI_MODEL)
+    else:
+        chat_model = None
+except ImportError:
+    genai = None
+    chat_model = None
+
 if settings.GROQ_API_KEY:
     groq_client = Groq(api_key=settings.GROQ_API_KEY)
 else:
     groq_client = None
-
-# Use standard model for chat (fallback)
-chat_model = genai.GenerativeModel(settings.GEMINI_MODEL)
-
-# Use JSON-enforced model for quizzes (if the model supports it, else just standard)
-try:
-    json_model = genai.GenerativeModel(settings.GEMINI_MODEL, generation_config={"response_mime_type": "application/json"})
-except Exception:
-    json_model = chat_model
-
-import time
 
 def generate_chat_response(prompt: str, retries: int = 3, delay: int = 15) -> str:
     if not groq_client:
