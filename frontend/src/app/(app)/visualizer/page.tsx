@@ -236,8 +236,8 @@ export default function VisualizerPage() {
     URL.revokeObjectURL(url);
   };
 
-  // High-Resolution PNG Export (2x Retina)
-  const handleDownloadPng = () => {
+  // High-Resolution PNG / JPG Export (2x Retina with Tainted Canvas Prevention)
+  const handleDownloadImage = (format: "png" | "jpg" = "png") => {
     if (!currentSvg) return;
     try {
       const parser = new DOMParser();
@@ -259,42 +259,127 @@ export default function VisualizerPage() {
 
       svgElement.setAttribute("width", width.toString());
       svgElement.setAttribute("height", height.toString());
-      const serialized = new XMLSerializer().serializeToString(svgElement);
-
-      const svgBlob = new Blob([serialized], { type: "image/svg+xml;charset=utf-8" });
-      const url = URL.createObjectURL(svgBlob);
-      const img = new Image();
 
       const isDark = typeof document !== "undefined" && document.documentElement.classList.contains("dark");
 
+      // ── CRITICAL FIX: SANITIZE SVG TO PREVENT CANVAS TAINTING ──
+      // 1. Convert any <foreignObject> tags to standard SVG <text> elements
+      // Browsers unconditionally taint the canvas if an SVG contains <foreignObject>.
+      const foreignObjects = Array.from(svgElement.querySelectorAll("foreignObject"));
+      foreignObjects.forEach((fo) => {
+        const text = fo.textContent?.trim() || "";
+        const x = parseFloat(fo.getAttribute("x") || "0");
+        const y = parseFloat(fo.getAttribute("y") || "0");
+        const w = parseFloat(fo.getAttribute("width") || "0");
+        const h = parseFloat(fo.getAttribute("height") || "0");
+
+        const textElem = svgDoc.createElementNS("http://www.w3.org/2000/svg", "text");
+        textElem.setAttribute("x", (x + w / 2).toString());
+        textElem.setAttribute("y", (y + h / 2).toString());
+        textElem.setAttribute("text-anchor", "middle");
+        textElem.setAttribute("dominant-baseline", "central");
+        textElem.setAttribute("font-family", "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif");
+        textElem.setAttribute("font-size", "14px");
+        textElem.setAttribute("font-weight", "500");
+        textElem.setAttribute("fill", isDark ? "#f8fafc" : "#0f172a");
+        textElem.textContent = text;
+
+        fo.parentNode?.replaceChild(textElem, fo);
+      });
+
+      // 2. Remove external @import and external font/image references that taint canvas
+      const styles = Array.from(svgElement.querySelectorAll("style"));
+      styles.forEach((style) => {
+        if (style.textContent) {
+          style.textContent = style.textContent.replace(/@import\s+url\([^)]+\);?/gi, "");
+        }
+      });
+
+      // 3. Remove external <image> tags pointing to http/https
+      const images = Array.from(svgElement.querySelectorAll("image"));
+      images.forEach((imgElem) => {
+        const href = imgElem.getAttribute("href") || imgElem.getAttribute("xlink:href") || "";
+        if (href.startsWith("http://") || href.startsWith("https://")) {
+          imgElem.remove();
+        }
+      });
+
+      // 4. Ensure xmlns attributes exist
+      if (!svgElement.getAttribute("xmlns")) {
+        svgElement.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+      }
+
+      const serialized = new XMLSerializer().serializeToString(svgElement);
+      // Base64 encode SVG to ensure origin-clean representation in Chromium/WebKit
+      let svgDataUri: string;
+      try {
+        const b64 = typeof window !== "undefined" ? window.btoa(unescape(encodeURIComponent(serialized))) : "";
+        svgDataUri = `data:image/svg+xml;base64,${b64}`;
+      } catch {
+        svgDataUri = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(serialized)}`;
+      }
+
+      const img = new Image();
+      // IMPORTANT: NEVER set img.crossOrigin on data: URIs. Setting crossOrigin on data: triggers CORS validation against an opaque origin, which immediately taints the canvas!
+
       img.onload = () => {
-        const scale = 2; // Hi-DPI
-        const canvas = document.createElement("canvas");
-        canvas.width = width * scale;
-        canvas.height = height * scale;
-        const ctx = canvas.getContext("2d");
-        if (ctx) {
+        try {
+          const scale = 2; // Hi-DPI
+          const canvas = document.createElement("canvas");
+          canvas.width = Math.max(200, width * scale);
+          canvas.height = Math.max(200, height * scale);
+          const ctx = canvas.getContext("2d");
+          if (!ctx) {
+            handleDownloadSvg();
+            return;
+          }
+
           ctx.imageSmoothingEnabled = true;
           ctx.imageSmoothingQuality = "high";
           ctx.fillStyle = isDark ? "#090d16" : "#ffffff";
           ctx.fillRect(0, 0, canvas.width, canvas.height);
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-          const pngUrl = canvas.toDataURL("image/png");
-          const link = document.createElement("a");
-          link.href = pngUrl;
-          link.download = `adapted-ai-${diagramType}-${Date.now()}.png`;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
+          const mimeType = format === "jpg" ? "image/jpeg" : "image/png";
+          
+          let imageUrl: string | null = null;
+          try {
+            imageUrl = canvas.toDataURL(mimeType, 0.95);
+          } catch (taintErr) {
+            console.warn("Canvas toDataURL restricted by browser sandbox, downloading vector SVG instead:", taintErr);
+            handleDownloadSvg();
+            return;
+          }
+
+          if (imageUrl) {
+            const link = document.createElement("a");
+            link.href = imageUrl;
+            link.download = `adapted-ai-${diagramType}-${Date.now()}.${format === "jpg" ? "jpg" : "png"}`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }
+        } catch (canvasErr) {
+          console.error(`Failed to export ${format.toUpperCase()} from canvas:`, canvasErr);
+          // Safe fallback: download the clean vector SVG directly if canvas is restricted
+          handleDownloadSvg();
         }
-        URL.revokeObjectURL(url);
       };
-      img.src = url;
+
+      img.onerror = () => {
+        console.error("Failed to load SVG into Image for canvas rasterization. Falling back to SVG download.");
+        handleDownloadSvg();
+      };
+
+      img.src = svgDataUri;
     } catch (e) {
-      console.error("Failed to export PNG:", e);
+      console.error(`Failed to export ${format.toUpperCase()}:`, e);
+      handleDownloadSvg();
     }
   };
+
+  const handleDownloadPng = () => handleDownloadImage("png");
+  const handleDownloadJpg = () => handleDownloadImage("jpg");
 
   const activeTypeMeta = DIAGRAM_TYPES.find((d) => d.type === diagramType) || DIAGRAM_TYPES[0];
   const activeStarters = STARTER_PRESETS[diagramType] || [];
@@ -598,6 +683,18 @@ export default function VisualizerPage() {
                     >
                       <Download className="h-3 w-3" />
                       <span className="hidden xs:inline">PNG</span>
+                    </Button>
+
+                    {/* Download JPG */}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleDownloadJpg}
+                      className="h-7 px-2 text-[11px] gap-1 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-indigo-600"
+                      title="Download high-quality JPG image"
+                    >
+                      <Download className="h-3 w-3" />
+                      <span className="hidden xs:inline">JPG</span>
                     </Button>
 
                     {/* Copy Mermaid Code */}

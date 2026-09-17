@@ -71,6 +71,10 @@ export function MermaidViewer({ chart, theme = "auto", onSvgRendered, className 
         startOnLoad: false,
         suppressErrorRendering: true,
         theme: effectiveTheme,
+        flowchart: {
+          htmlLabels: false,
+          useMaxWidth: true,
+        },
         themeVariables: effectiveTheme === "dark" ? {
           darkMode: true,
           background: "transparent",
