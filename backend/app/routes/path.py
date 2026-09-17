@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from sqlalchemy import asc
 from app.database import get_db
@@ -8,9 +8,27 @@ from app.models.topic import Topic
 from app.models.topic_mastery import TopicMastery
 from app.deps import get_current_user
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
+from app.services.path_service import (
+    calculate_day_spans,
+    get_topic_enrichment,
+    generate_ai_custom_roadmap
+)
 
 router = APIRouter(prefix="/api/path", tags=["path"])
+
+class ChecklistItem(BaseModel):
+    id: str
+    title: str
+    completed: bool = False
+
+class ResourceItem(BaseModel):
+    title: str
+    type: str  # "youtube" | "doc" | "paper" | "practice"
+    url: str
+    channel_or_author: Optional[str] = None
+    duration_or_pages: Optional[str] = None
+    summary: Optional[str] = None
 
 class PathItem(BaseModel):
     order: int
@@ -19,14 +37,29 @@ class PathItem(BaseModel):
     status: str  # "done" | "current" | "in_progress" | "locked"
     mastery: float
     reason: str
+    day_range: Optional[str] = None
+    estimated_hours: Optional[float] = 2.5
+    checklist: Optional[List[ChecklistItem]] = []
+    resources: Optional[List[ResourceItem]] = []
 
 class PathResponse(BaseModel):
     goal: str
+    subject: Optional[str] = None
     overall_progress: float
+    target_days: Optional[int] = 14
     items: List[PathItem]
 
+class CustomRoadmapRequest(BaseModel):
+    prompt: str
+    days: Optional[int] = 14
+    subject: Optional[str] = None
+
 @router.get("", response_model=PathResponse)
-def get_learning_path(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+def get_learning_path(
+    days: int = Query(default=14, ge=1, le=180),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
     profile = db.query(LearnerProfile).filter(LearnerProfile.user_id == current_user.id).first()
     if not profile:
         raise HTTPException(status_code=404, detail="Profile not found")
@@ -37,8 +70,9 @@ def get_learning_path(current_user: User = Depends(get_current_user), db: Sessio
     items = []
     overall_score = 0.0
     current_found = False
+    day_spans = calculate_day_spans(len(topics), total_days=days)
 
-    for t in topics:
+    for idx, t in enumerate(topics):
         m = masteries.get(t.id)
         score = m.mastery_score if m else 0.0
         overall_score += score
@@ -67,19 +101,53 @@ def get_learning_path(current_user: User = Depends(get_current_user), db: Sessio
                     status = "locked"
                     reason = "Complete current topic to unlock."
 
+        # Fetch enriched checklist and resource recommendations
+        enrichment = get_topic_enrichment(t.name, idx, len(topics), total_days=days)
+        day_range = day_spans[idx] if idx < len(day_spans) else f"Day {idx+1}"
+
         items.append(PathItem(
             order=t.order_index,
             topic_id=t.id,
             topic=t.name,
             status=status,
             mastery=score,
-            reason=reason
+            reason=reason,
+            day_range=day_range,
+            estimated_hours=enrichment["estimated_hours"],
+            checklist=enrichment["checklist"],
+            resources=enrichment["resources"]
         ))
 
     overall_progress = (overall_score / len(topics)) if topics else 0.0
 
     return PathResponse(
-        goal=profile.goal,
+        goal=profile.goal or f"Master {profile.subject}",
+        subject=profile.subject,
         overall_progress=overall_progress,
+        target_days=days,
         items=items
     )
+
+@router.post("/custom-roadmap", response_model=PathResponse)
+def create_custom_roadmap(
+    req: CustomRoadmapRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Dynamically designs a day-by-day roadmap based on user's custom prompt & target days."""
+    profile = db.query(LearnerProfile).filter(LearnerProfile.user_id == current_user.id).first()
+    level = profile.academic_level if profile else "Undergraduate"
+
+    days = req.days or 14
+    if days < 1:
+        days = 7
+    elif days > 180:
+        days = 180
+
+    roadmap_data = generate_ai_custom_roadmap(
+        prompt=req.prompt,
+        days=days,
+        user_level=level
+    )
+
+    return roadmap_data

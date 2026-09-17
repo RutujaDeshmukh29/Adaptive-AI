@@ -182,6 +182,21 @@ export interface ChatHistoryResponse {
   messages: ChatHistoryMessage[];
 }
 
+export interface PathChecklistItem {
+  id: string;
+  title: string;
+  completed: boolean;
+}
+
+export interface PathResourceItem {
+  title: string;
+  type: "youtube" | "doc" | "paper" | "practice";
+  url: string;
+  channel_or_author?: string;
+  duration_or_pages?: string;
+  summary?: string;
+}
+
 export interface PathItem {
   order: number;
   topic_id: number;
@@ -189,11 +204,17 @@ export interface PathItem {
   status: PathStatus;
   mastery: number;
   reason: string;
+  day_range?: string;
+  estimated_hours?: number;
+  checklist?: PathChecklistItem[];
+  resources?: PathResourceItem[];
 }
 
 export interface PathResponse {
   goal: string;
+  subject?: string;
   overall_progress: number;
+  target_days?: number;
   items: PathItem[];
 }
 
