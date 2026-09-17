@@ -16,6 +16,11 @@ export interface User {
   link_code?: string;
 }
 
+export interface MeResponse extends User {
+  onboarding_complete?: boolean;
+  diagnostic_done?: boolean;
+}
+
 export interface AuthResponse {
   access_token: string;
   token_type: string;
@@ -242,6 +247,35 @@ export interface StudentActivityItem {
   date_str: string;
 }
 
+export interface ParentCourseMastery {
+  title: string;
+  progress: number;
+  module_info: string;
+  projected_completion: string;
+  color?: string;
+  icon?: string;
+}
+
+export interface ParentLiveStudy {
+  is_active: boolean;
+  session_time_str: string;
+  current_activity: string;
+  current_activity_detail: string;
+  last_interaction_prompt: string;
+  last_interaction_response: string;
+  last_interaction_time: string;
+  focus_metric: number;
+  focus_status: string;
+  focus_detail: string;
+}
+
+export interface ParentTimelineEvent {
+  time_str: string;
+  title: string;
+  description: string;
+  is_active?: boolean;
+}
+
 export interface ParentReport {
   student: {
     id: number;
@@ -254,6 +288,7 @@ export interface ParentReport {
     study_time_goal: number;
     streak_days: number;
     overall_mastery: number;
+    cognitive_caliber?: string;
   };
   today_stats: {
     active_minutes_today: number;
@@ -262,6 +297,61 @@ export interface ParentReport {
     chat_queries_today: number;
     uploads_today: number;
   };
+  courses_mastery?: ParentCourseMastery[];
+  live_study?: ParentLiveStudy;
+  timeline?: ParentTimelineEvent[];
+  curriculum_pace?: {
+    milestone_pct: number;
+    status: string;
+    current_module: string;
+    next_target: string;
+  };
+  practice_accuracy?: {
+    accuracy_pct: number;
+    diff_str: string;
+    quizzes_count: number;
+    sparkline: number[];
+  };
+  ai_assistance?: {
+    doubts_resolved: number;
+    status: string;
+    note: string;
+    avg_latency?: string;
+  };
+  adaptive_insights?: {
+    remediation: {
+      title: string;
+      gap: string;
+      description: string;
+      drills_info: string;
+      timing: string;
+    };
+    mastery: {
+      title: string;
+      score: number;
+      caliber: string;
+      description: string;
+      milestone: string;
+    };
+  };
+  weekly_consistency?: {
+    total_hours: string;
+    optimal_window: string;
+    days: {
+      day: string;
+      minutes: number;
+      height_pct: number;
+      is_peak?: boolean;
+    }[];
+  };
+  diagnostic_milestones?: {
+    title: string;
+    module: string;
+    description: string;
+    score: number;
+    caliber_gain: string;
+    date_str: string;
+  }[];
   mastery_map: {
     topic_id: number;
     topic: string;

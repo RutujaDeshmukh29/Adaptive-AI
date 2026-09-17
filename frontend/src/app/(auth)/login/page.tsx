@@ -10,7 +10,7 @@ import Link from "next/link";
 import {
   Brain, Target, Network, Code2, MessageSquare, HeartHandshake,
   CheckCircle2, Eye, EyeOff, ArrowRight, Moon, Sun, Lock, Mail,
-  Sparkles, Star, ShieldCheck
+  Sparkles, Star, ShieldCheck, GraduationCap, KeyRound, Users
 } from "lucide-react";
 
 const highlights = [
@@ -21,8 +21,11 @@ const highlights = [
 ];
 
 export default function Login() {
+  const [loginTab, setLoginTab] = useState<"student" | "parent">("student");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [studentName, setStudentName] = useState("");
+  const [parentKey, setParentKey] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const [error, setError] = useState("");
@@ -78,6 +81,29 @@ export default function Login() {
       }
     } catch (err: any) {
       setError(err.detail || "Invalid email or password. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleParentLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      const data = await fetchApi<{ access_token: string; onboarding_complete: boolean; user: { role?: string; id: number } }>("/api/auth/parent-login", {
+        method: "POST",
+        body: JSON.stringify({
+          student_name: studentName.trim(),
+          parent_key: parentKey.trim().toUpperCase(),
+        }),
+      });
+
+      setToken(data.access_token);
+      router.push("/parent-dashboard");
+    } catch (err: any) {
+      setError(err.detail || "Invalid Student Name or Parent Sync Key. Please verify the sync key provided by the student.");
     } finally {
       setLoading(false);
     }
@@ -223,119 +249,256 @@ export default function Login() {
               </div>
               
               <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-                Sign in to your account
+                {loginTab === "student" ? "Student Sign In" : "Parent Portal Sign In"}
               </h2>
               
               <p className="text-slate-500 dark:text-slate-400 text-sm sm:text-base mt-1.5">
-                Enter your credentials to continue your learning journey.
+                {loginTab === "student"
+                  ? "Enter your credentials to continue your learning journey."
+                  : "Enter student credentials and Parent Sync Key to view live reports."}
               </p>
             </div>
 
-            {/* Login Form */}
-            <form onSubmit={handleLogin} className="space-y-4">
-              
-              {/* Email Address */}
-              <div>
-                <Label htmlFor="email" className="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider block mb-1.5">
-                  Email Address
-                </Label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
-                    <Mail className="w-5 h-5" />
-                  </div>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="you@example.com"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="h-12 pl-12 rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 text-slate-900 dark:text-white placeholder:text-slate-400 focus-visible:ring-indigo-500 transition-all text-base"
-                  />
-                </div>
-              </div>
-
-              {/* Password */}
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <Label htmlFor="password" className="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider block">
-                    Password
-                  </Label>
-                  <button 
-                    type="button" 
-                    onClick={() => alert("Password reset link will be sent to your registered email.")} 
-                    className="text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline"
-                  >
-                    Forgot password?
-                  </button>
-                </div>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
-                    <Lock className="w-5 h-5" />
-                  </div>
-                  <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Enter your password"
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="h-12 pl-12 pr-12 rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 text-slate-900 dark:text-white placeholder:text-slate-400 focus-visible:ring-indigo-500 transition-all text-base"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors cursor-pointer"
-                  >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                  </button>
-                </div>
-              </div>
-
-              {/* Remember Me Option */}
-              <div className="flex items-center gap-2 pt-1">
-                <input
-                  type="checkbox"
-                  id="remember"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-700 dark:bg-slate-800 cursor-pointer"
-                />
-                <label htmlFor="remember" className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 cursor-pointer select-none">
-                  Keep me signed in on this device
-                </label>
-              </div>
-
-              {/* Error Message */}
-              {error && (
-                <div className="text-sm text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/50 px-4 py-3 rounded-xl flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-rose-500 flex-shrink-0"></span>
-                  <span>{error}</span>
-                </div>
-              )}
-
-              {/* Submit Button */}
-              <Button
-                type="submit"
-                disabled={loading}
-                className="w-full h-13 text-base sm:text-lg font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/35 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed mt-3 cursor-pointer"
+            {/* Segmented Switcher: Student vs Parent */}
+            <div className="flex items-center p-1 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 mb-6">
+              <button
+                type="button"
+                onClick={() => { setLoginTab("student"); setError(""); }}
+                className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg text-sm font-semibold transition-all cursor-pointer ${
+                  loginTab === "student"
+                    ? "bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-xs"
+                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                }`}
               >
-                {loading ? (
-                  <span className="flex items-center gap-2.5">
-                    <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24" fill="none">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-                    </svg>
-                    Signing in...
-                  </span>
-                ) : (
-                  <span className="flex items-center justify-center gap-2">
-                    Sign In to Dashboard
-                    <ArrowRight className="w-5 h-5 ml-1" />
-                  </span>
+                <GraduationCap className="w-4 h-4" />
+                <span>🎓 Student Login</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => { setLoginTab("parent"); setError(""); }}
+                className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg text-sm font-semibold transition-all cursor-pointer ${
+                  loginTab === "parent"
+                    ? "bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-xs"
+                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                }`}
+              >
+                <Users className="w-4 h-4" />
+                <span>👨‍👩‍👧 Parent Login</span>
+              </button>
+            </div>
+
+            {/* STUDENT LOGIN FORM */}
+            {loginTab === "student" ? (
+              <form onSubmit={handleLogin} className="space-y-4">
+                
+                {/* Email Address */}
+                <div>
+                  <Label htmlFor="email" className="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider block mb-1.5">
+                    Email Address
+                  </Label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+                      <Mail className="w-5 h-5" />
+                    </div>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="you@example.com"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="h-12 pl-12 rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 text-slate-900 dark:text-white placeholder:text-slate-400 focus-visible:ring-indigo-500 transition-all text-base"
+                    />
+                  </div>
+                </div>
+
+                {/* Password */}
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <Label htmlFor="password" className="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider block">
+                      Password
+                    </Label>
+                    <button 
+                      type="button" 
+                      onClick={() => alert("Password reset link will be sent to your registered email.")} 
+                      className="text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline"
+                    >
+                      Forgot password?
+                    </button>
+                  </div>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+                      <Lock className="w-5 h-5" />
+                    </div>
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter your password"
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="h-12 pl-12 pr-12 rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 text-slate-900 dark:text-white placeholder:text-slate-400 focus-visible:ring-indigo-500 transition-all text-base"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors cursor-pointer"
+                    >
+                      {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Remember Me Option */}
+                <div className="flex items-center gap-2 pt-1">
+                  <input
+                    type="checkbox"
+                    id="remember"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-700 dark:bg-slate-800 cursor-pointer"
+                  />
+                  <label htmlFor="remember" className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 cursor-pointer select-none">
+                    Keep me signed in on this device
+                  </label>
+                </div>
+
+                {/* Error Message */}
+                {error && (
+                  <div className="text-sm text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/50 px-4 py-3 rounded-xl flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-rose-500 flex-shrink-0"></span>
+                    <span>{error}</span>
+                  </div>
                 )}
-              </Button>
-            </form>
+
+                {/* Submit Button */}
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full h-13 text-base sm:text-lg font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/35 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed mt-3 cursor-pointer"
+                >
+                  {loading ? (
+                    <span className="flex items-center gap-2.5">
+                      <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24" fill="none">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                      </svg>
+                      Signing in...
+                    </span>
+                  ) : (
+                    <span className="flex items-center justify-center gap-2">
+                      Sign In to Dashboard
+                      <ArrowRight className="w-5 h-5 ml-1" />
+                    </span>
+                  )}
+                </Button>
+              </form>
+            ) : (
+              /* PARENT LOGIN FORM */
+              <form onSubmit={handleParentLogin} className="space-y-4">
+                
+                {/* Information Banner */}
+                <div className="p-3.5 rounded-xl bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/50 text-xs sm:text-sm text-indigo-800 dark:text-indigo-300 flex items-start gap-2.5 leading-relaxed">
+                  <ShieldCheck className="w-4 h-4 text-indigo-600 dark:text-indigo-400 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="font-semibold">Passwordless Parent Access:</strong> Enter your student&apos;s username and their unique <strong>Parent Sync Key</strong> (from the student&apos;s portal) to securely access live study telemetry and weekly progress.
+                  </div>
+                </div>
+
+                {/* Student Name / Username */}
+                <div>
+                  <Label htmlFor="studentName" className="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider block mb-1.5">
+                    Student Name / Username
+                  </Label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+                      <GraduationCap className="w-5 h-5" />
+                    </div>
+                    <Input
+                      id="studentName"
+                      type="text"
+                      placeholder="e.g. Rutuja or Aarav Sharma"
+                      required
+                      value={studentName}
+                      onChange={(e) => setStudentName(e.target.value)}
+                      className="h-12 pl-12 rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 text-slate-900 dark:text-white placeholder:text-slate-400 focus-visible:ring-indigo-500 transition-all text-base"
+                    />
+                  </div>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
+                    Enter the student&apos;s name or registered email address
+                  </p>
+                </div>
+
+                {/* Parent Sync Key */}
+                <div>
+                  <Label htmlFor="parentKey" className="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider block mb-1.5">
+                    Parent Sync Key
+                  </Label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+                      <KeyRound className="w-5 h-5" />
+                    </div>
+                    <Input
+                      id="parentKey"
+                      type="text"
+                      placeholder="e.g. PAR-0001 or STUDENT-0001"
+                      required
+                      value={parentKey}
+                      onChange={(e) => setParentKey(e.target.value)}
+                      className="h-12 pl-12 rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 text-slate-900 dark:text-white placeholder:text-slate-400 focus-visible:ring-indigo-500 font-mono transition-all text-base tracking-wider"
+                    />
+                  </div>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
+                    Unique key provided by the student from the Parent Portal in their panel
+                  </p>
+                </div>
+
+                {/* Remember Me Option */}
+                <div className="flex items-center gap-2 pt-1">
+                  <input
+                    type="checkbox"
+                    id="rememberParent"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-700 dark:bg-slate-800 cursor-pointer"
+                  />
+                  <label htmlFor="rememberParent" className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 cursor-pointer select-none">
+                    Keep me signed in to student dashboard
+                  </label>
+                </div>
+
+                {/* Error Message */}
+                {error && (
+                  <div className="text-sm text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/50 px-4 py-3 rounded-xl flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-rose-500 flex-shrink-0"></span>
+                    <span>{error}</span>
+                  </div>
+                )}
+
+                {/* Submit Button */}
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full h-13 text-base sm:text-lg font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/35 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed mt-3 cursor-pointer"
+                >
+                  {loading ? (
+                    <span className="flex items-center gap-2.5">
+                      <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24" fill="none">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                      </svg>
+                      Verifying sync key...
+                    </span>
+                  ) : (
+                    <span className="flex items-center justify-center gap-2">
+                      Connect to Student Progress
+                      <ArrowRight className="w-5 h-5 ml-1" />
+                    </span>
+                  )}
+                </Button>
+              </form>
+            )}
 
             {/* Bottom Perks Grid */}
             <div className="mt-8 pt-5 border-t border-slate-100 dark:border-slate-800 grid grid-cols-2 gap-3 text-xs sm:text-sm text-slate-500 dark:text-slate-400">

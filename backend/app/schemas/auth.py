@@ -11,6 +11,10 @@ class UserLogin(BaseModel):
     email: EmailStr
     password: str
 
+class ParentKeyLogin(BaseModel):
+    student_name: str
+    parent_key: str
+
 class UserResponse(BaseModel):
     id: int
     name: str

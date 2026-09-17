@@ -17,6 +17,44 @@ router = APIRouter(prefix="/api/parent", tags=["parent"])
 class LinkStudentRequest(BaseModel):
     code: str
 
+@router.get("/sync-key")
+def get_sync_key(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Returns or seeds the unique Parent Sync Key for the student."""
+    if not current_user.link_code:
+        current_user.link_code = f"PAR-{current_user.id:04d}"
+        db.commit()
+        db.refresh(current_user)
+    elif current_user.link_code.startswith("STUDENT-"):
+        current_user.link_code = current_user.link_code.replace("STUDENT-", "PAR-")
+        db.commit()
+        db.refresh(current_user)
+
+    return {
+        "student_id": current_user.id,
+        "student_name": current_user.name,
+        "sync_key": current_user.link_code
+    }
+
+@router.post("/generate-sync-key")
+def generate_new_sync_key(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Generates a fresh unique Parent Sync Key for the student."""
+    import secrets
+    suffix = secrets.token_hex(2).upper()
+    current_user.link_code = f"PAR-{current_user.id:04d}-{suffix}"
+    db.commit()
+    db.refresh(current_user)
+    return {
+        "student_id": current_user.id,
+        "student_name": current_user.name,
+        "sync_key": current_user.link_code
+    }
+
 @router.get("/students")
 def list_students(
     current_user: User = Depends(get_current_user),
