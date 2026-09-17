@@ -61,26 +61,24 @@ function ScrollReveal({
 
 export default function Home() {
   const router = useRouter();
-  const [checking, setChecking] = useState(true);
+  const [mounted, setMounted] = useState(false);
+  const [isAuth, setIsAuth] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
-    if (isAuthenticated()) {
-      router.replace("/dashboard");
+    setIsAuth(isAuthenticated());
+    setMounted(true);
+    const saved = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const dark = saved === "dark" || (!saved && prefersDark);
+    setIsDark(dark);
+    if (dark) {
+      document.documentElement.classList.add("dark");
     } else {
-      setChecking(false);
-      const saved = localStorage.getItem("theme");
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      const dark = saved === "dark" || (!saved && prefersDark);
-      setIsDark(dark);
-      if (dark) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
+      document.documentElement.classList.remove("dark");
     }
-  }, [router]);
+  }, []);
 
   useEffect(() => {
     const checkScroll = () => {
@@ -110,7 +108,7 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  if (checking) return null;
+  if (!mounted) return null;
 
   return (
     <div className="min-h-screen bg-[#f8faff] dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans selection:bg-indigo-100 selection:text-indigo-900 dark:selection:bg-indigo-950 dark:selection:text-indigo-200 transition-colors duration-200 relative">
@@ -157,13 +155,25 @@ export default function Home() {
               {isDark ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5 text-slate-600" />}
             </button>
 
-            <Link className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors px-2 py-1" href="/login">
-              Sign In
-            </Link>
+            {isAuth ? (
+              <Link
+                className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-sm hover:shadow transition-all duration-150"
+                href="/dashboard"
+              >
+                <span>Go to Dashboard</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            ) : (
+              <>
+                <Link className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors px-2 py-1" href="/login">
+                  Sign In
+                </Link>
 
-            <Link className="inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-sm hover:shadow transition-all duration-150" href="/signup">
-              Get Started Free
-            </Link>
+                <Link className="inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-sm hover:shadow transition-all duration-150" href="/signup">
+                  Get Started Free
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </header>
@@ -199,21 +209,33 @@ export default function Home() {
             {/* CTA Group */}
             <ScrollReveal delay={350}>
               <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link 
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-md shadow-indigo-500/10 hover:shadow-lg transition" 
-                  href="/signup"
-                >
-                  Start Learning for Free
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Link>
+                {isAuth ? (
+                  <Link 
+                    className="w-full sm:w-auto inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-md shadow-indigo-500/10 hover:shadow-lg transition" 
+                    href="/dashboard"
+                  >
+                    Go to Your Dashboard
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Link>
+                ) : (
+                  <>
+                    <Link 
+                      className="w-full sm:w-auto inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-md shadow-indigo-500/10 hover:shadow-lg transition" 
+                      href="/signup"
+                    >
+                      Start Learning for Free
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Link>
 
-                <Link 
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/80 rounded-xl shadow-sm transition" 
-                  href="/login"
-                >
-                  <Play className="w-4 h-4 mr-2 fill-indigo-600 text-indigo-600 dark:fill-indigo-400 dark:text-indigo-400" />
-                  Explore Live Demo
-                </Link>
+                    <Link 
+                      className="w-full sm:w-auto inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/80 rounded-xl shadow-sm transition" 
+                      href="/login"
+                    >
+                      <Play className="w-4 h-4 mr-2 fill-indigo-600 text-indigo-600 dark:fill-indigo-400 dark:text-indigo-400" />
+                      Explore Live Demo
+                    </Link>
+                  </>
+                )}
               </div>
             </ScrollReveal>
 
@@ -881,19 +903,31 @@ export default function Home() {
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link 
-                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 text-base font-semibold text-indigo-950 bg-white hover:bg-slate-100 rounded-xl shadow-lg hover:scale-105 transition duration-150" 
-                href="/signup"
-              >
-                Get Started Free — 100% Free
-              </Link>
+              {isAuth ? (
+                <Link 
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 text-base font-semibold text-indigo-950 bg-white hover:bg-slate-100 rounded-xl shadow-lg hover:scale-105 transition duration-150" 
+                  href="/dashboard"
+                >
+                  <span>Return to Dashboard</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              ) : (
+                <>
+                  <Link 
+                    className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 text-base font-semibold text-indigo-950 bg-white hover:bg-slate-100 rounded-xl shadow-lg hover:scale-105 transition duration-150" 
+                    href="/signup"
+                  >
+                    Get Started Free — 100% Free
+                  </Link>
 
-              <Link 
-                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 text-base font-semibold text-white border border-indigo-500 hover:bg-indigo-800/60 rounded-xl hover:scale-105 transition duration-150" 
-                href="/login"
-              >
-                Explore Live Demo
-              </Link>
+                  <Link 
+                    className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 text-base font-semibold text-white border border-indigo-500 hover:bg-indigo-800/60 rounded-xl hover:scale-105 transition duration-150" 
+                    href="/login"
+                  >
+                    Explore Live Demo
+                  </Link>
+                </>
+              )}
             </div>
 
             <p className="mt-6 text-xs text-indigo-300">
