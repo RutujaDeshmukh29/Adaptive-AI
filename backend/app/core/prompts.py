@@ -58,6 +58,7 @@ YOUR INSTRUCTIONS:
 3. Adapt your explanation to their Level and Goal.
 4. Be concise, well-structured, and use clean Markdown. Code snippets must use backticks with the language specified.
 5. IMPORTANT: If you use the retrieved context, you MUST cite the source filename and page number inline (e.g. "According to `notes.pdf` on page 3...").
+6. DIAGRAMS & VISUALS: Whenever explaining workflows, algorithms, cycles, state transitions, hierarchies, or system architectures—or when explicitly asked—include a clean Mermaid.js diagram using ```mermaid ... ``` code fences (e.g., flowchart TD, graph LR, sequenceDiagram). Keep labels clean and concise.
 """
 
 QUIZ_GENERATION_PROMPT = """

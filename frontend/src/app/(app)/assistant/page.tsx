@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { 
   Send, FileText, Loader2, Sparkles, Brain, 
   HelpCircle, Baby, GraduationCap, Code2, Briefcase, 
-  ArrowRight, Lightbulb 
+  ArrowRight, Lightbulb, Network 
 } from "lucide-react";
 import { fetchApi } from "@/lib";
 import { ChatResponse, ChatSource, LearningMode } from "@/lib/types";
@@ -14,6 +14,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import ReactMarkdown from 'react-markdown';
+import { MermaidViewer } from "@/components/ui/mermaid-viewer";
 
 interface ModeConfig {
   id: LearningMode;
@@ -293,7 +294,43 @@ export default function AssistantPage() {
                       : "bg-slate-50 text-slate-900 border border-slate-100 shadow-sm"
                   }`}>
                     <div className="prose prose-sm dark:prose-invert max-w-none break-words">
-                      <ReactMarkdown>{msg.content}</ReactMarkdown>
+                      <ReactMarkdown
+                        components={{
+                          code({ className, children, ...props }: any) {
+                            const match = /language-(\w+)/.exec(className || "");
+                            const lang = match ? match[1] : "";
+                            const rawCode = String(children).replace(/\n$/, "");
+                            
+                            if (lang === "mermaid") {
+                              return <MermaidViewer chart={rawCode} />;
+                            }
+                            
+                            const isMultiLine = rawCode.includes("\n");
+                            if (!isMultiLine && !match) {
+                              return (
+                                <code className="px-1.5 py-0.5 rounded bg-slate-200/70 text-slate-800 font-mono text-[12px]" {...props}>
+                                  {children}
+                                </code>
+                              );
+                            }
+
+                            return (
+                              <div className="my-2.5 rounded-lg overflow-hidden border border-slate-700/50 shadow-xs">
+                                <div className="px-3 py-1 bg-slate-800 text-[11px] text-slate-300 font-mono flex items-center justify-between">
+                                  <span>{lang || "code"}</span>
+                                </div>
+                                <pre className="p-3 bg-slate-900 text-slate-100 font-mono text-xs overflow-x-auto">
+                                  <code className={className} {...props}>
+                                    {children}
+                                  </code>
+                                </pre>
+                              </div>
+                            );
+                          }
+                        }}
+                      >
+                        {msg.content}
+                      </ReactMarkdown>
                     </div>
                   </div>
                   
@@ -350,6 +387,15 @@ export default function AssistantPage() {
               <Lightbulb className="h-3 w-3 text-amber-500" />
               Try asking:
             </span>
+            <button
+              type="button"
+              onClick={() => handleSend("Please draw a clear Mermaid flowchart diagram explaining the lifecycle and decision points of loops in Python.")}
+              disabled={isLoading}
+              className="text-[11px] px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors whitespace-nowrap shrink-0 flex items-center gap-1 font-medium"
+            >
+              <Network className="h-3 w-3 text-emerald-600" />
+              <span>Draw Concept Flowchart</span>
+            </button>
             {activeModeConfig.starterPrompts.map((prompt, idx) => (
               <button
                 key={idx}
