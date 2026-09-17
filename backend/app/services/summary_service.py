@@ -48,6 +48,28 @@ Instructions:
 3. Keep it punchy, fast to scan, and focused on practical recall.
 """,
 
+    "shortnotes": """You are an expert revision note creator on AdaptEd AI.
+Create concise, high-yield Short Revision Notes from the following document.
+Document Title: {filename}
+Student Academic Level: {level}
+Student Target Goal: {goal}
+
+Document Content:
+--------------------------------------------------
+{doc_text}
+--------------------------------------------------
+
+Instructions:
+1. Provide concise, bulleted revision notes in clean Markdown.
+2. Structure with these sections:
+   # 📝 Short Revision Notes: {filename}
+   ## 📌 Core Definitions & Formulas (1-line definitions)
+   ## ⚡ High-Yield Bullet Points (key principles, rules, theorems)
+   ## 💡 Exam & Interview Rapid Recall Points
+   ## 🎯 5-Minute Quick Recap Checklist
+3. Keep sentences short, dense with information, and ideal for fast pre-exam revision.
+""",
+
     "eli5": """You are a master educator on AdaptEd AI specializing in intuitive, metaphor-driven learning.
 Explain the entire core concept of this document as if explaining to a 5-year-old (ELI5).
 Document Title: {filename}
@@ -71,6 +93,7 @@ Instructions:
 
 MODE_TITLES = {
     "detailed": "Comprehensive Summary",
+    "shortnotes": "Short Revision Notes",
     "cheatsheet": "Quick Cheat Sheet",
     "eli5": "ELI5 Breakdown"
 }

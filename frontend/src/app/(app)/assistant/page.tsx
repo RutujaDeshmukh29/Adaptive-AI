@@ -6,7 +6,7 @@ import {
   HelpCircle, Baby, GraduationCap, Code2, Briefcase, 
   ArrowRight, Lightbulb, Network, Mic, MicOff, Volume2, VolumeX,
   History, Plus, Trash2, Clock, MessageSquare, ArrowUp,
-  PanelRightClose, PanelRight, ChevronRight, Copy, Check,
+  PanelRightClose, PanelRight, ChevronRight, ChevronUp, ChevronDown, Copy, Check,
   BookOpen, Bookmark, Target, Play, Paperclip, RefreshCw, X
 } from "lucide-react";
 import { fetchApi } from "@/lib";
@@ -246,6 +246,24 @@ function AssistantContent() {
     loadSessions();
   }, []);
 
+  // Auto-scroll to latest response immediately
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({
+        top: scrollRef.current.scrollHeight,
+        behavior: "smooth"
+      });
+    }
+  }, [messages.length, isLoading]);
+
+  const scrollToTop = () => {
+    scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const scrollToBottom = () => {
+    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
+  };
+
   const selectSession = async (targetSessionId: string) => {
     if (loadingHistory || targetSessionId === sessionId) return;
     try {
@@ -471,7 +489,7 @@ function AssistantContent() {
   });
 
   return (
-    <div className="flex flex-col min-h-[calc(100vh-6rem)] space-y-2.5 pb-2">
+    <div className="flex flex-col min-h-[calc(100vh-5.5rem)] space-y-3 pb-8">
       {/* Top Header Strip & Page Title (Streamlined Single Row) */}
       <ScrollReveal pop={false}>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 border-b border-slate-200/80 dark:border-slate-800 pb-2">
@@ -581,9 +599,9 @@ function AssistantContent() {
       </ScrollReveal>
 
       {/* Main Spacious Canvas Grid (9 Cols Wide Chat + 3 Cols Right Rail or Full 12 Cols when collapsed) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-5 flex-1 min-h-0 items-stretch">
-        {/* Primary Wide Chat Section (Expansive 75% Width) */}
-        <section className={`flex flex-col bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-[0_2px_16px_rgba(15,23,42,0.02)] transition-all flex-1 min-h-[620px] lg:min-h-[680px] overflow-hidden ${
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-5 items-start">
+        {/* Primary Chat & Response Section */}
+        <section className={`flex flex-col bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-[0_2px_16px_rgba(15,23,42,0.02)] transition-all min-h-[660px] lg:min-h-[740px] overflow-hidden ${
           rightPanelOpen ? "lg:col-span-9 xl:col-span-9" : "lg:col-span-12"
         }`}>
           {/* Persona / Learning Modes Switcher Strip */}
@@ -616,10 +634,88 @@ function AssistantContent() {
             </span>
           </div>
 
-          {/* Chat Stream (Airy, highly legible, spacious) */}
+          {/* Sleek Prompt Input Box Docked ABOVE the Responses */}
+          <div className="p-3 lg:p-3.5 border-b border-slate-200/80 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-950/40 shrink-0">
+            {isListening && (
+              <div className="mb-2 px-3.5 py-1.5 rounded-xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900 flex items-center justify-between text-xs text-rose-700 dark:text-rose-300 animate-pulse">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-rose-500 animate-ping" />
+                  <span className="font-semibold">Listening to your voice... Speak your question now!</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={toggleListening}
+                  className="text-xs font-bold underline hover:text-rose-950"
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
+
+            <form 
+              onSubmit={(e) => { e.preventDefault(); handleSend(); }}
+              className="bg-white dark:bg-slate-800/80 border border-slate-200/90 dark:border-slate-700 focus-within:border-indigo-500/80 focus-within:ring-2 focus-within:ring-indigo-500/15 rounded-2xl p-2.5 transition-all flex flex-col gap-2 shadow-2xs"
+            >
+              <textarea
+                ref={textareaRef}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSend();
+                  }
+                }}
+                rows={2}
+                disabled={isLoading}
+                placeholder="Ask a question, enter a prompt, or request a diagram from your syllabus..."
+                className="w-full bg-transparent border-none focus:outline-none text-slate-900 dark:text-white placeholder:text-slate-400 text-sm resize-none px-2 py-1 leading-relaxed min-h-[46px] max-h-36"
+              />
+
+              <div className="flex items-center justify-between pt-1 px-1 border-t border-slate-100 dark:border-slate-700/50">
+                <div className="flex items-center gap-2">
+                  {speechSupported && (
+                    <button
+                      type="button"
+                      onClick={toggleListening}
+                      disabled={isLoading}
+                      className={`p-1.5 rounded-xl transition-all ${
+                        isListening
+                          ? "bg-rose-500 text-white animate-pulse"
+                          : "text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-700"
+                      }`}
+                      title="Voice speech-to-text input"
+                    >
+                      {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+                    </button>
+                  )}
+
+                  <div className="h-3.5 w-px bg-slate-200 dark:bg-slate-700"></div>
+
+                  <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-900 px-2.5 py-0.5 rounded-md border border-slate-200 dark:border-slate-700">
+                    Caliber {caliberScore} Depth
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <span className="hidden sm:inline text-[11px] text-slate-400">Press ↵ to send</span>
+                  <button
+                    type="submit"
+                    disabled={isLoading || !input.trim()}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-semibold text-xs transition-all shadow-xs cursor-pointer"
+                  >
+                    <span>Send</span>
+                    <ArrowUp className="w-3.5 h-3.5 stroke-[2.5]" />
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          {/* Chat Stream (Expansive, airy response canvas below the prompt box) */}
           <div 
             ref={scrollRef}
-            className="flex-1 p-5 lg:p-7 flex flex-col gap-6 overflow-y-auto min-h-[480px] lg:min-h-[560px] relative scrollbar-thin"
+            className="flex-1 p-5 lg:p-7 flex flex-col gap-6 overflow-y-auto min-h-[480px] max-h-[740px] relative scrollbar-thin"
           >
             {loadingHistory && (
               <div className="absolute inset-0 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xs flex items-center justify-center z-10">
@@ -680,8 +776,8 @@ function AssistantContent() {
                       )}
                     </div>
 
-                    {/* Markdown Rendered Content */}
-                    <div className="prose prose-slate dark:prose-invert max-w-none text-slate-800 dark:text-slate-200 text-sm sm:text-base leading-relaxed break-words">
+                    {/* Markdown Rendered Content (Expands naturally to show full diagrams & content, up to generous limit) */}
+                    <div className="prose prose-slate dark:prose-invert max-w-none text-slate-800 dark:text-slate-200 text-sm sm:text-base leading-relaxed break-words max-h-[620px] lg:max-h-[700px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-700">
                       <ReactMarkdown
                         remarkPlugins={[remarkGfm]}
                         components={{
@@ -955,90 +1051,35 @@ function AssistantContent() {
                 <span>Searching indexed course notes and synthesizing response...</span>
               </div>
             )}
-          </div>
 
-          {/* Sleek Docked Input Bar at Bottom */}
-          <div className="p-2.5 lg:p-3 border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shrink-0">
-            {/* Active Voice Listening Banner */}
-            {isListening && (
-              <div className="mb-2 px-3.5 py-1.5 rounded-xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900 flex items-center justify-between text-xs text-rose-700 dark:text-rose-300 animate-pulse">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-rose-500 animate-ping" />
-                  <span className="font-semibold">Listening to your voice... Speak your question now!</span>
-                </div>
+            {/* Floating Up & Down Jump Navigation Arrows */}
+            {messages.length > 1 && (
+              <div className="sticky bottom-2 right-2 self-end flex items-center gap-1.5 p-1 rounded-2xl bg-white/95 dark:bg-slate-800/95 backdrop-blur-md border border-slate-200/80 dark:border-slate-700 shadow-md z-20 pointer-events-auto">
                 <button
                   type="button"
-                  onClick={toggleListening}
-                  className="text-xs font-bold underline hover:text-rose-950"
+                  onClick={scrollToTop}
+                  className="w-7 h-7 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-indigo-600 flex items-center justify-center transition-all cursor-pointer"
+                  title="Scroll to Top / History"
                 >
-                  Cancel
+                  <ChevronUp className="w-4 h-4" />
+                </button>
+                <div className="w-px h-3.5 bg-slate-200 dark:bg-slate-700" />
+                <button
+                  type="button"
+                  onClick={scrollToBottom}
+                  className="w-7 h-7 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-indigo-600 flex items-center justify-center transition-all cursor-pointer"
+                  title="Scroll to Latest Response"
+                >
+                  <ChevronDown className="w-4 h-4" />
                 </button>
               </div>
             )}
-
-            <form 
-              onSubmit={(e) => { e.preventDefault(); handleSend(); }}
-              className="bg-slate-50 dark:bg-slate-800/70 border border-slate-200/80 dark:border-slate-700 focus-within:border-indigo-500/80 focus-within:ring-2 focus-within:ring-indigo-500/10 rounded-2xl p-2 transition-all flex flex-col gap-1.5"
-            >
-              <textarea
-                ref={textareaRef}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    handleSend();
-                  }
-                }}
-                rows={1}
-                disabled={isLoading}
-                placeholder="Ask a question or request a derivation from your notes..."
-                className="w-full bg-transparent border-none focus:outline-none text-slate-900 dark:text-white placeholder:text-slate-400 text-sm resize-none px-2 py-1 leading-relaxed min-h-[38px] max-h-32"
-              />
-
-              <div className="flex items-center justify-between pt-0.5 px-1">
-                <div className="flex items-center gap-2">
-                  {speechSupported && (
-                    <button
-                      type="button"
-                      onClick={toggleListening}
-                      disabled={isLoading}
-                      className={`p-1.5 rounded-xl transition-all ${
-                        isListening
-                          ? "bg-rose-500 text-white animate-pulse"
-                          : "text-slate-400 hover:text-indigo-600 hover:bg-slate-200/60 dark:hover:bg-slate-700"
-                      }`}
-                      title="Voice speech-to-text input"
-                    >
-                      {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
-                    </button>
-                  )}
-
-                  <div className="h-3.5 w-px bg-slate-200 dark:bg-slate-700"></div>
-
-                  <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900 px-2.5 py-0.5 rounded-md border border-slate-200 dark:border-slate-700">
-                    Caliber {caliberScore} Depth
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <span className="hidden sm:inline text-[11px] text-slate-400">Press ↵ to send</span>
-                  <button
-                    type="submit"
-                    disabled={isLoading || !input.trim()}
-                    className="w-8 h-8 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white flex items-center justify-center transition-all shadow-xs cursor-pointer"
-                  >
-                    <ArrowUp className="w-4 h-4 stroke-[2.5]" />
-                  </button>
-                </div>
-              </div>
-            </form>
           </div>
         </section>
 
         {/* Streamlined Right Rail (Col 3) - Hideable / Unhideable */}
         {rightPanelOpen && (
-          <aside className="lg:col-span-3 xl:col-span-3 flex flex-col gap-3 h-full lg:overflow-y-auto scrollbar-thin pr-0.5 animate-in fade-in slide-in-from-right-2">
+          <aside className="lg:col-span-3 xl:col-span-3 flex flex-col gap-3 min-h-[660px] lg:min-h-[740px] max-h-[820px] overflow-y-auto scrollbar-thin pr-0.5 animate-in fade-in slide-in-from-right-2">
             {/* Section 0: Chat Stats & Counts in Short */}
             <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4 shadow-xs shrink-0">
               <div className="flex items-center justify-between mb-2">

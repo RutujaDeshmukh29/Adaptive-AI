@@ -7,6 +7,9 @@ import { Button } from "@/components/ui/button";
 
 interface MermaidViewerProps {
   chart: string;
+  theme?: "dark" | "neutral" | "default" | "auto";
+  onSvgRendered?: (svg: string) => void;
+  className?: string;
 }
 
 /**
@@ -45,8 +48,11 @@ function sanitizeMermaid(code: string): string {
   return processed.join("\n");
 }
 
-export function MermaidViewer({ chart }: MermaidViewerProps) {
+export function MermaidViewer({ chart, theme = "auto", onSvgRendered, className }: MermaidViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const onSvgRenderedRef = useRef(onSvgRendered);
+  onSvgRenderedRef.current = onSvgRendered;
+
   const [svg, setSvg] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -57,11 +63,27 @@ export function MermaidViewer({ chart }: MermaidViewerProps) {
   useEffect(() => {
     let isMounted = true;
 
+    const isDark = typeof document !== "undefined" && document.documentElement.classList.contains("dark");
+    const effectiveTheme = theme === "dark" || (theme === "auto" && isDark) ? "dark" : (theme === "auto" ? "neutral" : theme);
+
     try {
       mermaid.initialize({
         startOnLoad: false,
         suppressErrorRendering: true,
-        theme: "neutral",
+        theme: effectiveTheme,
+        themeVariables: effectiveTheme === "dark" ? {
+          darkMode: true,
+          background: "transparent",
+          primaryColor: "#4f46e5",
+          primaryTextColor: "#f8fafc",
+          primaryBorderColor: "#818cf8",
+          lineColor: "#94a3b8",
+          secondaryColor: "#1e293b",
+          tertiaryColor: "#0f172a",
+          textColor: "#f8fafc",
+          mainBkg: "#1e293b",
+          nodeBorder: "#6366f1",
+        } : undefined,
         securityLevel: "loose",
         fontFamily: "ui-sans-serif, system-ui, sans-serif",
       });
@@ -80,6 +102,7 @@ export function MermaidViewer({ chart }: MermaidViewerProps) {
         
         if (isMounted) {
           setSvg(renderedSvg);
+          onSvgRenderedRef.current?.(renderedSvg);
         }
       } catch {
         // Clean up any stray error element that Mermaid may have injected into DOM
@@ -105,7 +128,7 @@ export function MermaidViewer({ chart }: MermaidViewerProps) {
     return () => {
       isMounted = false;
     };
-  }, [chart, uniqueId]);
+  }, [chart, uniqueId, theme]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(chart);

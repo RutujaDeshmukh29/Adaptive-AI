@@ -65,7 +65,7 @@ YOUR INSTRUCTIONS:
      | :--- | :--- | :--- |
      | Embedding | Dense vector representation | Semantic similarity |
    - For mathematical equations, ALWAYS enclose formulas in standard LaTeX:
-     - Block equations: use double dollar signs `$$ ... $$` (e.g. `$$ \text{sim}(\mathbf{a}, \mathbf{b}) = \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{a}\| \|\mathbf{b}\|} $$`).
+     - Block equations: use double dollar signs `$$ ... $$` (e.g. `$$ \mathrm{{sim}}(A, B) = \frac{{A \cdot B}}{{\|A\| \|B\|}} $$`).
      - Inline math: use single dollar signs `$ ... $` (e.g. `$d_k$`).
 5. CITATIONS: If you use the retrieved context, you MUST cite the source filename and page number inline (e.g. "According to `notes.pdf` on page 3...").
 6. DIAGRAMS & VISUALS (MERMAID SYNTAX RULES):
