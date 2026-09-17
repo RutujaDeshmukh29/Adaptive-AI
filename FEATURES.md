@@ -34,28 +34,29 @@ This document serves as the master record of all features built and planned for 
 
 ---
 
-## 🟡 Planned Features (To Be Built)
-
 ### 9. Parent Sync Portal & Activity Tracker 👨‍👩‍👧‍👦
-*   **Description:** A separate login role for parents. Parents can link their accounts to their children to view a read-only dashboard.
-*   **Daily Timeline:** Tracks exact timestamps of what the student studied (e.g., "10:15 AM - Took a Quiz on Thermodynamics").
-*   **AI Parent Advisor:** Uses Gemini to generate a plain-English weekly summary for the parent (e.g., *"Sarah is struggling with Genetics. We recommend having her generate a cheat sheet this weekend."*)
-*   **Addresses:** *Should be sync with parents of student.*
+*   **Description:** A role-based architecture with separate "Student" and "Parent" accounts linked via secure 6-character sync keys.
+*   **Daily Timeline:** Real-time event logging capturing exact timestamps of uploads, quizzes, chat queries, and coding challenges.
+*   **AI Parent Advisor:** Uses Gemini to synthesize comprehensive weekly progress reports, identifying strengths, struggles, and actionable study tips.
+*   **Addresses:** *Direct judge feedback: "Should be sync with parents of student."*
 
-### 10. 6 Learning Modes Dropdown 🎓
-*   **Description:** A dropdown in the chat allowing the student to instantly switch the AI’s personality (e.g., "Beginner", "Exam Prep", "Practical Application").
+### 10. 6 Pedagogical Learning Modes 🎓
+*   **Description:** Interactive persona selector in the chat: Adaptive Tutor, Socratic Guide (hints without spoiling answers), ELI5 (everyday metaphors), Exam & Viva Prep (scoring definitions & likely viva traps), Code-First (runnable snippets first), and Technical Interview (Big-O analysis & scalability).
 
-### 11. Diagram Generation (Mermaid.js) 🔀
-*   **Description:** The AI can generate instant flowcharts, mind-maps, and architecture diagrams inside the chat using Mermaid.js rendering.
+### 11. Diagram Generation & Mermaid.js Rendering 🔀
+*   **Description:** The AI dynamically renders flowcharts, decision trees, architecture graphs, and sequence diagrams directly inside chat messages using Mermaid.js.
 
-### 12. Smart Summaries 📋
-*   **Description:** A UI feature to instantly generate a "Detailed Chapter Summary," a "Quick Cheat Sheet," or an "Explain Like I'm 5" breakdown from the PDFs.
+### 12. Smart Document Summarizer 📋
+*   **Description:** Instant AI-powered chapter summarizer on uploaded PDFs with 3 distinct modalities: Comprehensive Chapter Breakdown, Quick Revision Cheat Sheet, and ELI5 Metaphor Guide.
 
-### 13. Voice Assistant 🔊
-*   **Description:** A microphone button in the chat allowing students to ask questions using their voice and hear the AI speak the answers back (using browser native Speech APIs).
+### 13. Voice Assistant (STT & TTS) 🔊
+*   **Description:** Native browser speech recognition for hands-free voice input and natural text-to-speech voice narration for AI explanations.
 
-### 14. Coding Challenges & Interview Prep 🏆
-*   **Description:** Expands the Quiz Engine to dynamically generate coding problems or short-answer interview questions based on the student's weakest topics.
+### 14. Chat Session History & Conversation Persistence 📁
+*   **Description:** Collapsible sidebar with saved past conversations, timestamped session history, message count badges, one-click "+ New Chat", and session deletion.
+
+### 15. Coding Challenges & Weak-Topic Lab 🏆
+*   **Description:** Expands the practice engine with an interactive coding workspace. Features a Weak-Concept Diagnostic Radar that auto-detects concepts missed in quizzes, generates targeted Python challenges, provides progressive hints, and offers real-time AI code reviews with Big-O time/space complexity analysis and edge-case validation.
 
 ---
 
