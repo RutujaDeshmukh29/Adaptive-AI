@@ -467,7 +467,7 @@ function AssistantContent() {
           id: Date.now().toString(), 
           role: "assistant", 
           timestamp: timeStr,
-          content: `Unable to retrieve response: ${err.detail || "Server connection timed out."}`,
+          content: `Unable to retrieve response: ${err.detail || err.message || "Server connection timed out or backend is unreachable. Please verify backend is running on port 8000."}`,
           mode: selectedMode 
         }
       ]);
