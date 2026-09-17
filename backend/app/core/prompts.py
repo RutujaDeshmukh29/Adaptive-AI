@@ -29,7 +29,14 @@ Difficulty: {difficulty} (easy, medium, or hard)
 Target Level: {level}
 Goal: {goal}
 
+Here is context from the student's own uploaded course materials:
+--------------------------------------------------
+{rag_context}
+--------------------------------------------------
+
 Generate exactly {count} multiple-choice questions about this topic. 
+IMPORTANT: Base the questions and terminology primarily on the provided course material context. If the context is empty, use general knowledge.
+
 Format your response as a strict JSON array of objects. Do not include markdown fences like ```json.
 Each object must have exactly these keys:
 - "question": string

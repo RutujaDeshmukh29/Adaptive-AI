@@ -76,6 +76,8 @@ export interface QuizQuestion {
   difficulty: Difficulty;
   topic?: string;
   topic_id?: number;
+  correct_index: number;
+  explanation: string;
 }
 
 export interface QuizGenerateResponse {
