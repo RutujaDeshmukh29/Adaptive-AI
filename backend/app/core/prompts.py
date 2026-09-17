@@ -86,3 +86,91 @@ Each object must have exactly these keys:
 
 Make sure the questions match the requested difficulty.
 """
+
+CHALLENGE_GENERATION_PROMPT = """
+You are a senior technical interviewer and adaptive coding mentor for AdaptEd AI.
+Topic: {topic}
+Difficulty: {difficulty} (easy, medium, hard)
+Format: {format} ("code" for coding exercise, "interview" for technical interview challenge)
+Target Learner Level: {level}
+Learner Goal: {goal}
+Targeted Weak Sub-Concepts: {weak_concepts}
+
+Uploaded Materials Context:
+--------------------------------------------------
+{rag_context}
+--------------------------------------------------
+
+TASK:
+Generate a targeted, highly practical challenge that specifically tests and strengthens the student on their weak concepts: {weak_concepts}.
+
+Format your response as a strict JSON object (no markdown backticks, no ```json):
+{{
+  "title": "Short catchy title of the challenge",
+  "targeted_weakness": "The specific weak concept or trap being addressed",
+  "difficulty": "{difficulty}",
+  "type": "{format}",
+  "scenario": "A 2-4 sentence real-world engineering or practical problem context setting up the challenge.",
+  "requirements": [
+    "Specific functional requirement 1",
+    "Specific functional requirement 2",
+    "Constraint or edge-case handling requirement 3"
+  ],
+  "starter_code": "Clean Python starter code with function definitions, docstrings, typing, sample inputs, and # TODO comments for the student to fill in.",
+  "test_cases": [
+    {{
+      "input": "Description or exact input parameters (e.g. nums = [2, 7, 11, 15], target = 9)",
+      "expected": "Expected return value or output (e.g. [0, 1])",
+      "explanation": "Why this test case matters (e.g. Standard positive case)"
+    }},
+    {{
+      "input": "Edge-case input parameters (e.g. nums = [], target = 5)",
+      "expected": "Expected return value or exception",
+      "explanation": "Empty or boundary test case"
+    }}
+  ],
+  "hints": [
+    "Hint 1: Conceptual or structural guidance without giving away the logic.",
+    "Hint 2: Edge-case warning or specific boundary check to think about.",
+    "Hint 3: High-level algorithm approach or key data structure to use."
+  ],
+  "solution": "Complete, correct, fully-commented reference implementation.",
+  "explanation": "Deep dive into the optimal approach, Big-O Time Complexity (e.g., O(N)), Big-O Space Complexity (e.g., O(1)), and common interview mistakes to avoid."
+}}
+"""
+
+CHALLENGE_EVALUATION_PROMPT = """
+You are a senior technical interviewer evaluating a student's submission.
+Challenge Title: {title}
+Topic: {topic}
+Difficulty: {difficulty}
+Challenge Scenario: {scenario}
+
+Reference Solution:
+{solution}
+
+Student's Submitted Solution:
+{user_code}
+
+Evaluate the student's solution thoroughly for logic correctness, syntax, edge case handling, and algorithmic efficiency.
+
+Format your response as a strict JSON object (no markdown backticks, no ```json):
+{{
+  "passed": true,
+  "score": 85,
+  "summary": "2-3 encouraging, constructive sentences summarizing their performance.",
+  "strengths": [
+    "Specific positive observation 1",
+    "Specific positive observation 2"
+  ],
+  "areas_for_improvement": [
+    "Constructive critique or missed edge case 1",
+    "Constructive critique or efficiency tip 2"
+  ],
+  "efficiency_analysis": "Time complexity: O(...), Space complexity: O(...). Brief comparison to reference solution.",
+  "edge_cases_analyzed": [
+    {{"case": "Empty / null input", "handled": true, "notes": "Handled properly"}},
+    {{"case": "Boundary condition / single element", "handled": false, "notes": "Missed boundary condition"}}
+  ]
+}}
+"""

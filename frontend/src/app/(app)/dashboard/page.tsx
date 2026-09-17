@@ -6,7 +6,7 @@ import { LearnerSnapshot, TopicMastery } from "@/lib/types";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, BrainCircuit, TrendingUp, Trophy, Target, AlertCircle, BookOpen, PenTool } from "lucide-react";
+import { Loader2, BrainCircuit, TrendingUp, Trophy, Target, AlertCircle, BookOpen, PenTool, Code2 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
@@ -125,12 +125,23 @@ export default function Dashboard() {
                 </div>
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-red-700 mb-2 flex items-center gap-2">
-                  <AlertCircle className="h-4 w-4" /> Needs Review
+                <h4 className="text-sm font-semibold text-red-700 mb-2 flex items-center justify-between">
+                  <span className="flex items-center gap-2">
+                    <AlertCircle className="h-4 w-4" /> Needs Review
+                  </span>
+                  <Link href="/practice?tab=challenge" className="text-xs font-normal text-indigo-600 hover:text-indigo-800 flex items-center gap-1">
+                    <Code2 className="h-3 w-3" />
+                    <span>Code Lab</span>
+                  </Link>
                 </h4>
                 <div className="flex flex-wrap gap-2">
                   {snapshot.weaknesses.length > 0 ? snapshot.weaknesses.map(w => (
-                    <Badge key={w} variant="outline" className="bg-red-50 border-red-200 text-red-800">{w}</Badge>
+                    <Link key={w} href={`/practice?tab=challenge`}>
+                      <Badge variant="outline" className="bg-red-50 border-red-200 text-red-800 hover:bg-red-100 hover:border-red-300 transition-colors cursor-pointer flex items-center gap-1">
+                        <span>{w}</span>
+                        <Code2 className="h-3 w-3 text-red-500" />
+                      </Badge>
+                    </Link>
                   )) : <span className="text-sm text-slate-500">No major weaknesses detected.</span>}
                 </div>
               </div>
@@ -148,11 +159,17 @@ export default function Dashboard() {
               <div key={m.topic_id} className="space-y-2">
                 <div className="flex justify-between items-center text-sm">
                   <span className="font-medium text-slate-700">{m.topic}</span>
-                  <div className="flex items-center gap-3">
-                    <span className="font-bold">{m.mastery.toFixed(1)}%</span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold mr-1">{m.mastery.toFixed(1)}%</span>
+                    <Link href={`/practice?tab=challenge&topic_id=${m.topic_id}`}>
+                      <Button variant="outline" size="sm" className="h-7 px-2 text-xs text-indigo-700 border-indigo-200 hover:bg-indigo-50 flex items-center gap-1">
+                        <Code2 className="h-3 w-3" />
+                        <span>Code</span>
+                      </Button>
+                    </Link>
                     <Link href={`/practice?topic_id=${m.topic_id}`}>
                       <Button variant="ghost" size="sm" className="h-7 px-2 text-xs text-primary hover:text-primary hover:bg-primary/10">
-                        Practice →
+                        Quiz →
                       </Button>
                     </Link>
                   </div>

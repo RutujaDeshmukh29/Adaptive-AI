@@ -262,3 +262,55 @@ export interface ParentReport {
   ai_advisor: string;
   generated_at: string;
 }
+
+export interface TestCaseItem {
+  input: string;
+  expected: string;
+  explanation?: string;
+}
+
+export interface Challenge {
+  id: string;
+  title: string;
+  topic_id: number;
+  topic_name: string;
+  targeted_weakness: string;
+  difficulty: "easy" | "medium" | "hard";
+  type: "code" | "interview";
+  scenario: string;
+  requirements: string[];
+  starter_code: string;
+  test_cases: TestCaseItem[];
+  hints: string[];
+  solution: string;
+  explanation: string;
+}
+
+export interface EdgeCaseItem {
+  case: string;
+  handled: boolean;
+  notes?: string;
+}
+
+export interface ChallengeEvaluation {
+  passed: boolean;
+  score: number;
+  summary: string;
+  strengths: string[];
+  areas_for_improvement: string[];
+  efficiency_analysis: string;
+  edge_cases_analyzed: EdgeCaseItem[];
+  mastery_updated?: boolean;
+  new_mastery?: number;
+}
+
+export interface WeakTopicsSummary {
+  current_topic: { id: number; name: string } | null;
+  weak_concepts: string[];
+  recommended_topics: {
+    topic_id: number;
+    name: string;
+    mastery: number;
+    attempts: number;
+  }[];
+}
