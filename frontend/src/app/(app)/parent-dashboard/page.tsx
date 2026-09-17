@@ -374,7 +374,7 @@ export default function ParentDashboardPage() {
       </div>
 
       {/* ── 3. HERO / CHILD PROFILE SUMMARY BANNER ── */}
-      <section className="relative w-full rounded-2xl bg-white dark:bg-slate-900 p-6 sm:p-8 shadow-sm border border-slate-200/80 dark:border-slate-800 overflow-hidden">
+      <section id="overview" className="scroll-mt-6 relative w-full rounded-2xl bg-white dark:bg-slate-900 p-6 sm:p-8 shadow-sm border border-slate-200/80 dark:border-slate-800 overflow-hidden">
         {/* Ambient Accent Glow behind header */}
         <div className="absolute -top-24 -right-20 w-96 h-96 rounded-full bg-indigo-500/10 dark:bg-indigo-500/5 blur-3xl pointer-events-none"></div>
 
@@ -468,7 +468,7 @@ export default function ParentDashboardPage() {
 
       {/* ── 4. LIVE STUDY ACTIVITY • WHAT AARAV IS DOING RIGHT NOW ── */}
       {liveStudy && (
-        <section className="w-full bg-gradient-to-r from-white via-indigo-50/20 to-white dark:from-slate-900 dark:via-indigo-950/20 dark:to-slate-900 rounded-2xl p-6 sm:p-7 border-2 border-indigo-200/80 dark:border-indigo-900/80 shadow-sm relative overflow-hidden">
+        <section id="insights" className="scroll-mt-6 w-full bg-gradient-to-r from-white via-indigo-50/20 to-white dark:from-slate-900 dark:via-indigo-950/20 dark:to-slate-900 rounded-2xl p-6 sm:p-7 border-2 border-indigo-200/80 dark:border-indigo-900/80 shadow-sm relative overflow-hidden">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-slate-200/80 dark:border-slate-800">
             <div className="flex items-center gap-3.5">
               <div className="relative flex items-center justify-center w-11 h-11 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex-shrink-0">
@@ -585,7 +585,7 @@ export default function ParentDashboardPage() {
       <section className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
         {/* Left 7 cols: Enrolled Courses & Progress Mastery */}
-        <div className="lg:col-span-7 bg-white dark:bg-slate-900 rounded-2xl p-6 sm:p-7 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+        <div id="mastery" className="scroll-mt-6 lg:col-span-7 bg-white dark:bg-slate-900 rounded-2xl p-6 sm:p-7 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-4">
               <div>
@@ -639,7 +639,7 @@ export default function ParentDashboardPage() {
         </div>
 
         {/* Right 5 cols: Today's Study Timeline */}
-        <div className="lg:col-span-5 bg-white dark:bg-slate-900 rounded-2xl p-6 sm:p-7 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+        <div id="habits" className="scroll-mt-6 lg:col-span-5 bg-white dark:bg-slate-900 rounded-2xl p-6 sm:p-7 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">
@@ -1006,7 +1006,7 @@ export default function ParentDashboardPage() {
       </section>
 
       {/* ── 9. PARENTAL CONTROLS & QUIET ADVISORY FOOTER ── */}
-      <footer className="w-full bg-slate-50 dark:bg-slate-800/60 rounded-2xl p-6 sm:p-7 border border-slate-200/80 dark:border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <footer id="settings" className="scroll-mt-6 w-full bg-slate-50 dark:bg-slate-800/60 rounded-2xl p-6 sm:p-7 border border-slate-200/80 dark:border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
         {/* Toggle SMS */}
         <div className="flex items-center gap-3.5 cursor-pointer" onClick={handleToggleSms}>
           <div className="relative inline-flex items-center">

@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { 
   LayoutDashboard, UserCheck, Target, Code2, BookOpen, 
   MessageSquare, Network, FileText, HeartHandshake, 
-  LogOut, Sparkles, ChevronRight
+  LogOut, Sparkles, ChevronRight, TrendingUp, Brain, Clock, Bell, Users
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { removeToken, fetchApi } from "@/lib";
@@ -14,6 +14,7 @@ import { removeToken, fetchApi } from "@/lib";
 export function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const [userRole, setUserRole] = useState("student");
   const [userName, setUserName] = useState("Aarav Sharma");
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [competency, setCompetency] = useState(84);
@@ -21,12 +22,24 @@ export function Sidebar() {
 
   useEffect(() => {
     function refreshUserData() {
+      const savedRole = localStorage.getItem("user_role");
+      if (savedRole) setUserRole(savedRole);
+
       const savedAvatar = localStorage.getItem("user_avatar");
       if (savedAvatar) setAvatarUrl(savedAvatar);
       const savedName = localStorage.getItem("user_name");
       if (savedName) setUserName(savedName);
       const savedDegree = localStorage.getItem("user_degree");
       if (savedDegree) setLevel(savedDegree);
+
+      fetchApi<any>("/api/auth/me")
+        .then((me) => {
+          if (me?.role) {
+            setUserRole(me.role);
+            localStorage.setItem("user_role", me.role);
+          }
+        })
+        .catch(() => {});
 
       fetchApi<any>("/api/profile")
         .then((data) => {
@@ -56,7 +69,7 @@ export function Sidebar() {
     return () => window.removeEventListener("profile-updated", refreshUserData);
   }, []);
   
-  const navItems = [
+  const studentNavItems = [
     { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
     { name: "Dynamic Learner Profile", href: "/profile", icon: UserCheck },
     { name: "Adaptive Practice", href: "/practice", icon: Target },
@@ -67,6 +80,16 @@ export function Sidebar() {
     { name: "Knowledge Base", href: "/materials", icon: FileText },
     { name: "Parent Portal", href: "/parent-dashboard", icon: HeartHandshake },
   ];
+
+  const parentNavItems = [
+    { name: "Overview & Progress", href: "/parent-dashboard#overview", icon: TrendingUp },
+    { name: "Mastery & Diagnostics", href: "/parent-dashboard#mastery", icon: Target },
+    { name: "Study Habits & Time", href: "/parent-dashboard#habits", icon: Clock },
+    { name: "Tutor AI Insights", href: "/parent-dashboard#insights", icon: Brain },
+    { name: "Settings & Alerts", href: "/parent-dashboard#settings", icon: Bell },
+  ];
+
+  const navItems = userRole === "parent" ? parentNavItems : studentNavItems;
 
   const handleLogout = () => {
     removeToken();
@@ -91,9 +114,15 @@ export function Sidebar() {
           <div className="flex flex-col">
             <div className="flex items-center gap-1.5">
               <span className="font-bold text-slate-900 dark:text-white text-lg tracking-tight leading-none">AdaptEd AI</span>
-              <span className="text-[9px] uppercase font-semibold tracking-wider bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 px-2 py-0.5 rounded-full border border-indigo-100 dark:border-indigo-900">
-                by SkillMatix
-              </span>
+              {userRole === "parent" ? (
+                <span className="text-[9px] uppercase font-bold tracking-wider bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 px-2 py-0.5 rounded-full border border-indigo-200 dark:border-indigo-800">
+                  Parent
+                </span>
+              ) : (
+                <span className="text-[9px] uppercase font-semibold tracking-wider bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 px-2 py-0.5 rounded-full border border-indigo-100 dark:border-indigo-900">
+                  by SkillMatix
+                </span>
+              )}
             </div>
           </div>
         </Link>
@@ -101,7 +130,7 @@ export function Sidebar() {
         {/* Navigation Items */}
         <nav className="flex flex-col gap-1 mt-1">
           {navItems.map((item) => {
-            const isActive = pathname === item.href;
+            const isActive = pathname === item.href || (userRole === "parent" && pathname === "/parent-dashboard" && item.href.startsWith("/parent-dashboard"));
             return (
               <Link
                 key={item.name}
@@ -123,42 +152,76 @@ export function Sidebar() {
 
       {/* Bottom User Card */}
       <div className="p-4 mt-auto">
-        <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800 flex flex-col gap-3">
-          
-          <div className="flex items-center gap-3">
-            {avatarUrl ? (
-              <img
-                src={avatarUrl}
-                alt={userName}
-                className="w-9 h-9 rounded-full object-cover shrink-0 ring-2 ring-indigo-500/20"
-              />
-            ) : (
-              <div className="w-9 h-9 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shrink-0">
-                {userName.charAt(0) || "A"}
+        {userRole === "parent" ? (
+          <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800 flex flex-col gap-3">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-xs">
+                <Users className="w-4 h-4" />
               </div>
-            )}
-            <div className="flex flex-col min-w-0 flex-1">
-              <span className="text-sm font-bold text-slate-900 dark:text-white truncate">{userName}</span>
-              <span className="text-[11px] text-slate-500 dark:text-slate-400 truncate">{level}</span>
+              <div className="flex flex-col min-w-0 flex-1">
+                <span className="text-sm font-bold text-slate-900 dark:text-white truncate">
+                  {userName.startsWith("Parent") ? userName : `Parent Account`}
+                </span>
+                <span className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
+                  Parent Observer
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between bg-white dark:bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-200/60 dark:border-slate-800">
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Family Telemetry</span>
+              <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                Live Synced
+              </span>
+            </div>
+
+            <div className="pt-1 flex justify-end">
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-1.5 text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 transition-colors text-xs font-medium cursor-pointer"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                <span>Log Out</span>
+              </button>
             </div>
           </div>
+        ) : (
+          <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800 flex flex-col gap-3">
+            <div className="flex items-center gap-3">
+              {avatarUrl ? (
+                <img
+                  src={avatarUrl}
+                  alt={userName}
+                  className="w-9 h-9 rounded-full object-cover shrink-0 ring-2 ring-indigo-500/20"
+                />
+              ) : (
+                <div className="w-9 h-9 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shrink-0">
+                  {userName.charAt(0) || "A"}
+                </div>
+              )}
+              <div className="flex flex-col min-w-0 flex-1">
+                <span className="text-sm font-bold text-slate-900 dark:text-white truncate">{userName}</span>
+                <span className="text-[11px] text-slate-500 dark:text-slate-400 truncate">{level}</span>
+              </div>
+            </div>
 
-          <div className="flex items-center justify-between bg-white dark:bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-200/60 dark:border-slate-800">
-            <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Competency</span>
-            <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">{competency}%</span>
+            <div className="flex items-center justify-between bg-white dark:bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-200/60 dark:border-slate-800">
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Competency</span>
+              <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">{competency}%</span>
+            </div>
+
+            <div className="pt-1 flex justify-end">
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-1.5 text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 transition-colors text-xs font-medium cursor-pointer"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                <span>Log Out</span>
+              </button>
+            </div>
           </div>
-
-          <div className="pt-1 flex justify-end">
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-1.5 text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 transition-colors text-xs font-medium cursor-pointer"
-            >
-              <LogOut className="w-3.5 h-3.5" />
-              <span>Log Out</span>
-            </button>
-          </div>
-
-        </div>
+        )}
       </div>
 
     </aside>

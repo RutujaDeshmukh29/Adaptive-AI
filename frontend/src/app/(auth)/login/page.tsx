@@ -71,6 +71,7 @@ export default function Login() {
       });
 
       setToken(data.access_token);
+      localStorage.setItem("user_role", data.user?.role || "student");
 
       if (data.user?.role === "parent") {
         router.push("/parent-dashboard");
@@ -92,7 +93,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const data = await fetchApi<{ access_token: string; onboarding_complete: boolean; user: { role?: string; id: number } }>("/api/auth/parent-login", {
+      const data = await fetchApi<{ access_token: string; onboarding_complete: boolean; user: { role?: string; id: number; name?: string } }>("/api/auth/parent-login", {
         method: "POST",
         body: JSON.stringify({
           student_name: studentName.trim(),
@@ -101,6 +102,10 @@ export default function Login() {
       });
 
       setToken(data.access_token);
+      localStorage.setItem("user_role", "parent");
+      if (data.user?.name) {
+        localStorage.setItem("user_name", data.user.name);
+      }
       router.push("/parent-dashboard");
     } catch (err: any) {
       setError(err.detail || "Invalid Student Name or Parent Sync Key. Please verify the sync key provided by the student.");
