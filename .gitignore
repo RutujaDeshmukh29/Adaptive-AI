@@ -8,8 +8,8 @@
 # -----------------------------------------------------------------------------
 .env
 .env.*
-!.env.example
-!.env.local.example
+!**/.env.example
+!**/.env.local.example
 *.pem
 *.key
 secrets.json
