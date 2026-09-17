@@ -6,6 +6,7 @@ class ChallengeGenerateRequest(BaseModel):
     difficulty: str = "medium"
     type: str = "code"  # "code" or "interview"
     concept_focus: Optional[str] = None
+    language: Optional[str] = "python"
 
 class TestCaseItem(BaseModel):
     input: str
@@ -27,6 +28,7 @@ class ChallengeResponse(BaseModel):
     hints: List[str]
     solution: str
     explanation: str
+    language: Optional[str] = "python"
 
 class ChallengeEvaluateRequest(BaseModel):
     challenge_id: Optional[str] = None
@@ -38,6 +40,7 @@ class ChallengeEvaluateRequest(BaseModel):
     scenario: str
     user_code: str
     solution: str
+    language: Optional[str] = "python"
 
 class EdgeCaseItem(BaseModel):
     case: str

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { 
-  LayoutDashboard, UserCheck, Target, BookOpen, 
+  LayoutDashboard, UserCheck, Target, Code2, BookOpen, 
   MessageSquare, Network, FileText, HeartHandshake, 
   LogOut, Sparkles, ChevronRight
 } from "lucide-react";
@@ -60,6 +60,7 @@ export function Sidebar() {
     { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
     { name: "Dynamic Learner Profile", href: "/profile", icon: UserCheck },
     { name: "Adaptive Practice", href: "/practice", icon: Target },
+    { name: "Coding Challenges", href: "/challenges", icon: Code2 },
     { name: "Learning Path", href: "/path", icon: BookOpen },
     { name: "AI Chat Assistant", href: "/assistant", icon: MessageSquare },
     { name: "Diagram Studio", href: "/visualizer", icon: Network },

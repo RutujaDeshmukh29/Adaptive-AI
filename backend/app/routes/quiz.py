@@ -20,6 +20,8 @@ def generate(req: QuizGenerateRequest, current_user: User = Depends(get_current_
         raise HTTPException(status_code=400, detail="Profile not found")
         
     try:
+        # Enforce valid bounds: minimum 3, maximum 20 MCQs
+        quiz_count = min(20, max(3, req.count or 5))
         attempt, questions, topic_name = generate_quiz(
             db, 
             current_user.id, 
@@ -27,7 +29,7 @@ def generate(req: QuizGenerateRequest, current_user: User = Depends(get_current_
             req.difficulty, 
             profile.academic_level, 
             profile.goal,
-            count=3  # Short quiz for demo purposes
+            count=quiz_count
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

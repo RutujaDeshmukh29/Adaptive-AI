@@ -1,9 +1,10 @@
 from pydantic import BaseModel
-from typing import List, Dict
+from typing import List, Dict, Optional
 
 class QuizGenerateRequest(BaseModel):
     topic_id: int
     difficulty: str
+    count: Optional[int] = 5
 
 class QuizQuestionSchema(BaseModel):
     id: int

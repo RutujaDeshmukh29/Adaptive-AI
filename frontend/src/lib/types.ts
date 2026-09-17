@@ -284,6 +284,7 @@ export interface Challenge {
   hints: string[];
   solution: string;
   explanation: string;
+  language?: string;
 }
 
 export interface EdgeCaseItem {

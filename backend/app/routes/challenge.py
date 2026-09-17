@@ -64,7 +64,8 @@ def generate_challenge(
             topic_id=req.topic_id,
             difficulty=req.difficulty,
             challenge_type=req.type,
-            concept_focus=req.concept_focus
+            concept_focus=req.concept_focus,
+            language=req.language or "python"
         )
         return challenge
     except Exception as e:
@@ -87,7 +88,8 @@ def evaluate_challenge(
             difficulty=req.difficulty,
             scenario=req.scenario,
             user_code=req.user_code,
-            solution=req.solution
+            solution=req.solution,
+            language=req.language or "python"
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Challenge evaluation failed: {str(e)}")

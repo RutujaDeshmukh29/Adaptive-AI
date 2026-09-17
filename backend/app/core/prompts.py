@@ -98,6 +98,7 @@ You are a senior technical interviewer and adaptive coding mentor for AdaptEd AI
 Topic: {topic}
 Difficulty: {difficulty} (easy, medium, hard)
 Format: {format} ("code" for coding exercise, "interview" for technical interview challenge)
+Programming Language: {language}
 Target Learner Level: {level}
 Learner Goal: {goal}
 Targeted Weak Sub-Concepts: {weak_concepts}
@@ -109,6 +110,7 @@ Uploaded Materials Context:
 
 TASK:
 Generate a targeted, highly practical challenge that specifically tests and strengthens the student on their weak concepts: {weak_concepts}.
+All starter code and reference solutions MUST be written in {language}.
 
 Format your response as a strict JSON object (no markdown backticks, no ```json):
 {{
@@ -122,7 +124,7 @@ Format your response as a strict JSON object (no markdown backticks, no ```json)
     "Specific functional requirement 2",
     "Constraint or edge-case handling requirement 3"
   ],
-  "starter_code": "Clean Python starter code with function definitions, docstrings, typing, sample inputs, and # TODO comments for the student to fill in.",
+  "starter_code": "Clean starter code written in {language} with function definitions, docstrings/comments, typing if applicable, sample inputs, and # TODO / // TODO comments for the student to fill in.",
   "test_cases": [
     {{
       "input": "Description or exact input parameters (e.g. nums = [2, 7, 11, 15], target = 9)",
@@ -140,7 +142,7 @@ Format your response as a strict JSON object (no markdown backticks, no ```json)
     "Hint 2: Edge-case warning or specific boundary check to think about.",
     "Hint 3: High-level algorithm approach or key data structure to use."
   ],
-  "solution": "Complete, correct, fully-commented reference implementation.",
+  "solution": "Complete, correct, fully-commented reference implementation in {language}.",
   "explanation": "Deep dive into the optimal approach, Big-O Time Complexity (e.g., O(N)), Big-O Space Complexity (e.g., O(1)), and common interview mistakes to avoid."
 }}
 """
@@ -150,6 +152,7 @@ You are a senior technical interviewer evaluating a student's submission.
 Challenge Title: {title}
 Topic: {topic}
 Difficulty: {difficulty}
+Programming Language: {language}
 Challenge Scenario: {scenario}
 
 Reference Solution:
@@ -158,7 +161,7 @@ Reference Solution:
 Student's Submitted Solution:
 {user_code}
 
-Evaluate the student's solution thoroughly for logic correctness, syntax, edge case handling, and algorithmic efficiency.
+Evaluate the student's solution thoroughly for logic correctness, syntax in {language}, edge case handling, and algorithmic efficiency.
 
 Format your response as a strict JSON object (no markdown backticks, no ```json):
 {{

@@ -15,7 +15,8 @@ def generate_coding_challenge(
     topic_id: int,
     difficulty: str = "medium",
     challenge_type: str = "code",
-    concept_focus: str = None
+    concept_focus: str = None,
+    language: str = "python"
 ) -> dict:
     topic = db.query(Topic).filter(Topic.id == topic_id).first()
     if not topic:
@@ -39,6 +40,7 @@ def generate_coding_challenge(
         topic=topic.name,
         difficulty=difficulty,
         format=challenge_type,
+        language=language,
         level=level,
         goal=goal,
         weak_concepts=targeted_weakness,
@@ -57,13 +59,14 @@ def generate_coding_challenge(
         "targeted_weakness": data.get("targeted_weakness", targeted_weakness),
         "difficulty": difficulty,
         "type": challenge_type,
+        "language": language,
         "scenario": data.get("scenario", "Implement the following function to solve the problem."),
         "requirements": data.get("requirements", [
-            "Implement a clean, robust solution in Python.",
+            f"Implement a clean, robust solution in {language.capitalize()}.",
             "Handle empty and boundary inputs without unhandled exceptions.",
             "Maintain optimal time and space complexity."
         ]),
-        "starter_code": data.get("starter_code", "# Write your solution below\n\ndef solution():\n    # TODO: Implement your logic here\n    pass\n"),
+        "starter_code": data.get("starter_code", f"// Write your {language} solution below\n"),
         "test_cases": data.get("test_cases", [
             {
                 "input": "Sample standard input",
@@ -74,9 +77,9 @@ def generate_coding_challenge(
         "hints": data.get("hints", [
             "Break down the problem by writing down the base cases first.",
             "Be careful with indexing and zero-based offsets.",
-            "Consider whether a dictionary or set gives faster lookups."
+            "Consider whether a hash map or set gives faster lookups."
         ]),
-        "solution": data.get("solution", "# Official reference solution\n"),
+        "solution": data.get("solution", f"// Official reference solution in {language}\n"),
         "explanation": data.get("explanation", "Ensure all edge cases and time complexities are analyzed.")
     }
 
@@ -86,12 +89,14 @@ def evaluate_challenge_solution(
     difficulty: str,
     scenario: str,
     user_code: str,
-    solution: str
+    solution: str,
+    language: str = "python"
 ) -> dict:
     prompt = CHALLENGE_EVALUATION_PROMPT.format(
         title=title,
         topic=topic_name,
         difficulty=difficulty,
+        language=language,
         scenario=scenario,
         solution=solution,
         user_code=user_code
