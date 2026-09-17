@@ -1,37 +1,14 @@
-# =============================================================================
-# AdaptEd AI — Backend dependencies
-# Python 3.11 or 3.12
-# Install:  pip install -r requirements.txt
-# =============================================================================
-
-# ----- Web framework -------------------------------------------------------
-fastapi>=0.115,<1.0
-uvicorn[standard]>=0.30,<1.0
-python-multipart>=0.0.9          # REQUIRED for PDF upload (multipart/form-data)
-
-# ----- Config & validation -------------------------------------------------
-pydantic>=2.9,<3.0
-pydantic-settings>=2.5,<3.0
-python-dotenv>=1.0,<2.0
-email-validator>=2.1,<3.0        # enables pydantic EmailStr on signup
-
-# ----- Database ------------------------------------------------------------
-sqlalchemy>=2.0.35,<2.1
-psycopg2-binary>=2.9.9,<3.0      # PostgreSQL / Supabase driver
-                                 # (not needed if you fall back to SQLite)
-
-# ----- Auth ----------------------------------------------------------------
-PyJWT>=2.8,<3.0                  # JWT encode/decode (HS256, no crypto build needed)
-passlib[bcrypt]>=1.7.4,<2.0      # password hashing wrapper
-bcrypt==4.0.1                    # PINNED ON PURPOSE — see note below
-
-# ----- AI / LLM ------------------------------------------------------------
-google-genai>=1.0                # Gemini SDK (`from google import genai`)
-
-# ----- RAG pipeline --------------------------------------------------------
-pymupdf>=1.24,<2.0               # PDF text extraction (`import fitz`)
-sentence-transformers>=3.0,<6.0  # all-MiniLM-L6-v2 embeddings (pulls torch)
-chromadb>=0.5,<3.0               # persistent vector store
-
-# ----- Utilities -----------------------------------------------------------
-httpx>=0.27,<1.0                 # async HTTP + TestClient backend
+fastapi
+uvicorn[standard]
+pydantic
+pydantic-settings
+sqlalchemy
+psycopg2-binary
+python-jose[cryptography]
+passlib[bcrypt]
+python-multipart
+python-dotenv
+google-genai
+PyMuPDF
+sentence-transformers
+chromadb
