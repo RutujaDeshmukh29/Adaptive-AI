@@ -10,7 +10,7 @@ import {
   BookOpen, Target, TrendingUp, AlertCircle,
   FileText, Send, Flag, Play, Award, Brain, Clock, ChevronRight,
   BarChart2, HelpCircle, Flame, User, X, Upload, CheckCircle2,
-  FolderSpecial, Lightbulb, Compass, MessageSquare
+  Lightbulb, Compass, MessageSquare
 } from "lucide-react";
 
 interface MaterialItem {

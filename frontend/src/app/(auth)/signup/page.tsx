@@ -73,19 +73,19 @@ export default function Signup() {
   const strengthLabels = ["Weak", "Fair", "Good", "Strong"];
   const strengthColors = ["bg-rose-500", "bg-amber-500", "bg-blue-500", "bg-emerald-500"];
 
-  const handleSignup = async (e) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
     try {
-      const data = await fetchApi("/api/auth/signup", {
+      const data: any = await fetchApi("/api/auth/signup", {
         method: "POST",
         body: JSON.stringify({ name, email, password, role }),
       });
       setToken(data.access_token);
       router.push(role === "parent" ? "/parent-dashboard" : "/onboarding");
-    } catch (err) {
-      setError(err.detail || "Signup failed. Please try again.");
+    } catch (err: any) {
+      setError(err?.detail || "Signup failed. Please try again.");
     } finally {
       setLoading(false);
     }
