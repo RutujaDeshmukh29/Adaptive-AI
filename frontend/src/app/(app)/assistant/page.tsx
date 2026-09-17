@@ -471,10 +471,10 @@ function AssistantContent() {
   });
 
   return (
-    <div className="flex flex-col lg:h-[calc(100vh-8rem)] min-h-[560px] space-y-3">
+    <div className="flex flex-col min-h-[calc(100vh-6rem)] space-y-2.5 pb-2">
       {/* Top Header Strip & Page Title (Streamlined Single Row) */}
       <ScrollReveal pop={false}>
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 border-b border-slate-200/80 dark:border-slate-800 pb-2.5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 border-b border-slate-200/80 dark:border-slate-800 pb-2">
           <div className="flex items-center gap-2.5 flex-wrap">
             <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white mr-1">
               AI Chat Assistant
@@ -536,7 +536,7 @@ function AssistantContent() {
           <button
             type="button"
             onClick={handleNewChat}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 font-bold text-xs shrink-0 shadow-xs transition-all cursor-pointer"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 font-bold text-xs shrink-0 shadow-xs transition-all cursor-pointer"
           >
             <Plus className="h-3.5 w-3.5" />
             <span>New Chat</span>
@@ -580,11 +580,11 @@ function AssistantContent() {
         </div>
       </ScrollReveal>
 
-      {/* Main Spacious Canvas Grid (8 Cols Wide Chat + 4 Cols Right Rail or Full 12 Cols when collapsed) */}
+      {/* Main Spacious Canvas Grid (9 Cols Wide Chat + 3 Cols Right Rail or Full 12 Cols when collapsed) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-5 flex-1 min-h-0 items-stretch">
-        {/* Primary Wide Chat Section */}
-        <section className={`flex flex-col bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-[0_2px_16px_rgba(15,23,42,0.02)] transition-all flex-1 min-h-0 overflow-hidden ${
-          rightPanelOpen ? "lg:col-span-8" : "lg:col-span-12"
+        {/* Primary Wide Chat Section (Expansive 75% Width) */}
+        <section className={`flex flex-col bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-[0_2px_16px_rgba(15,23,42,0.02)] transition-all flex-1 min-h-[620px] lg:min-h-[680px] overflow-hidden ${
+          rightPanelOpen ? "lg:col-span-9 xl:col-span-9" : "lg:col-span-12"
         }`}>
           {/* Persona / Learning Modes Switcher Strip */}
           <div className="px-4 py-2 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40 flex items-center justify-between gap-2 overflow-x-auto scrollbar-none shrink-0">
@@ -619,7 +619,7 @@ function AssistantContent() {
           {/* Chat Stream (Airy, highly legible, spacious) */}
           <div 
             ref={scrollRef}
-            className="flex-1 p-5 lg:p-6 flex flex-col gap-5 overflow-y-auto min-h-0 relative scrollbar-thin"
+            className="flex-1 p-5 lg:p-7 flex flex-col gap-6 overflow-y-auto min-h-[480px] lg:min-h-[560px] relative scrollbar-thin"
           >
             {loadingHistory && (
               <div className="absolute inset-0 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xs flex items-center justify-center z-10">
@@ -638,16 +638,16 @@ function AssistantContent() {
               if (isUser) {
                 return (
                   <div key={msg.id} className="flex justify-end w-full animate-in fade-in slide-in-from-bottom-1">
-                    <div className="max-w-2xl bg-indigo-600 text-white px-5 py-3.5 rounded-2xl rounded-tr-xs shadow-xs text-sm sm:text-base leading-relaxed break-words font-normal">
+                    <div className="max-w-3xl bg-indigo-600 text-white px-5 py-3 rounded-2xl rounded-tr-xs shadow-xs text-sm sm:text-base leading-relaxed break-words font-normal">
                       {msg.content}
                     </div>
                   </div>
                 );
               }
 
-              // Assistant Response (Matching HTML template)
+              // Assistant Response (Wide, Airy, Highly Legible Canvas)
               return (
-                <div key={msg.id} className="flex items-start gap-3.5 max-w-3xl w-full animate-in fade-in slide-in-from-bottom-1">
+                <div key={msg.id} className="flex items-start gap-3.5 w-full animate-in fade-in slide-in-from-bottom-1">
                   <div className="w-8 h-8 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">
                     <Brain className="w-4 h-4" />
                   </div>
@@ -958,7 +958,7 @@ function AssistantContent() {
           </div>
 
           {/* Sleek Docked Input Bar at Bottom */}
-          <div className="p-3 lg:p-4 border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shrink-0">
+          <div className="p-2.5 lg:p-3 border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shrink-0">
             {/* Active Voice Listening Banner */}
             {isListening && (
               <div className="mb-2 px-3.5 py-1.5 rounded-xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900 flex items-center justify-between text-xs text-rose-700 dark:text-rose-300 animate-pulse">
@@ -978,7 +978,7 @@ function AssistantContent() {
 
             <form 
               onSubmit={(e) => { e.preventDefault(); handleSend(); }}
-              className="bg-slate-50 dark:bg-slate-800/70 border border-slate-200/80 dark:border-slate-700 focus-within:border-indigo-500/80 focus-within:ring-2 focus-within:ring-indigo-500/10 rounded-2xl p-2.5 transition-all flex flex-col gap-1.5"
+              className="bg-slate-50 dark:bg-slate-800/70 border border-slate-200/80 dark:border-slate-700 focus-within:border-indigo-500/80 focus-within:ring-2 focus-within:ring-indigo-500/10 rounded-2xl p-2 transition-all flex flex-col gap-1.5"
             >
               <textarea
                 ref={textareaRef}
@@ -990,10 +990,10 @@ function AssistantContent() {
                     handleSend();
                   }
                 }}
-                rows={2}
+                rows={1}
                 disabled={isLoading}
                 placeholder="Ask a question or request a derivation from your notes..."
-                className="w-full bg-transparent border-none focus:outline-none text-slate-900 dark:text-white placeholder:text-slate-400 text-sm resize-none px-2 py-1 leading-relaxed"
+                className="w-full bg-transparent border-none focus:outline-none text-slate-900 dark:text-white placeholder:text-slate-400 text-sm resize-none px-2 py-1 leading-relaxed min-h-[38px] max-h-32"
               />
 
               <div className="flex items-center justify-between pt-0.5 px-1">
@@ -1036,9 +1036,9 @@ function AssistantContent() {
           </div>
         </section>
 
-        {/* Streamlined Right Rail (Col 4) - Hideable / Unhideable */}
+        {/* Streamlined Right Rail (Col 3) - Hideable / Unhideable */}
         {rightPanelOpen && (
-          <aside className="lg:col-span-4 flex flex-col gap-3.5 h-full lg:overflow-y-auto scrollbar-thin pr-0.5 animate-in fade-in slide-in-from-right-2">
+          <aside className="lg:col-span-3 xl:col-span-3 flex flex-col gap-3 h-full lg:overflow-y-auto scrollbar-thin pr-0.5 animate-in fade-in slide-in-from-right-2">
             {/* Section 0: Chat Stats & Counts in Short */}
             <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4 shadow-xs shrink-0">
               <div className="flex items-center justify-between mb-2">
