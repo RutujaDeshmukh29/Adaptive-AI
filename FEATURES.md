@@ -35,28 +35,39 @@ This document serves as the master record of all features built and planned for 
 ---
 
 ### 9. Parent Sync Portal & Activity Tracker 👨‍👩‍👧‍👦
-*   **Description:** A role-based architecture with separate "Student" and "Parent" accounts linked via secure 6-character sync keys.
-*   **Daily Timeline:** Real-time event logging capturing exact timestamps of uploads, quizzes, chat queries, and coding challenges.
-*   **AI Parent Advisor:** Uses Gemini to synthesize comprehensive weekly progress reports, identifying strengths, struggles, and actionable study tips.
-*   **Addresses:** *Direct judge feedback: "Should be sync with parents of student."*
+*   **Dual-Tab Login Interface:** Students log in with email/password; parents log in with Student Name + Parent Sync Key (`PAR-XXXX`).
+*   **Complete Parent Access Isolation:** Dedicated Parent sidebar displaying only parent-specific telemetry (Overview, Mastery, Study Habits, Tutor AI, Settings). All student learning panels and routes are strictly hidden and guarded.
+*   **Live Study Activity:** Real-time telemetry beacon showing what the student is actively studying right now, last interaction prompt, and focus stamina metrics.
+*   **Course Progress & Timeline:** Real-time chronological event log tracking quizzes, challenges, uploads, and active minutes with 7-day streak counters.
+*   **AI Parent Advisor & Diagnostic Milestones:** Comprehensive weekly synthesis of strengths, struggles, and actionable recommendations with 7-day study consistency bar charts.
+*   **Official Academic Transcript & Quick Encouragement:** View official topic mastery transcripts and beam 1-click motivational badges to the student's active screen.
 
 ### 10. 6 Pedagogical Learning Modes 🎓
 *   **Description:** Interactive persona selector in the chat: Adaptive Tutor, Socratic Guide (hints without spoiling answers), ELI5 (everyday metaphors), Exam & Viva Prep (scoring definitions & likely viva traps), Code-First (runnable snippets first), and Technical Interview (Big-O analysis & scalability).
 
-### 11. Diagram Generation & Mermaid.js Rendering 🔀
-*   **Description:** The AI dynamically renders flowcharts, decision trees, architecture graphs, and sequence diagrams directly inside chat messages using Mermaid.js.
+### 11. Vector Diagram Studio & Visualizer 🔀
+*   **Description:** Full-featured architecture and diagram studio supporting Flowcharts, Mindmaps, Sequence Diagrams, Class Diagrams, State Diagrams, and System Architecture graphs.
+*   **Interactive Infinite Canvas:** Smooth drag-panning and mouse-wheel zoom (30% to 300%) with grid/solid modes and reset controls.
+*   **Dual-Pane Source Editor:** Live Mermaid.js syntax editor with instant canvas re-rendering.
+*   **High-Resolution Multi-Format Exporter:** Clean Vector SVG, 192 DPI (2x Retina) PNG, and crisp JPG downloads powered by server-side PyMuPDF rasterization (100% immune to browser tainted canvas errors).
 
-### 12. Smart Document Summarizer 📋
-*   **Description:** Instant AI-powered chapter summarizer on uploaded PDFs with 3 distinct modalities: Comprehensive Chapter Breakdown, Quick Revision Cheat Sheet, and ELI5 Metaphor Guide.
+### 12. Smart Document Summarizer & Short Notes 📋
+*   **Description:** Instant AI-powered document analyzer on uploaded PDFs with 3 distinct modalities: Comprehensive Chapter Breakdown, Quick Revision Cheat Sheet / Short Notes with key formulas, and ELI5 Metaphor Guide.
 
 ### 13. Voice Assistant (STT & TTS) 🔊
 *   **Description:** Native browser speech recognition for hands-free voice input and natural text-to-speech voice narration for AI explanations.
 
-### 14. Chat Session History & Conversation Persistence 📁
-*   **Description:** Collapsible sidebar with saved past conversations, timestamped session history, message count badges, one-click "+ New Chat", and session deletion.
+### 14. Chat Session History & Fast Navigation 📁
+*   **Description:** Multi-thread history sidebar with timestamped sessions, message counters, rename, and delete options.
+*   **Direct Response Box:** Responses auto-scroll into view with dedicated Up and Down navigation arrows for easy message history browsing.
 
 ### 15. Coding Challenges & Weak-Topic Lab 🏆
-*   **Description:** Expands the practice engine with an interactive coding workspace. Features a Weak-Concept Diagnostic Radar that auto-detects concepts missed in quizzes, generates targeted Python challenges, provides progressive hints, and offers real-time AI code reviews with Big-O time/space complexity analysis and edge-case validation.
+*   **Description:** Interactive coding workspace that scans quiz errors, generates targeted Python programming challenges, provides progressive hints, and offers real-time AI code reviews with Big-O time/space complexity analysis.
+
+### 16. Cloud-Ready Production Architecture ☁️
+*   **Dual-Database Support:** Seamless local development on SQLite and instant production deployment on PostgreSQL (Supabase / Railway) with automatic table creation.
+*   **CORS & URL Normalization:** Handles `postgres://` to `postgresql://` conversion and allows dynamic Vercel preview/production domains (`*.vercel.app`).
+*   **Zero-Config Deployments:** Preconfigured `Procfile`, `railway.json`, and `render.yaml` for 1-click cloud deployments.
 
 ---
 

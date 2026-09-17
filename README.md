@@ -190,39 +190,118 @@ Every recommendation object carries a `reason` string built from actual database
 
 ## 5. Feature List
 
-### MUST HAVE (MVP — ship these or nothing)
+AdaptEd AI provides an end-to-end, production-grade ecosystem spanning intelligent student learning, automated cognitive adaptation, interactive coding, architecture synthesis, and real-time parent observation.
 
-| # | Feature | Proof it's real |
-|---|---|---|
-| 1 | JWT authentication | Signup/login, protected routes |
-| 2 | Student onboarding | Level, subject, goal, study time |
-| 3 | Dynamic learner profile | Rebuilt per request from DB |
-| 4 | PDF / notes upload | Stored, parsed, chunked |
-| 5 | RAG retrieval | Answers cite uploaded chunks |
-| 6 | AI diagnostic assessment | Generates initial mastery map |
-| 7 | Topic-wise mastery | Live scores, updated by quizzes |
-| 8 | Adaptive AI assistant | Same question → different answers |
-| 9 | Personalized learning path | Locked/current/done nodes |
-| 10 | Adaptive quiz engine | Difficulty follows mastery |
-| 11 | Dashboard | Mastery, progress, next action |
-| 12 | Continuous adaptation | Quiz result visibly changes the path |
+---
 
-### SHOULD HAVE
+### 5.1 🔐 Role-Based Authentication & Complete Access Isolation
+* **Student Authentication**: Secure JWT-based signup and login with hashed passwords, persistent auth tokens, and strict student data privacy.
+* **Dual-Tab Login Interface (`/login`)**:
+  - **Student Login**: Email & password authentication with access to all 9 learning modules.
+  - **Parent Login**: Passwordless dual-factor login using **Student Name / Username** + **Unique Parent Sync Key** (e.g., `PAR-0001` or `STUDENT-0001`).
+* **Strict Parent Access Isolation**:
+  - **Dedicated Parent Sidebar**: Parents only see the 5 Parent Portal sections (Overview, Mastery, Study Habits, AI Insights, Settings). All student learning panels (*Practice, Coding Challenges, Diagram Studio, AI Assistant, Knowledge Base, Learning Path, Dashboard, Profile*) are completely hidden.
+  - **Streamlined Parent Header**: Replaces student search bars and countdown alarms with an active `Parent Observer Portal` badge and direct logout button.
+  - **Automatic Layout Route Guard**: Intercepts any direct URL navigation to student paths and redirects parents back to `/parent-dashboard`.
+* **Profile Customization**: Customizable academic grade/level, target subjects, learning goals, weekly study hour targets, cognitive caliber, and avatar photo integration.
 
-- Explainable recommendation strings
-- Learning analytics + Recharts visualizations
-- Chat history persistence
-- Smooth loading/skeleton states
+---
 
-### NICE TO HAVE (only if hours 21+ are free)
+### 5.2 🧠 Mathematical Adaptive Learning Engine
+* **Exponential Moving Average (EMA) Mastery Tracking**: Formulates mastery dynamically ($\alpha = 0.50$ for first attempts, $\alpha = 0.30$ for repeats) to weight recent trajectory over historical attempts.
+* **Cognitive Caliber Calibration**: Dynamic learner caliber classification (e.g., `Level 3.2 Dynamic`) adjusting question depths across Bayesian difficulty bands.
+* **Next Best Learning Action (NBLA)**: Live decision algorithm calculating exactly one highest-impact next step with real database-backed reasoning.
+* **Dynamic Prerequisite Logic**: Automated unlocking of downstream topics upon reaching mastery thresholds ($\ge 60\%$) and protective re-locking below $50\%$.
 
-- Response streaming (SSE)
-- Voice input
-- Multilingual output
-- Gamification / streaks / badges
-- PWA install
+---
 
-> **Rule:** never sacrifice the adaptive loop for decorative features.
+### 5.3 📚 Local Knowledge Base & Multimodal RAG Pipeline
+* **Multi-PDF Document Ingestion**: Upload course syllabuses, lecture slides, and notes with automated PyMuPDF extraction, semantic chunking, and local ChromaDB vector embeddings (`all-MiniLM-L6-v2`).
+* **Document Analytics**: Real-time extraction of file size, page count, chunk volume, and ingestion timestamps.
+* **Smart Document Summarizer & Cheat Sheets**:
+  - **Comprehensive Chapter Breakdown**: Structured deep-dive into major sections.
+  - **Quick-Revision Cheat Sheets & Short Notes**: Key definitions, core takeaways, and formulas.
+  - **ELI5 Metaphor Guide**: Conceptual analogies for difficult concepts.
+* **Grounded Citations**: AI responses cite exact source documents, chapters, and page numbers to eliminate hallucinations.
+
+---
+
+### 5.4 💬 Adaptive AI Chat Assistant (with 6 Pedagogical Personas)
+* **6 Interactive Pedagogical Personas**:
+  1. **Adaptive Tutor**: Tailors pacing and vocabulary to the learner's live profile.
+  2. **Socratic Guide**: Probes with conceptual questions and hints without giving away solutions.
+  3. **ELI5 Explainer**: Simplifies complex theoretical concepts using everyday analogies.
+  4. **Exam & Viva Prep**: High-yield definitions, scoring points, and tricky examiner viva questions.
+  5. **Code-First Mentor**: Delivers runnable code snippets and architectural patterns first.
+  6. **Technical Interview Coach**: Evaluates algorithmic trade-offs, Big-O complexity, and system scaling.
+* **Direct Response Box & Fast Navigation**: Automatically scrolls responses directly into view with up/down navigation arrows for message history.
+* **Voice Assistant (STT & TTS)**: Native hands-free speech-to-text input and natural text-to-speech voice narration.
+* **Conversation Session Persistence**: Multi-thread history sidebar with timestamped sessions, message counters, rename, and delete options.
+* **Rich Markdown & LaTeX**: Syntax-highlighted code blocks with 1-click clipboard copy and KaTeX mathematical notation.
+
+---
+
+### 5.5 📝 Adaptive Practice & Instant-Feedback Quiz Engine
+* **Context-Grounded Quizzes**: Dynamically generates 5-question multiple-choice quizzes tailored directly to student documents and detected weaknesses.
+* **Instant Visual Feedback**: Instant green/red highlighting with step-by-step conceptual answer explanations.
+* **Dynamic Question Depth**: Automatically escalates difficulty from foundational recall to multi-step application as student mastery increases.
+
+---
+
+### 5.6 💻 Interactive Coding Challenges & Weak-Topic Lab
+* **Weak-Concept Challenge Generator**: Automatically scans quiz errors and formulates targeted Python programming problems.
+* **In-Browser Code Studio**: Full code editor with starter boilerplate, test cases, and simulated execution.
+* **Progressive Hint Engine**: Tiered hints that guide students through algorithmic hurdles without spoiling the answer.
+* **Real-Time AI Code Reviewer**: In-depth static analysis checking for edge cases, algorithmic efficiency, and Big-O time/space complexity.
+
+---
+
+### 5.7 📐 Vector Diagram Studio (Architecture & Mindmap Visualizer)
+* **Multi-Archetype Synthesis**: Generates Flowcharts, Mindmaps, Sequence Diagrams, Class Diagrams, State Machines, and System Architecture graphs from natural language prompts or starter presets.
+* **Infinite Pan & Zoom Canvas**: Smooth drag panning and mouse-wheel zoom (30% to 300%) with reset controls and grid/solid backgrounds.
+* **Dual-View Code Editor**: Switch between interactive canvas and raw Mermaid.js syntax editor with live re-rendering.
+* **High-Resolution Multi-Format Export**:
+  - Clean Vector **SVG** export.
+  - 192 DPI (2x Retina) **PNG** export powered by server-side PyMuPDF rasterization (100% immune to browser tainted canvas errors).
+  - High-quality **JPG** export with solid contrast backgrounds.
+  - 1-click Mermaid source code clipboard copy.
+
+---
+
+### 5.8 🗺️ Dynamic Learning Path & Curriculum Roadmap
+* **Visual Graph Roadmap**: Interactive sequential node graph categorizing concepts as *Locked*, *In Progress*, or *Mastered*.
+* **Prerequisite Dependencies**: Strict node locking requiring upstream competencies before unlocking advanced topics.
+* **Milestone Analytics**: Estimated completion times and module mastery percentages.
+
+---
+
+### 5.9 👨‍👩‍👧‍👦 Parent Observer Portal & Real-Time Family Telemetry
+* **Unique Student Sync Key Generator**: Student generates, copies, or regenerates unique parent sync credentials (`PAR-XXXX`) directly from their portal.
+* **Live Study Activity**: Radar beacon showing what the student is studying right now, their last interaction prompt, and real-time focus metrics.
+* **Enrolled Course Mastery**: Visual progress bars and projected completion milestones across active academic tracks.
+* **Chronological Study Timeline**: Timestamped vertical log of daily quizzes, challenges, document uploads, and study duration.
+* **Performance Metrics**: 3-card analytics strip covering Curriculum Pace, Practice Accuracy (with 5-point sparkline), and AI Tutor Assistance counts.
+* **Adaptive Intelligence Insights**: Displays active remediation drills for weak topics and challenge escalation for demonstrated mastery.
+* **7-Day Study Consistency Bar Chart**: Day-by-day study hour breakdown with peak-day markers and optimal focus window recommendations.
+* **Official Academic Transcript Modal**: Full topic mastery index with historical assessment grades.
+* **Quick Encouragement Beamer**: Allows parents to beam an instant motivational toast to the student's active screen with one click.
+* **Parental Controls & Advisory**: Toggle for weekly Sunday SMS/WhatsApp summaries and a 1-on-1 Academic Advisor appointment scheduler.
+
+---
+
+### 5.10 📊 Student Analytics Dashboard
+* Comprehensive dials for Overall Mastery and Competency.
+* Active study streak tracker with fire indicator and weekly hour counters.
+* Next Best Learning Action hero card with direct 1-click launcher.
+* Quick-launch cards for all platform tools.
+
+---
+
+### 5.11 ☁️ Cloud Deployment & Production Architecture
+* **Dual-Database Support**: Seamless local development on SQLite (`sqlite:///./adapted.db`) and zero-code migration to production PostgreSQL / Supabase with auto-table initialization (`Base.metadata.create_all`).
+* **URL Normalization**: Automatic handling of `postgres://` to `postgresql://` connection strings for modern SQLAlchemy engines.
+* **Smart CORS Handling**: Built-in support for local frontend, custom domains, and dynamic Vercel preview/production deployments (`*.vercel.app`).
+* **Deploy Configurations**: Out-of-the-box `Procfile`, `railway.json`, and `render.yaml` for 1-click backend deployments, and Next.js Vercel presets for frontend.
 
 ---
 
