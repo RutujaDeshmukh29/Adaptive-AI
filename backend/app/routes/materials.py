@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 import os
 import shutil
 import uuid
-from typing import Optional
+from typing import Optional, List
 
 from app.database import get_db
 from app.models.user import User
@@ -63,6 +63,59 @@ async def upload_material(
         chunk_count=material.chunk_count,
         uploaded_at=material.uploaded_at.isoformat()
     )
+
+@router.post("/upload-batch", response_model=List[MaterialResponse], status_code=status.HTTP_201_CREATED)
+async def upload_batch_materials(
+    files: List[UploadFile] = File(...),
+    subject: Optional[str] = Form(None),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    upload_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../", settings.UPLOAD_DIR, str(current_user.id)))
+    os.makedirs(upload_dir, exist_ok=True)
+    
+    results = []
+    for file in files:
+        if not file.filename.endswith('.pdf'):
+            continue
+            
+        file_uuid = str(uuid.uuid4())
+        file_path = os.path.join(upload_dir, f"{file_uuid}.pdf")
+        
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+            
+        material = Material(
+            user_id=current_user.id,
+            filename=file.filename,
+            stored_path=file_path,
+            subject=subject,
+            status="processing"
+        )
+        db.add(material)
+        db.commit()
+        db.refresh(material)
+        
+        try:
+            chunks = process_and_ingest_pdf(current_user.id, material.id, file_path, file.filename)
+            material.status = "ready"
+            material.chunk_count = chunks
+        except Exception as e:
+            material.status = "failed"
+            material.error_message = str(e)
+            
+        db.commit()
+        db.refresh(material)
+        
+        results.append(MaterialResponse(
+            id=material.id,
+            filename=material.filename,
+            status=material.status,
+            chunk_count=material.chunk_count,
+            uploaded_at=material.uploaded_at.isoformat()
+        ))
+        
+    return results
 
 @router.get("", response_model=dict)
 def list_materials(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
