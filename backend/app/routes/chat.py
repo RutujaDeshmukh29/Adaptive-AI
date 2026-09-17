@@ -9,6 +9,7 @@ from app.services.rag_service import search
 from app.services.llm_service import generate_chat_response
 from app.core.prompts import ADAPTIVE_TUTOR_PROMPT, LEARNING_MODES
 from app.services.adaptive_engine import next_best_action
+from app.services.activity_service import log_activity
 
 router = APIRouter(prefix="/api/chat", tags=["chat"])
 
@@ -45,6 +46,17 @@ def send_message(req: ChatMessageRequest, current_user: User = Depends(get_curre
     # 5. Determine Next Best Action
     nba = next_best_action(db, current_user.id)
     
+    # 6. Log Activity for Parent & Student Timeline
+    topic_name = snapshot.current_topic["name"] if snapshot.current_topic else "General"
+    log_activity(
+        db, 
+        current_user.id, 
+        "chat", 
+        topic_id=snapshot.current_topic["id"] if snapshot.current_topic else None,
+        description=f'Asked tutor ({mode_info["name"]}): "{question[:50]}..."',
+        result_data={"mode": selected_mode, "topic": topic_name, "grounded": len(rag_results) > 0}
+    )
+
     return ChatResponse(
         answer=answer,
         sources=[{"filename": r["metadata"]["filename"], "page": r["metadata"]["page"]} for r in rag_results],

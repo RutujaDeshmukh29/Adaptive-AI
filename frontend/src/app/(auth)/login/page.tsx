@@ -19,14 +19,16 @@ export default function Login() {
     setError("");
     
     try {
-      const data = await fetchApi<{access_token: string; onboarding_complete: boolean}>("/api/auth/login", {
+      const data = await fetchApi<{ access_token: string; onboarding_complete: boolean; user: { role?: string } }>("/api/auth/login", {
         method: "POST",
         body: JSON.stringify({ email, password }),
       });
       
       setToken(data.access_token);
       
-      if (data.onboarding_complete) {
+      if (data.user?.role === "parent") {
+        router.push("/parent-dashboard");
+      } else if (data.onboarding_complete) {
         router.push("/dashboard");
       } else {
         router.push("/onboarding");

@@ -8,7 +8,13 @@ export type ActionType =
   | "practice_easy" | "practice_medium" | "practice_hard"
   | "review_mistakes" | "advance" | "mock_test";
 
-export interface User { id: number; name: string; email: string; }
+export interface User { 
+  id: number; 
+  name: string; 
+  email: string; 
+  role?: "student" | "parent";
+  link_code?: string;
+}
 
 export interface AuthResponse {
   access_token: string;
@@ -166,3 +172,67 @@ export interface PathResponse {
 }
 
 export interface ApiError { detail: string; code: string; }
+
+export interface ParentStudentSummary {
+  id: number;
+  name: string;
+  email: string;
+  link_code: string;
+  subject: string;
+  goal: string;
+  overall_mastery: number;
+}
+
+export interface StudentActivityItem {
+  id: number;
+  activity_type: string;
+  topic_id: number | null;
+  topic_name: string | null;
+  description: string;
+  result?: any;
+  timestamp: string;
+  time_str: string;
+  date_str: string;
+}
+
+export interface ParentReport {
+  student: {
+    id: number;
+    name: string;
+    email: string;
+    link_code: string;
+    subject: string;
+    goal: string;
+    academic_level: string;
+    study_time_goal: number;
+    streak_days: number;
+    overall_mastery: number;
+  };
+  today_stats: {
+    active_minutes_today: number;
+    total_actions_today: number;
+    quizzes_today: number;
+    chat_queries_today: number;
+    uploads_today: number;
+  };
+  mastery_map: {
+    topic_id: number;
+    topic: string;
+    mastery: number;
+    band: Band;
+  }[];
+  strengths: string[];
+  weaknesses: string[];
+  recent_trend: Trend;
+  activities: StudentActivityItem[];
+  quiz_history: {
+    id: number;
+    score: number;
+    difficulty: Difficulty;
+    mastery_before: number;
+    mastery_after: number;
+    date: string;
+  }[];
+  ai_advisor: string;
+  generated_at: string;
+}

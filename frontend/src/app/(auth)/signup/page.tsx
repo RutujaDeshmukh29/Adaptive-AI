@@ -12,6 +12,7 @@ export default function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState<"student" | "parent">("student");
   const [error, setError] = useState("");
   const router = useRouter();
 
@@ -20,13 +21,17 @@ export default function Signup() {
     setError("");
     
     try {
-      const data = await fetchApi<{access_token: string}>("/api/auth/signup", {
+      const data = await fetchApi<{ access_token: string; user: { role: string } }>("/api/auth/signup", {
         method: "POST",
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ name, email, password, role }),
       });
       
       setToken(data.access_token);
-      router.push("/onboarding");
+      if (role === "parent") {
+        router.push("/parent-dashboard");
+      } else {
+        router.push("/onboarding");
+      }
     } catch (err: any) {
       setError(err.detail || "Signup failed");
     }
@@ -37,10 +42,38 @@ export default function Signup() {
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Create an account</CardTitle>
-          <CardDescription>Enter your information to get started</CardDescription>
+          <CardDescription>Enter your information to get started with AdaptEd AI</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSignup} className="space-y-4">
+            <div className="space-y-2">
+              <Label>Account Type</Label>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => setRole("student")}
+                  className={`p-2.5 rounded-lg border text-xs font-semibold flex items-center justify-center gap-2 transition-all ${
+                    role === "student"
+                      ? "border-primary bg-primary/10 text-primary"
+                      : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+                  }`}
+                >
+                  <span>🎓 Student</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setRole("parent")}
+                  className={`p-2.5 rounded-lg border text-xs font-semibold flex items-center justify-center gap-2 transition-all ${
+                    role === "parent"
+                      ? "border-primary bg-primary/10 text-primary"
+                      : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+                  }`}
+                >
+                  <span>👨‍👩‍👧 Parent</span>
+                </button>
+              </div>
+            </div>
+
             <div className="space-y-2">
               <Label htmlFor="name">Name</Label>
               <Input 

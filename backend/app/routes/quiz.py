@@ -9,6 +9,7 @@ from app.deps import get_current_user
 from app.schemas.quiz import QuizGenerateRequest, QuizGenerateResponse, QuizSubmitRequest
 from app.services.quiz_engine import generate_quiz
 from app.services.mastery_service import update_mastery
+from app.services.activity_service import log_activity
 
 router = APIRouter(prefix="/api/quiz", tags=["quiz"])
 
@@ -103,6 +104,23 @@ def submit_quiz(attempt_id: int, req: QuizSubmitRequest, current_user: User = De
 
     band_after = "mastered" if updated_attempt.mastery_after >= 70 else "competent" if updated_attempt.mastery_after >= 50 else "developing" if updated_attempt.mastery_after >= 30 else "struggling"
     band_before = "mastered" if updated_attempt.mastery_before >= 70 else "competent" if updated_attempt.mastery_before >= 50 else "developing" if updated_attempt.mastery_before >= 30 else "struggling"
+
+    delta = updated_attempt.mastery_after - updated_attempt.mastery_before
+    log_activity(
+        db,
+        current_user.id,
+        "quiz",
+        topic_id=updated_attempt.topic_id,
+        description=f'Completed {topic_name} Quiz: {updated_attempt.score:.0f}% (Mastery: {updated_attempt.mastery_after:.0f}%, {delta:+.0f}%)',
+        result_data={
+            "score": updated_attempt.score,
+            "difficulty": updated_attempt.difficulty,
+            "mastery_before": updated_attempt.mastery_before,
+            "mastery_after": updated_attempt.mastery_after,
+            "mastery_delta": delta,
+            "topic": topic_name
+        }
+    )
 
     return {
         "attempt_id": updated_attempt.id,

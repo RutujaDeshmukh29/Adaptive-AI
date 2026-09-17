@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, User, Target, Clock, Award, Flame, CheckCircle2, AlertCircle, Sparkles } from "lucide-react";
+import { Loader2, User, Target, Clock, Award, Flame, CheckCircle2, AlertCircle, Sparkles, HeartHandshake } from "lucide-react";
 
 export default function ProfilePage() {
   const [snapshot, setSnapshot] = useState<LearnerSnapshot | null>(null);
@@ -135,6 +135,40 @@ export default function ProfilePage() {
               <span className="text-slate-500">Uploaded Docs</span>
               <span className="font-bold text-slate-800">{snapshot.materials_count}</span>
             </div>
+          </CardContent>
+        </Card>
+
+        {/* Parent Sync Code Card */}
+        <Card className="border-indigo-200 bg-indigo-50/40 shadow-sm md:col-span-1">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base flex items-center gap-2 text-indigo-950">
+              <HeartHandshake className="h-4 w-4 text-indigo-600" /> Parent Sync Key
+            </CardTitle>
+            <CardDescription className="text-xs">
+              Give this code to your parent to link their account and view your weekly progress.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3 pt-2 text-sm">
+            <div className="p-3 bg-white border border-indigo-200 rounded-lg flex items-center justify-between">
+              <span className="font-mono font-bold text-base text-indigo-700 tracking-wider">
+                {snapshot.user.link_code || `STUDENT-${snapshot.user.id.toString().padStart(4, "0")}`}
+              </span>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-7 text-xs"
+                onClick={() => {
+                  const code = snapshot.user.link_code || `STUDENT-${snapshot.user.id.toString().padStart(4, "0")}`;
+                  navigator.clipboard.writeText(code);
+                  alert(`Copied Parent Link Code: ${code}`);
+                }}
+              >
+                Copy
+              </Button>
+            </div>
+            <p className="text-[11px] text-slate-500">
+              Parents can enter this code in the Parent Portal to view live study timelines and reports.
+            </p>
           </CardContent>
         </Card>
 

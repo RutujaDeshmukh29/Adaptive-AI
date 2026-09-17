@@ -1,9 +1,11 @@
 from pydantic import BaseModel, EmailStr
+from typing import Optional
 
 class UserCreate(BaseModel):
     name: str
     email: EmailStr
     password: str
+    role: Optional[str] = "student"
 
 class UserLogin(BaseModel):
     email: EmailStr
@@ -13,6 +15,8 @@ class UserResponse(BaseModel):
     id: int
     name: str
     email: str
+    role: str = "student"
+    link_code: Optional[str] = None
 
     class Config:
         from_attributes = True
@@ -27,5 +31,7 @@ class MeResponse(BaseModel):
     id: int
     name: str
     email: str
+    role: str = "student"
+    link_code: Optional[str] = None
     onboarding_complete: bool
     diagnostic_done: bool

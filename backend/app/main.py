@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.database import engine, Base
 import app.models  # This ensures all models are registered with Base
-from app.routes import auth, profile, materials, chat, quiz, path
+from app.routes import auth, profile, materials, chat, quiz, path, parent
 
 # Initialize DB tables
 Base.metadata.create_all(bind=engine)
@@ -32,6 +32,7 @@ app.include_router(materials.router)
 app.include_router(chat.router)
 app.include_router(quiz.router)
 app.include_router(path.router)
+app.include_router(parent.router)
 
 @app.get("/health", tags=["system"])
 def health_check():
