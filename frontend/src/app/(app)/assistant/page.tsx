@@ -202,10 +202,17 @@ function AssistantContent() {
   const [copiedMsgId, setCopiedMsgId] = useState<string | null>(null);
 
   const scrollRef = useRef<HTMLDivElement>(null);
+  const latestExchangeRef = useRef<HTMLDivElement>(null);
+  const chatBottomRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const activeModeConfig = LEARNING_MODES.find(m => m.id === selectedMode) || LEARNING_MODES[0];
+
+  // Calculate the starting index of the active/latest exchange
+  const latestExchangeIndex = messages.length > 0 
+    ? (messages[messages.length - 1].role === "assistant" && messages.length >= 2 ? messages.length - 2 : messages.length - 1)
+    : -1;
 
   // Load user profile context
   useEffect(() => {
@@ -246,23 +253,40 @@ function AssistantContent() {
     loadSessions();
   }, []);
 
-  // Auto-scroll to latest response immediately
-  useEffect(() => {
-    if (scrollRef.current) {
+  const scrollToLatest = (smooth = true) => {
+    if (latestExchangeRef.current) {
+      latestExchangeRef.current.scrollIntoView({
+        behavior: smooth ? "smooth" : "auto",
+        block: "start"
+      });
+    } else if (scrollRef.current) {
       scrollRef.current.scrollTo({
         top: scrollRef.current.scrollHeight,
-        behavior: "smooth"
+        behavior: smooth ? "smooth" : "auto"
       });
     }
-  }, [messages.length, isLoading]);
+  };
 
   const scrollToTop = () => {
     scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const scrollToBottom = () => {
-    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
+    scrollToLatest(true);
   };
+
+  // Auto-scroll directly to the active prompt & response upon arrival
+  useEffect(() => {
+    scrollToLatest(true);
+    const t1 = setTimeout(() => scrollToLatest(true), 80);
+    const t2 = setTimeout(() => scrollToLatest(true), 250);
+    const t3 = setTimeout(() => scrollToLatest(true), 600);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+    };
+  }, [messages.length, isLoading]);
 
   const selectSession = async (targetSessionId: string) => {
     if (loadingHistory || targetSessionId === sessionId) return;
@@ -726,24 +750,39 @@ function AssistantContent() {
               </div>
             )}
 
-            {messages.map((msg) => {
+            {messages.map((msg, index) => {
+              const isLatestExchange = index === latestExchangeIndex;
               const isUser = msg.role === "user";
               const isSpeaking = currentlySpeakingId === msg.id;
               const isCopied = copiedMsgId === msg.id;
 
-              if (isUser) {
-                return (
-                  <div key={msg.id} className="flex justify-end w-full animate-in fade-in slide-in-from-bottom-1">
-                    <div className="max-w-3xl bg-indigo-600 text-white px-5 py-3 rounded-2xl rounded-tr-xs shadow-xs text-sm sm:text-base leading-relaxed break-words font-normal">
-                      {msg.content}
-                    </div>
-                  </div>
-                );
-              }
-
-              // Assistant Response (Wide, Airy, Highly Legible Canvas)
               return (
-                <div key={msg.id} className="flex items-start gap-3.5 w-full animate-in fade-in slide-in-from-bottom-1">
+                <div 
+                  key={msg.id} 
+                  ref={isLatestExchange ? latestExchangeRef : null}
+                  className="flex flex-col gap-4 w-full"
+                >
+                  {/* Visual Divider for Previous History vs Active Question */}
+                  {isLatestExchange && index > 0 && (
+                    <div className="flex items-center gap-3 my-2 text-xs text-slate-400">
+                      <div className="h-px bg-slate-200 dark:bg-slate-800 flex-1" />
+                      <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 font-bold text-[11px] border border-indigo-200 dark:border-indigo-800 shadow-2xs">
+                        <Sparkles className="w-3.5 h-3.5 text-indigo-500 animate-pulse" />
+                        <span>Active Question & Response</span>
+                      </span>
+                      <div className="h-px bg-slate-200 dark:bg-slate-800 flex-1" />
+                    </div>
+                  )}
+
+                  {isUser ? (
+                    <div className="flex justify-end w-full animate-in fade-in slide-in-from-bottom-1">
+                      <div className="max-w-3xl bg-indigo-600 text-white px-5 py-3 rounded-2xl rounded-tr-xs shadow-xs text-sm sm:text-base leading-relaxed break-words font-normal">
+                        {msg.content}
+                      </div>
+                    </div>
+                  ) : (
+                    /* Assistant Response (Wide, Airy, Highly Legible Canvas) */
+                    <div className="flex items-start gap-3.5 w-full animate-in fade-in slide-in-from-bottom-1">
                   <div className="w-8 h-8 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">
                     <Brain className="w-4 h-4" />
                   </div>
@@ -1039,42 +1078,46 @@ function AssistantContent() {
                     </div>
                   </div>
                 </div>
-              );
-            })}
+              )}
+            </div>
+          );
+        })}
 
-            {/* AI Loading Placeholder */}
-            {isLoading && (
-              <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 py-2 animate-in fade-in">
-                <div className="w-7 h-7 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 flex items-center justify-center animate-spin">
-                  <RefreshCw className="w-3.5 h-3.5" />
-                </div>
-                <span>Searching indexed course notes and synthesizing response...</span>
-              </div>
-            )}
-
-            {/* Floating Up & Down Jump Navigation Arrows */}
-            {messages.length > 1 && (
-              <div className="sticky bottom-2 right-2 self-end flex items-center gap-1.5 p-1 rounded-2xl bg-white/95 dark:bg-slate-800/95 backdrop-blur-md border border-slate-200/80 dark:border-slate-700 shadow-md z-20 pointer-events-auto">
-                <button
-                  type="button"
-                  onClick={scrollToTop}
-                  className="w-7 h-7 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-indigo-600 flex items-center justify-center transition-all cursor-pointer"
-                  title="Scroll to Top / History"
-                >
-                  <ChevronUp className="w-4 h-4" />
-                </button>
-                <div className="w-px h-3.5 bg-slate-200 dark:bg-slate-700" />
-                <button
-                  type="button"
-                  onClick={scrollToBottom}
-                  className="w-7 h-7 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-indigo-600 flex items-center justify-center transition-all cursor-pointer"
-                  title="Scroll to Latest Response"
-                >
-                  <ChevronDown className="w-4 h-4" />
-                </button>
-              </div>
-            )}
+        {/* AI Loading Placeholder */}
+        {isLoading && (
+          <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 py-2 animate-in fade-in">
+            <div className="w-7 h-7 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 flex items-center justify-center animate-spin">
+              <RefreshCw className="w-3.5 h-3.5" />
+            </div>
+            <span>Searching indexed course notes and synthesizing response...</span>
           </div>
+        )}
+
+        {/* Floating Up & Down Jump Navigation Controls */}
+        {messages.length > 1 && (
+          <div className="sticky bottom-3 right-3 self-end flex items-center gap-1 p-1.5 rounded-2xl bg-white/95 dark:bg-slate-800/95 backdrop-blur-md border border-slate-200/90 dark:border-slate-700 shadow-xl z-30 pointer-events-auto animate-in fade-in">
+            <button
+              type="button"
+              onClick={scrollToTop}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 text-xs font-bold transition-all cursor-pointer shadow-2xs"
+              title="Scroll to Top / Conversation History"
+            >
+              <ChevronUp className="w-4 h-4 text-indigo-600 dark:text-indigo-400 stroke-[2.5]" />
+              <span>History</span>
+            </button>
+            <div className="w-px h-4 bg-slate-200 dark:bg-slate-700" />
+            <button
+              type="button"
+              onClick={scrollToBottom}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 text-xs font-bold transition-all cursor-pointer shadow-2xs"
+              title="Scroll to Latest Question & Response"
+            >
+              <ChevronDown className="w-4 h-4 text-indigo-600 dark:text-indigo-400 stroke-[2.5]" />
+              <span>Latest</span>
+            </button>
+          </div>
+        )}
+      </div>
         </section>
 
         {/* Streamlined Right Rail (Col 3) - Hideable / Unhideable */}
