@@ -59,10 +59,7 @@ class DiagramExportRequest(BaseModel):
     is_dark: bool = False
 
 @router.post("/export")
-def export_diagram(
-    req: DiagramExportRequest,
-    current_user: User = Depends(get_current_user)
-):
+def export_diagram(req: DiagramExportRequest):
     try:
         from fastapi.responses import Response
         import pymupdf
