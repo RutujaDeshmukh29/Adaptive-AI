@@ -37,7 +37,8 @@ def current_topic(db: Session, user_id: int):
     return None
 
 def compute_trend(attempts: list) -> str:
-    recent = attempts[:TREND_WINDOW]
+    valid = [a for a in attempts if a.mastery_after is not None and a.mastery_before is not None]
+    recent = valid[:TREND_WINDOW]
     if len(recent) < 2:
         return "insufficient_data"
     delta = recent[0].mastery_after - recent[-1].mastery_before

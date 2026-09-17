@@ -10,6 +10,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import ReactMarkdown from 'react-markdown';
 
 interface Message {
   id: string;
@@ -89,8 +90,8 @@ export default function AssistantPage() {
               
               <div className={`flex flex-col max-w-[80%] ${msg.role === "user" ? "items-end" : "items-start"}`}>
                 <div className={`rounded-xl p-4 ${msg.role === "user" ? "bg-primary text-primary-foreground" : "bg-slate-100 text-slate-900"}`}>
-                  <div className="prose prose-sm dark:prose-invert max-w-none whitespace-pre-wrap">
-                    {msg.content}
+                  <div className="prose prose-sm dark:prose-invert max-w-none">
+                    <ReactMarkdown>{msg.content}</ReactMarkdown>
                   </div>
                 </div>
                 

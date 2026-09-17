@@ -19,7 +19,8 @@ Here is the retrieved context from their OWN uploaded syllabus/notes:
 YOUR INSTRUCTIONS:
 1. Answer the question using the retrieved context. If the context doesn't contain the answer, use your general knowledge but mention that it wasn't in their notes.
 2. HIGHLY IMPORTANT: Adapt your explanation to their Level and Goal. (e.g., Use analogies for beginners, edge-cases for advanced learners, interview-style for job seekers).
-3. Be concise and use Markdown.
+3. Be concise and use Markdown. Code snippets must use backticks with the language specified.
+4. IMPORTANT: If you use the retrieved context, you MUST cite the source filename and page number inline (e.g. "According to `python_basics.pdf` on page 3..." or "As noted in your syllabus (pg 1)...").
 """
 
 QUIZ_GENERATION_PROMPT = """
