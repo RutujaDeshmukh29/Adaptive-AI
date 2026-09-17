@@ -13,6 +13,9 @@ from app.services.rag_service import process_and_ingest_pdf, delete_material_vec
 from app.config import settings
 from app.schemas.material import MaterialResponse
 from app.services.activity_service import log_activity
+from app.models.learner_profile import LearnerProfile
+from app.services.summary_service import generate_document_summary
+from pydantic import BaseModel
 
 router = APIRouter(prefix="/api/materials", tags=["materials"])
 
@@ -175,3 +178,53 @@ def delete_material(material_id: int, current_user: User = Depends(get_current_u
     db.commit()
     
     return {"deleted": True, "id": material_id}
+
+class SummarizeRequest(BaseModel):
+    mode: str = "detailed"  # "detailed" | "cheatsheet" | "eli5"
+
+class SummarizeResponse(BaseModel):
+    material_id: int
+    filename: str
+    mode: str
+    mode_name: str
+    summary: str
+
+@router.post("/{material_id}/summarize", response_model=SummarizeResponse)
+def summarize_material(
+    material_id: int,
+    req: SummarizeRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    material = db.query(Material).filter(Material.user_id == current_user.id, Material.id == material_id).first()
+    if not material:
+        raise HTTPException(status_code=404, detail="Material not found")
+
+    profile = db.query(LearnerProfile).filter(LearnerProfile.user_id == current_user.id).first()
+    level = profile.academic_level if profile else "Beginner"
+    goal = profile.goal if profile else "Exam Preparation"
+
+    result = generate_document_summary(
+        file_path=material.stored_path,
+        filename=material.filename,
+        mode=req.mode,
+        level=level,
+        goal=goal
+    )
+
+    # Log in activity audit trail
+    log_activity(
+        db,
+        current_user.id,
+        "summary",
+        description=f'Generated {result["mode_name"]} for "{material.filename}"',
+        result_data={"material_id": material_id, "mode": result["mode"]}
+    )
+
+    return SummarizeResponse(
+        material_id=material.id,
+        filename=material.filename,
+        mode=result["mode"],
+        mode_name=result["mode_name"],
+        summary=result["summary"]
+    )

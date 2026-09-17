@@ -4,13 +4,49 @@ import { useState, useEffect, useRef } from "react";
 import { 
   Upload, File as FileIcon, Trash2, CheckCircle2, 
   AlertCircle, Loader2, FileText, Sparkles, ShieldCheck, 
-  Layers, FolderPlus 
+  Layers, FolderPlus, BookOpen, Copy, Check, Printer, X,
+  Zap, Baby, FileSpreadsheet
 } from "lucide-react";
 import { fetchApi } from "@/lib";
 import { Material } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import ReactMarkdown from "react-markdown";
+
+type SummaryMode = "detailed" | "cheatsheet" | "eli5";
+
+interface SummaryModeOption {
+  id: SummaryMode;
+  label: string;
+  icon: React.ElementType;
+  description: string;
+  badgeColor: string;
+}
+
+const SUMMARY_MODES: SummaryModeOption[] = [
+  {
+    id: "detailed",
+    label: "Comprehensive",
+    icon: BookOpen,
+    description: "Detailed section-by-section breakdown with critical takeaways & common pitfalls",
+    badgeColor: "bg-blue-50 text-blue-700 border-blue-200"
+  },
+  {
+    id: "cheatsheet",
+    label: "Cheat Sheet",
+    icon: Zap,
+    description: "High-yield syntax tables, concise formulas, and rapid-recall definitions",
+    badgeColor: "bg-amber-50 text-amber-700 border-amber-200"
+  },
+  {
+    id: "eli5",
+    label: "ELI5 Breakdown",
+    icon: Baby,
+    description: "Ultra-intuitive analogies and everyday real-world stories with zero technical jargon",
+    badgeColor: "bg-purple-50 text-purple-700 border-purple-200"
+  }
+];
 
 export default function MaterialsPage() {
   const [materials, setMaterials] = useState<Material[]>([]);
@@ -21,6 +57,13 @@ export default function MaterialsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [notification, setNotification] = useState<{ type: "success" | "error"; message: string } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Smart Summarizer State
+  const [summarizeMaterial, setSummarizeMaterial] = useState<Material | null>(null);
+  const [activeSummaryMode, setActiveSummaryMode] = useState<SummaryMode>("detailed");
+  const [summariesCache, setSummariesCache] = useState<Record<string, string>>({});
+  const [isSummarizing, setIsSummarizing] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const showNotification = (type: "success" | "error", message: string) => {
     setNotification({ type, message });
@@ -61,7 +104,6 @@ export default function MaterialsPage() {
     setIsUploading(true);
     setUploadProgressText(`Uploading & vectorizing ${pdfFiles.length} file${pdfFiles.length > 1 ? "s" : ""} in ChromaDB...`);
 
-    // Add optimistic temporary items
     const tempItems = pdfFiles.map((file, idx) => ({
       id: Date.now() + idx,
       filename: file.name,
@@ -138,8 +180,55 @@ export default function MaterialsPage() {
     }
   };
 
+  // Summarizer Handlers
+  const openSummarizer = (material: Material) => {
+    setSummarizeMaterial(material);
+    setActiveSummaryMode("detailed");
+    triggerSummarize(material.id, "detailed");
+  };
+
+  const triggerSummarize = async (materialId: number, mode: SummaryMode) => {
+    const cacheKey = `${materialId}_${mode}`;
+    if (summariesCache[cacheKey]) {
+      return;
+    }
+
+    setIsSummarizing(true);
+    try {
+      const res = await fetchApi<{ summary: string }>(`/api/materials/${materialId}/summarize`, {
+        method: "POST",
+        body: JSON.stringify({ mode }),
+      });
+      setSummariesCache(prev => ({ ...prev, [cacheKey]: res.summary }));
+    } catch (err: any) {
+      showNotification("error", err.detail || "Failed to generate AI summary.");
+    } finally {
+      setIsSummarizing(false);
+    }
+  };
+
+  const handleModeChange = (mode: SummaryMode) => {
+    setActiveSummaryMode(mode);
+    if (summarizeMaterial) {
+      triggerSummarize(summarizeMaterial.id, mode);
+    }
+  };
+
+  const handleCopySummary = () => {
+    if (!summarizeMaterial) return;
+    const cacheKey = `${summarizeMaterial.id}_${activeSummaryMode}`;
+    const text = summariesCache[cacheKey] || "";
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const currentSummary = summarizeMaterial 
+    ? summariesCache[`${summarizeMaterial.id}_${activeSummaryMode}`] || ""
+    : "";
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 pb-12">
       {/* Header */}
       <div>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -153,7 +242,7 @@ export default function MaterialsPage() {
             </h1>
             <p className="mt-2 text-sm text-slate-500 max-w-2xl">
               Upload your syllabus, lecture notes, or textbooks. Materials are processed into local semantic vector chunks 
-              so only precise snippets are referenced during tutoring, protecting your private data.
+              for inline page citations, and you can generate 3 styles of instant Smart Summaries.
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -182,6 +271,112 @@ export default function MaterialsPage() {
           )}
           <span>{notification.message}</span>
         </div>
+      )}
+
+      {/* Smart Document Summarizer Modal / Sheet */}
+      {summarizeMaterial && (
+        <Card className="border-primary/30 shadow-lg bg-white overflow-hidden animate-fade-in">
+          <CardHeader className="bg-slate-50/80 border-b border-slate-200/80 pb-4">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2">
+                  <Badge className="bg-primary text-white text-xs gap-1 font-normal">
+                    <Sparkles className="h-3 w-3" /> Smart AI Summarizer
+                  </Badge>
+                  <span className="text-xs text-slate-400">•</span>
+                  <span className="text-xs text-slate-500 font-mono">{summarizeMaterial.chunk_count} vector chunks</span>
+                </div>
+                <CardTitle className="text-xl font-bold text-slate-900 mt-1">
+                  {summarizeMaterial.filename}
+                </CardTitle>
+              </div>
+              <div className="flex items-center gap-1">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={handleCopySummary}
+                  disabled={!currentSummary || isSummarizing}
+                  className="h-8 text-xs gap-1"
+                >
+                  {copied ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <Copy className="h-3.5 w-3.5" />}
+                  <span>{copied ? "Copied" : "Copy"}</span>
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => window.print()}
+                  disabled={!currentSummary || isSummarizing}
+                  className="h-8 text-xs gap-1 hidden sm:flex"
+                >
+                  <Printer className="h-3.5 w-3.5" />
+                  <span>Print</span>
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={() => setSummarizeMaterial(null)}
+                  className="h-8 w-8 text-slate-400 hover:text-slate-700"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+
+            {/* 3 Summary Modes Selector */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-4">
+              {SUMMARY_MODES.map((mode) => {
+                const Icon = mode.icon;
+                const isActive = activeSummaryMode === mode.id;
+                return (
+                  <button
+                    key={mode.id}
+                    onClick={() => handleModeChange(mode.id)}
+                    type="button"
+                    className={`p-2.5 rounded-lg border text-left transition-all ${
+                      isActive
+                        ? "border-primary bg-primary/5 shadow-xs"
+                        : "border-slate-200 bg-white hover:bg-slate-50"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Icon className={`h-4 w-4 ${isActive ? "text-primary" : "text-slate-500"}`} />
+                      <span className={`text-xs font-bold ${isActive ? "text-primary" : "text-slate-800"}`}>
+                        {mode.label}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-slate-500 mt-1 line-clamp-2">
+                      {mode.description}
+                    </p>
+                  </button>
+                );
+              })}
+            </div>
+          </CardHeader>
+
+          <CardContent className="p-6">
+            {isSummarizing ? (
+              <div className="py-12 flex flex-col items-center justify-center space-y-3 text-center">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <div className="space-y-1">
+                  <p className="text-sm font-semibold text-slate-800">
+                    Gemini AI is reading and synthesizing {SUMMARY_MODES.find(m => m.id === activeSummaryMode)?.label}...
+                  </p>
+                  <p className="text-xs text-slate-400">
+                    Extracting high-yield concepts directly from {summarizeMaterial.filename}
+                  </p>
+                </div>
+              </div>
+            ) : currentSummary ? (
+              <div className="prose prose-sm max-w-none text-slate-800 leading-relaxed [&_h1]:text-lg [&_h1]:font-bold [&_h1]:text-slate-900 [&_h2]:text-base [&_h2]:font-bold [&_h2]:text-slate-800 [&_h2]:mt-4 [&_h2]:mb-2 [&_h3]:text-sm [&_h3]:font-bold [&_ul]:list-disc [&_ul]:pl-5 [&_pre]:bg-slate-900 [&_pre]:text-slate-100 [&_pre]:p-3 [&_pre]:rounded-lg [&_code]:text-primary [&_code]:font-mono">
+                <ReactMarkdown>{currentSummary}</ReactMarkdown>
+              </div>
+            ) : (
+              <div className="py-8 text-center text-slate-400 text-xs">
+                Click any of the 3 summary modes above to generate your document summary.
+              </div>
+            )}
+          </CardContent>
+        </Card>
       )}
 
       <div className="grid gap-6 md:grid-cols-3">
@@ -252,7 +447,7 @@ export default function MaterialsPage() {
             <div>
               <CardTitle className="text-lg">Grounding Materials</CardTitle>
               <CardDescription>
-                Indexed in your private ChromaDB vector collection for instant RAG citations
+                Indexed in ChromaDB for cited tutor answers, adaptive quizzes, and instant Smart Summaries
               </CardDescription>
             </div>
           </CardHeader>
@@ -266,7 +461,7 @@ export default function MaterialsPage() {
                 <FileText className="h-12 w-12 text-slate-300 mb-3" />
                 <p className="font-semibold text-slate-700">No documents uploaded yet</p>
                 <p className="text-xs text-slate-400 mt-1 max-w-sm">
-                  Upload one or more PDF files to ground the AI tutor with inline page citations and course-specific quiz generation.
+                  Upload one or more PDF files to ground the AI tutor with inline page citations and generate smart summaries.
                 </p>
               </div>
             ) : (
@@ -274,7 +469,7 @@ export default function MaterialsPage() {
                 {materials.map((mat) => (
                   <div 
                     key={mat.id} 
-                    className="flex items-center justify-between rounded-xl border border-slate-200 p-4 bg-white hover:border-slate-300 transition-colors shadow-2xs"
+                    className="flex flex-col sm:flex-row sm:items-center justify-between rounded-xl border border-slate-200 p-4 bg-white hover:border-slate-300 transition-colors shadow-2xs gap-3"
                   >
                     <div className="flex items-center space-x-3.5 truncate">
                       <div className="rounded-lg bg-primary/10 p-2.5 text-primary shrink-0">
@@ -288,7 +483,7 @@ export default function MaterialsPage() {
                               <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
                               <span className="font-medium text-emerald-700">Ready</span>
                               <span className="text-slate-300">•</span>
-                              <span>{mat.chunk_count} semantic vector chunks</span>
+                              <span>{mat.chunk_count} vector chunks</span>
                             </>
                           )}
                           {mat.status === "processing" && (
@@ -307,7 +502,20 @@ export default function MaterialsPage() {
                       </div>
                     </div>
 
-                    <div className="flex items-center space-x-2 shrink-0 ml-3">
+                    <div className="flex items-center space-x-2 shrink-0 self-end sm:self-auto">
+                      {mat.status === "ready" && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => openSummarizer(mat)}
+                          className="h-8 text-xs gap-1.5 border-primary/20 text-primary hover:bg-primary/5"
+                          title="Generate Smart AI Summary (Detailed, Cheat Sheet, ELI5)"
+                        >
+                          <Sparkles className="h-3.5 w-3.5 text-primary" />
+                          <span>Smart Summary</span>
+                        </Button>
+                      )}
+
                       <Button
                         variant="ghost"
                         size="icon"
