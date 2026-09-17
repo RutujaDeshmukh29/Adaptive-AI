@@ -15,6 +15,9 @@ class Settings(BaseSettings):
     GEMINI_FALLBACK_MODEL: str = "gemini-3.5-flash-lite"
     GEMINI_TIMEOUT_SECONDS: int = 45
     GEMINI_MAX_RETRIES: int = 2
+    
+    # GROQ
+    GROQ_API_KEY: str = ""
 
     # RAG
     EMBEDDING_MODEL: str = "all-MiniLM-L6-v2"

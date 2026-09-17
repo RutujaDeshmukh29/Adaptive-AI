@@ -23,8 +23,15 @@ def generate_quiz(db: Session, user_id: int, topic_id: int, difficulty: str, lev
         rag_context=rag_text if rag_text else "No uploaded documents found."
     )
     
-    questions_data = generate_json_response(prompt)
-    if not questions_data or not isinstance(questions_data, list):
+    questions_response = generate_json_response(prompt)
+    
+    questions_data = []
+    if isinstance(questions_response, dict) and "questions" in questions_response:
+        questions_data = questions_response["questions"]
+    elif isinstance(questions_response, list):
+        questions_data = questions_response
+        
+    if not questions_data:
         raise ValueError("Failed to generate quiz questions")
         
     attempt = QuizAttempt(

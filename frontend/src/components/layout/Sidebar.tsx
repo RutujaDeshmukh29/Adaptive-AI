@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BookOpen, FileText, MessageSquare, Target, LayoutDashboard, LogOut, Settings, HeartHandshake } from "lucide-react";
+import { BookOpen, FileText, MessageSquare, Target, LayoutDashboard, LogOut, Settings, HeartHandshake, Network } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { removeToken } from "@/lib";
 
@@ -16,6 +16,7 @@ export function Sidebar() {
     { name: "AI Assistant", href: "/assistant", icon: MessageSquare },
     { name: "Adaptive Practice", href: "/practice", icon: Target },
     { name: "Learning Path", href: "/path", icon: BookOpen },
+    { name: "Visualizer", href: "/visualizer", icon: Network },
     { name: "Parent Portal", href: "/parent-dashboard", icon: HeartHandshake },
     { name: "Profile", href: "/profile", icon: Settings },
   ];

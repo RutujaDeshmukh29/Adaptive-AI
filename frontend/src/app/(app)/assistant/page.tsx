@@ -408,7 +408,7 @@ export default function AssistantPage() {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-8rem)]">
+    <div className="flex flex-col h-[calc(100vh-4.5rem)]">
       {/* Header */}
       <div className="mb-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
@@ -498,10 +498,10 @@ export default function AssistantPage() {
       </div>
       
       {/* Chat Container with Sidebar */}
-      <Card className="flex flex-1 overflow-hidden shadow-sm border-slate-200 relative">
+      <Card className="flex flex-1 overflow-hidden min-h-0 shadow-sm border-slate-200 relative">
         {/* Session History Sidebar */}
         {sidebarOpen && (
-          <aside className="w-64 sm:w-72 border-r border-slate-200 bg-slate-50/75 flex flex-col shrink-0">
+          <aside className="w-64 sm:w-72 border-r border-slate-200 bg-slate-50/75 flex flex-col shrink-0 min-h-0">
             <div className="p-3 border-b border-slate-200/80 flex items-center justify-between bg-slate-50">
               <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-700">
                 <History className="h-3.5 w-3.5 text-primary" />
@@ -573,7 +573,7 @@ export default function AssistantPage() {
         )}
 
         {/* Main Chat Area */}
-        <div className="flex flex-col flex-1 min-w-0 bg-white">
+        <div className="flex flex-col flex-1 min-w-0 min-h-0 bg-white">
           <div 
             ref={scrollRef}
             className="flex-1 p-4 overflow-y-auto space-y-5 relative"

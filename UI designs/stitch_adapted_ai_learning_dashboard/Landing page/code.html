@@ -1,0 +1,669 @@
+<!DOCTYPE html><html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Adapted AI by SkillMatix | Continuous Adaptive Learning Platform</title>
+<meta content="AI-powered adaptive learning platform that continuously personalizes each student's journey using Gemini AI and Vector RAG pipelines." name="description">
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              200: '#c7d2fe',
+              300: '#a5b4fc',
+              400: '#818cf8',
+              500: '#6366f1',
+              600: '#4f46e5', // Primary brand color
+              700: '#4338ca',
+              800: '#3730a3',
+              900: '#312e81',
+            }
+          }
+        }
+      }
+    }
+  </script>
+<!-- Custom CSS for clean UI enhancements -->
+<style data-purpose="base-styling">
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8faff;
+      color: #0f172a;
+      overflow-x: hidden;
+    }
+    .gradient-glow {
+      background: radial-gradient(circle at 50% 0%, rgba(79, 70, 229, 0.08) 0%, rgba(248, 250, 255, 0) 70%);
+    }
+    .grid-pattern {
+      background-size: 32px 32px;
+      background-image: linear-gradient(to right, rgba(99, 102, 241, 0.04) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(99, 102, 241, 0.04) 1px, transparent 1px);
+    }
+  </style>
+</head>
+<body class="antialiased min-h-screen selection:bg-brand-100 selection:text-brand-900">
+<!-- BEGIN: TopNavigationBar -->
+<header class="sticky top-0 z-50 bg-white/85 backdrop-blur-md border-b border-slate-100 transition-all duration-200" data-purpose="main-header">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+<!-- Brand Logo -->
+<a aria-label="Adapted AI Home" class="flex items-center gap-3 group" href="#">
+<div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center text-white shadow-sm group-hover:bg-brand-700 transition">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewBox="0 0 24 24">
+<path d="M12 2a10 10 0 0 0-10 10c0 4.4 2.9 8.2 7 9.5v-3.8a2 2 0 0 1 .6-1.4l1.4-1.3"></path>
+<path d="M12 6a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"></path>
+<path d="M18 10a6 6 0 0 1-4.8 5.9"></path>
+<circle cx="19" cy="19" r="3"></circle>
+</svg>
+</div>
+<div class="flex flex-col">
+<span class="text-xl font-bold tracking-tight text-slate-900 leading-none">Adapted<span class="text-brand-600">.AI</span></span>
+<span class="text-[10px] uppercase font-semibold tracking-wider text-slate-400 mt-1">by SkillMatix</span>
+</div>
+</a>
+<!-- Desktop Nav Links -->
+<nav aria-label="Desktop Navigation" class="hidden lg:flex items-center gap-8 text-sm font-medium text-slate-600">
+<a class="hover:text-brand-600 transition-colors" href="#problem-solution">Why Adapted</a>
+<a class="hover:text-brand-600 transition-colors" href="#how-it-works">How It Works</a>
+<a class="hover:text-brand-600 transition-colors" href="#experience">Student Experience</a>
+<a class="hover:text-brand-600 transition-colors" href="#parent-portal">Parent Portal</a>
+<a class="hover:text-brand-600 transition-colors" href="#tech-stack">Architecture (RAG)</a>
+<a class="hover:text-brand-600 transition-colors" href="#tech-stack">Architecture</a>
+</nav>
+<!-- Right Action CTAs -->
+<div class="flex items-center gap-4">
+<a class="text-sm font-semibold text-slate-600 hover:text-brand-600 transition-colors px-2 py-1" href="#signin">Sign In</a>
+<a class="inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-xl shadow-sm hover:shadow transition-all duration-150" href="#get-started">
+          Get Started Free
+        </a>
+</div>
+</div>
+</header>
+<!-- END: TopNavigationBar -->
+<!-- BEGIN: HeroSection -->
+<section class="relative pt-12 pb-24 lg:pt-20 lg:pb-32 grid-pattern gradient-glow overflow-hidden" data-purpose="hero-section">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<!-- Headline & Pitch Content -->
+<div class="text-center max-w-3xl mx-auto mb-16">
+<!-- Trust Pill -->
+<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 border border-indigo-100/80 text-brand-700 text-xs sm:text-sm font-medium mb-6"><span class="flex h-2 w-2 rounded-full bg-brand-600 animate-pulse"></span><span class="">100% Free EdTech • Powered by Gemini AI &amp; Vector RAG</span></div>
+<h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.12]">
+          The Learning Journey That <span class="text-brand-600">Adapts to You</span>, Not the Other Way Around.
+        </h1>
+<p class="mt-6 text-lg sm:text-xl text-slate-600 font-normal leading-relaxed">
+          Instead of rigid static study plans, Adapted AI continuously diagnoses your mastery, bridges conceptual gaps in real time, and personalizes every practice question and AI explanation.
+        </p>
+<!-- CTA Group -->
+<div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+<a class="w-full sm:w-auto inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-xl shadow-md shadow-brand-500/10 hover:shadow-lg transition" href="#get-started">Start Learning for Free
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></a>
+<a class="w-full sm:w-auto inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-slate-700 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50/80 rounded-xl shadow-sm transition" href="#demo">
+<svg class="w-5 h-5 mr-2 text-brand-600" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+            Explore Live Demo
+          </a>
+</div>
+<!-- Social Proof Stats -->
+<div class="mt-10 pt-6 border-t border-slate-100 flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs sm:text-sm text-slate-500">
+<div class="flex items-center gap-2">
+<div class="flex -space-x-2">
+<span class="inline-block h-7 w-7 rounded-full bg-slate-200 border-2 border-white flex items-center justify-center font-bold text-[10px] text-slate-600">AK</span>
+<span class="inline-block h-7 w-7 rounded-full bg-brand-200 border-2 border-white flex items-center justify-center font-bold text-[10px] text-brand-700">SR</span>
+<span class="inline-block h-7 w-7 rounded-full bg-indigo-200 border-2 border-white flex items-center justify-center font-bold text-[10px] text-indigo-700">ML</span>
+</div>
+<span class="">Trusted across <strong>40+ leading institutions</strong></span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="text-amber-400">★★★★★</span>
+<span class="font-semibold text-slate-800">4.9/5</span>
+<span class="">Student &amp; Parent rating</span>
+</div>
+<div class="flex items-center gap-1.5 text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full font-medium text-xs"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>100% Free • No Credit Card Required</div></div>
+</div>
+<!-- Hero Visual: Clean Interactive Engine Mockup -->
+<div class="max-w-5xl mx-auto rounded-2xl bg-white border border-slate-200/80 shadow-xl shadow-slate-200/40 p-5 sm:p-8" data-purpose="hero-mockup">
+<!-- Mockup Header -->
+<div class="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-slate-100">
+<div class="flex items-center gap-3">
+<div class="flex space-x-1.5">
+<span class="w-3 h-3 rounded-full bg-rose-400"></span>
+<span class="w-3 h-3 rounded-full bg-amber-400"></span>
+<span class="w-3 h-3 rounded-full bg-emerald-400"></span>
+</div>
+<span class="text-xs font-mono text-slate-400">workspace / adaptive-runtime-v3.session</span>
+</div>
+<div class="flex items-center gap-2 bg-emerald-50 text-emerald-700 text-xs px-3 py-1 rounded-full font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
+            Live Loop: Dynamic Recalibration Active
+          </div>
+</div>
+<!-- Inner Split: Knowledge State + Real-time Assistant -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6">
+<!-- Left: Dynamic Learner Model Status -->
+<div class="lg:col-span-5 bg-slate-50/70 border border-slate-200/70 rounded-xl p-5 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-4">
+<span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Continuous Learner Model</span>
+<span class="text-xs font-semibold px-2 py-0.5 rounded bg-brand-50 text-brand-700">Bayesian Tracker</span>
+</div>
+<!-- Topic Progress Indicators -->
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-xs font-medium mb-1">
+<span class="text-slate-700">Calculus: Optimization &amp; Derivatives</span>
+<span class="text-brand-600 font-semibold">88% Mastered</span>
+</div>
+<div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+<div class="bg-brand-600 h-full rounded-full w-[88%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs font-medium mb-1">
+<span class="text-slate-700">Linear Algebra: Eigenvectors</span>
+<span class="text-amber-600 font-semibold">Gap Detected (42%)</span>
+</div>
+<div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+<div class="bg-amber-500 h-full rounded-full w-[42%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs font-medium mb-1">
+<span class="text-slate-700">Vector Calculus: Green's Theorem</span>
+<span class="text-slate-500">Calibrating next...</span>
+</div>
+<div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+<div class="bg-indigo-300 h-full rounded-full w-[15%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Real-time Adjustment Badge -->
+<div class="mt-6 pt-4 border-t border-slate-200/60 flex items-center justify-between text-xs">
+<span class="text-slate-500">Current Caliber Level:</span>
+<span class="font-bold text-slate-800 bg-white border border-slate-200 px-2.5 py-1 rounded-md shadow-xs">
+                Level 2.8 <span class="text-brand-600">→ 3.2 Dynamic</span>
+</span>
+</div>
+</div>
+<!-- Right: Interactive AI Assistant & Adaptive Practice Teaser -->
+<div class="lg:col-span-7 flex flex-col justify-between space-y-4">
+<!-- Simulated AI Dialogue -->
+<div class="space-y-3 text-xs sm:text-sm">
+<div class="flex items-start gap-2.5">
+<div class="w-7 h-7 rounded-lg bg-slate-200 flex-shrink-0 flex items-center justify-center text-xs font-semibold text-slate-700">You</div>
+<div class="bg-slate-100 text-slate-800 p-3 rounded-2xl rounded-tl-none leading-relaxed">
+                  "I don't understand why the determinant being zero means no unique inverse in Step 3 of this problem."
+                </div>
+</div>
+<div class="flex items-start gap-2.5">
+<div class="w-7 h-7 rounded-lg bg-brand-600 flex-shrink-0 flex items-center justify-center text-white text-xs font-bold">AI</div>
+<div class="bg-brand-50/60 border border-brand-100 text-slate-800 p-3.5 rounded-2xl rounded-tl-none leading-relaxed">
+<div class="flex items-center gap-1.5 text-brand-700 text-xs font-semibold mb-1">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                    Grounded in your uploaded lecture notes: <em>Prof_Math_Week4.pdf (p.14)</em>
+</div>
+                  When determinant = 0, the linear transformation collapses dimension (squashing 2D into a 1D line or point). You can't reverse a collapse uniquely!
+                  <div class="mt-2.5 pt-2 border-t border-brand-100/70 flex items-center justify-between text-xs text-brand-900 font-medium">
+<span class="">Generated 1 micro-quiz to solidify this concept?</span>
+<button class="bg-brand-600 text-white px-2.5 py-1 rounded-md hover:bg-brand-700 transition">Try Micro-Quiz</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Mini Footnote inside Mockup -->
+<div class="flex items-center justify-between text-[11px] text-slate-400 pt-2 border-t border-slate-100">
+<span class="">ChromaDB Vector Retrieval: 32ms</span>
+<span class="">Gemini 1.5 Pro Context Pipeline Active</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: HeroSection -->
+<!-- BEGIN: ProblemVsSolutionSection -->
+<section class="py-24 bg-white border-t border-slate-100" data-purpose="problem-vs-solution" id="problem-solution">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center max-w-2xl mx-auto mb-16">
+<span class="text-xs font-bold uppercase tracking-wider text-brand-600 bg-brand-50 px-3 py-1 rounded-full">Evolutionary Shift</span>
+<h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-4 tracking-tight">The Problem with Traditional EdTech vs. Adapted AI</h2>
+<p class="mt-3 text-slate-600 text-base sm:text-lg">Most platforms provide static video libraries or generic question banks. Here is how continuous adaptation changes the paradigm.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+<!-- The Problem Card -->
+<div class="bg-rose-50/40 border border-rose-100 rounded-2xl p-8 shadow-xs">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center font-bold">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<div>
+<h3 class="text-xl font-bold text-slate-900">Traditional Learning Platforms</h3>
+<p class="text-xs font-medium text-rose-600">The "One-Size-Fits-None" Trap</p>
+</div>
+</div>
+<ul class="space-y-4 text-sm text-slate-700">
+<li class="flex items-start gap-3">
+<span class="text-rose-500 font-bold mt-0.5">•</span>
+<span class=""><strong>Static Study Plans:</strong> Schedules created on Day 1 that never adjust when a student gets stuck or moves faster.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="text-rose-500 font-bold mt-0.5">•</span>
+<span class=""><strong>Invisible Learning Gaps:</strong> Students pass basic tests while deep foundational prerequisites remain unresolved.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="text-rose-500 font-bold mt-0.5">•</span>
+<span class=""><strong>Identical Practice for Everyone:</strong> High-achievers get bored with easy questions while struggling students get overwhelmed.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="text-rose-500 font-bold mt-0.5">•</span>
+<span class=""><strong>Generic AI Chatbots:</strong> Hallucinating assistants that give general textbook answers unrelated to your professor's specific curriculum.</span>
+</li>
+</ul>
+</div>
+<!-- The Adapted AI Solution Card -->
+<div class="bg-indigo-50/40 border border-brand-200/80 rounded-2xl p-8 shadow-sm relative">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-xl bg-brand-600 text-white flex items-center justify-center font-bold shadow-sm">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<div>
+<h3 class="text-xl font-bold text-slate-900">Adapted AI by SkillMatix</h3>
+<p class="text-xs font-medium text-brand-600">Continuous Adaptive Learning Intelligence</p>
+</div>
+</div>
+<ul class="space-y-4 text-sm text-slate-700">
+<li class="flex items-start gap-3">
+<span class="text-brand-600 font-bold mt-0.5">✓</span>
+<span class=""><strong>Dynamic Learner Profile:</strong> Automatically updates skill confidence ratings with every single question answered.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="text-brand-600 font-bold mt-0.5">✓</span>
+<span class=""><strong>Instant Gap Remediation:</strong> If you struggle with a question, the platform pinpoints the prerequisite formula immediately.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="text-brand-600 font-bold mt-0.5">✓</span>
+<span class=""><strong>Calibrated Practice Difficulty:</strong> Practice sets dynamically scale from Level 1 foundational to Level 5 mastery based on response speed and precision.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="text-brand-600 font-bold mt-0.5">✓</span>
+<span class=""><strong>100% Courseware-Grounded RAG:</strong> AI explanations cite exact paragraphs and formulas from your uploaded lecture slides and notes.</span>
+</li>
+<li class="flex items-start gap-3"><span class="text-brand-600 font-bold mt-0.5">✓</span><span class=""><strong>Completely Free Access:</strong> 100% free for all students and parents with no paywalls, subscriptions, or credit card required.</span></li></ul>
+</div>
+</div>
+</div>
+</section>
+<!-- END: ProblemVsSolutionSection -->
+<!-- BEGIN: HowItWorksSection -->
+<section class="py-24 bg-slate-50 border-t border-slate-100" data-purpose="how-it-works" id="how-it-works">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center max-w-3xl mx-auto mb-16">
+<span class="text-xs font-bold uppercase tracking-wider text-brand-600 bg-brand-50 px-3 py-1 rounded-full">The Technical Architecture</span>
+<h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-4 tracking-tight">The 6-Step Continuous Adaptive Loop</h2>
+<p class="mt-3 text-slate-600 text-base sm:text-lg">Instead of generating a static study plan once, Adapted AI continually updates learner models as students progress.</p>
+</div>
+<!-- 6-Step Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Step 1: Assess -->
+<div class="bg-white p-7 rounded-2xl border border-slate-200/80 shadow-xs hover:border-brand-300 transition duration-200">
+<div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-sm mb-5">01</div>
+<h3 class="text-lg font-bold text-slate-900 mb-2">1. ASSESS</h3>
+<p class="text-slate-600 text-sm leading-relaxed">
+            Quick AI diagnostic tests uncover micro-competencies, current conceptual grasp, and prior knowledge baseline.
+          </p>
+<div class="mt-4 pt-3 border-t border-slate-100 text-xs font-medium text-slate-500 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Diagnostic Diagnostic Matrix
+          </div>
+</div>
+<!-- Step 2: Profile -->
+<div class="bg-white p-7 rounded-2xl border border-slate-200/80 shadow-xs hover:border-brand-300 transition duration-200">
+<div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-sm mb-5">02</div>
+<h3 class="text-lg font-bold text-slate-900 mb-2">2. PROFILE</h3>
+<p class="text-slate-600 text-sm leading-relaxed">
+            Constructs a multi-dimensional Dynamic Learner Profile recording cognitive preferences, response speeds, and retention velocity.
+          </p>
+<div class="mt-4 pt-3 border-t border-slate-100 text-xs font-medium text-slate-500 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Real-Time Learner Model
+          </div>
+</div>
+<!-- Step 3: Personalize -->
+<div class="bg-white p-7 rounded-2xl border border-slate-200/80 shadow-xs hover:border-brand-300 transition duration-200">
+<div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center font-bold text-sm mb-5">03</div>
+<h3 class="text-lg font-bold text-slate-900 mb-2">3. PERSONALIZE</h3>
+<p class="text-slate-600 text-sm leading-relaxed">
+            Curates a customized trajectory of next topics, prioritizing weak foundational prerequisites before advanced challenges.
+          </p>
+<div class="mt-4 pt-3 border-t border-slate-100 text-xs font-medium text-slate-500 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-teal-500"></span> Algorithmic Path Generation
+          </div>
+</div>
+<!-- Step 4: Learn -->
+<div class="bg-white p-7 rounded-2xl border border-slate-200/80 shadow-xs hover:border-brand-300 transition duration-200">
+<div class="w-10 h-10 rounded-xl bg-brand-100 text-brand-700 flex items-center justify-center font-bold text-sm mb-5">04</div>
+<h3 class="text-lg font-bold text-slate-900 mb-2">4. LEARN</h3>
+<p class="text-slate-600 text-sm leading-relaxed">
+            Engage with our Multimodal AI Study Assistant grounded directly in your syllabus via ChromaDB embeddings &amp; Gemini 1.5.
+          </p>
+<div class="mt-4 pt-3 border-t border-slate-100 text-xs font-medium text-slate-500 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span> RAG Content Engine
+          </div>
+</div>
+<!-- Step 5: Measure -->
+<div class="bg-white p-7 rounded-2xl border border-slate-200/80 shadow-xs hover:border-brand-300 transition duration-200">
+<div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-sm mb-5">05</div>
+<h3 class="text-lg font-bold text-slate-900 mb-2">5. MEASURE</h3>
+<p class="text-slate-600 text-sm leading-relaxed">
+            Solve adaptive micro-practice sets where question caliber modulates dynamically based on accuracy and time-to-solve.
+          </p>
+<div class="mt-4 pt-3 border-t border-slate-100 text-xs font-medium text-slate-500 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-purple-600"></span> Dynamic Practice Engine
+          </div>
+</div>
+<!-- Step 6: Adapt -->
+<div class="bg-white p-7 rounded-2xl border border-slate-200/80 shadow-xs hover:border-brand-300 transition duration-200">
+<div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-sm mb-5">06</div>
+<h3 class="text-lg font-bold text-slate-900 mb-2">6. ADAPT</h3>
+<p class="text-slate-600 text-sm leading-relaxed">
+            The feedback loop closes: performance data updates the student profile, continuously rerouting the next best learning step.
+          </p>
+<div class="mt-4 pt-3 border-t border-slate-100 text-xs font-medium text-slate-500 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Self-Refining Loop
+          </div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: HowItWorksSection -->
+<!-- BEGIN: FeatureDeepDives -->
+<section class="py-24 bg-white border-t border-slate-100" data-purpose="features" id="experience">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24">
+<!-- Feature 1: Student Study Assistant with RAG -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+<div>
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 text-brand-700 text-xs font-semibold mb-4">
+            For Students
+          </div>
+<h3 class="text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
+            Ask doubts grounded directly in your syllabus and notes.
+          </h3>
+<p class="mt-4 text-slate-600 leading-relaxed">
+            Generic LLMs hallucinate or provide solutions in notation you never learned. Adapted AI's Retrieval Augmented Generation (RAG) vectorizes your university textbooks, assignments, and uploaded PDF notes.
+          </p>
+<div class="mt-6 space-y-3">
+<div class="flex items-center gap-3 text-sm text-slate-700 font-medium">
+<span class="w-5 h-5 rounded-full bg-indigo-100 text-brand-600 flex items-center justify-center text-xs">✓</span>
+              Direct citations to exact slide numbers &amp; textbook pages
+            </div>
+<div class="flex items-center gap-3 text-sm text-slate-700 font-medium">
+<span class="w-5 h-5 rounded-full bg-indigo-100 text-brand-600 flex items-center justify-center text-xs">✓</span>
+              Socratic step-by-step guidance rather than instant spoon-feeding
+            </div>
+<div class="flex items-center gap-3 text-sm text-slate-700 font-medium">
+<span class="w-5 h-5 rounded-full bg-indigo-100 text-brand-600 flex items-center justify-center text-xs">✓</span>
+              Automatic generation of related follow-up practice problems
+            </div>
+</div>
+</div>
+<!-- Student Graphic Card -->
+<div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-sm">
+<div class="bg-white rounded-xl border border-slate-200 p-5 shadow-xs">
+<div class="flex items-center justify-between text-xs text-slate-500 pb-3 border-b border-slate-100">
+<span class="font-medium text-slate-700">Target Document: CS201_Algorithms_Midterm.pdf</span>
+<span class="text-brand-600 font-semibold">Parsed with PyMuPDF</span>
+</div>
+<div class="mt-4 text-xs font-mono bg-slate-50 p-3 rounded-lg text-slate-600 border border-slate-100">
+              Chunk Embedding: [0.024, -0.198, 0.451, ...]<br>
+              Similarity Match: 98.4% (Dijkstra vs A* heuristics)
+            </div>
+<div class="mt-4 p-3 bg-brand-50/50 rounded-lg border border-brand-100 text-xs text-slate-800">
+<strong>AI Answer:</strong> "In your professor's notation on slide 22, the heuristic function h(n) must be admissible (it can never overestimate the true cost)..."
+            </div>
+</div>
+</div>
+</div>
+<!-- Feature 2: Parent Portal & Live Telemetry -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center" id="parent-portal">
+<!-- Parent Graphic Card (Left on large screen) -->
+<div class="order-2 lg:order-1 bg-slate-50 border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-sm">
+<div class="bg-white rounded-xl border border-slate-200 p-5 shadow-xs space-y-4">
+<div class="flex items-center justify-between">
+<div>
+<p class="text-xs text-slate-400 font-medium uppercase">Active Student Session</p>
+<h4 class="text-base font-bold text-slate-800">Rohan S. • Grade 11</h4>
+</div>
+<span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-full text-xs font-medium flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Studying Now
+              </span>
+</div>
+<div class="p-3.5 bg-slate-50 rounded-lg text-xs space-y-2">
+<div class="flex justify-between text-slate-600">
+<span class="">Current Module:</span>
+<span class="font-semibold text-slate-800">Organic Chemistry: Carbonyls</span>
+</div>
+<div class="flex justify-between text-slate-600">
+<span class="">Session Focus Time:</span>
+<span class="font-semibold text-slate-800">42 minutes</span>
+</div>
+<div class="flex justify-between text-slate-600">
+<span class="">Accuracy on Level 3 questions:</span>
+<span class="font-semibold text-emerald-600">85% (3/4 correct)</span>
+</div>
+</div>
+<div class="text-xs text-slate-500">
+              Weekly summary emailed every Sunday at 6:00 PM. No nagging required.
+            </div>
+</div>
+</div>
+<div class="order-1 lg:order-2">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold mb-4">
+            For Parents &amp; Mentors
+          </div>
+<h3 class="text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
+            Real clarity without the stressful interrogation.
+          </h3>
+<p class="mt-4 text-slate-600 leading-relaxed">
+            Stop asking "Did you study today?" and see actual conceptual progression. Adapted AI provides parents and mentors with non-intrusive, constructive visibility into learning effort and mastery trends.
+          </p>
+<div class="mt-6 space-y-3">
+<div class="flex items-center gap-3 text-sm text-slate-700 font-medium">
+<span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs">✓</span>
+              Zero guesswork on upcoming exams &amp; preparedness indicators
+            </div>
+<div class="flex items-center gap-3 text-sm text-slate-700 font-medium">
+<span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs">✓</span>
+              Actionable milestone updates rather than raw, unhelpful percentages
+            </div>
+<div class="flex items-center gap-3 text-sm text-slate-700 font-medium">
+<span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs">✓</span>
+              Shared mentor comments to celebrate breakthroughs and consistent habits
+            </div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: FeatureDeepDives -->
+<!-- BEGIN: TechArchitectureSection -->
+<section class="py-20 bg-slate-50 border-t border-slate-100" data-purpose="tech-stack" id="tech-stack">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center max-w-2xl mx-auto mb-14">
+<span class="text-xs font-bold uppercase tracking-wider text-slate-500 bg-white border border-slate-200 px-3 py-1 rounded-full">Enterprise Grade</span>
+<h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-3">Engineered on Modern AI Infrastructure</h2>
+<p class="mt-2 text-slate-600 text-sm sm:text-base">Robust, low-latency, and strictly partitioned per institution and student.</p>
+</div>
+<!-- Tech Badges Flow -->
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+<div class="bg-white p-5 rounded-xl border border-slate-200 text-center shadow-2xs">
+<div class="text-brand-600 font-bold text-base mb-1">Gemini API</div>
+<div class="text-xs text-slate-500">Multimodal Reasoning</div>
+</div>
+<div class="bg-white p-5 rounded-xl border border-slate-200 text-center shadow-2xs">
+<div class="text-brand-600 font-bold text-base mb-1">ChromaDB</div>
+<div class="text-xs text-slate-500">Vector Store &amp; Embeddings</div>
+</div>
+<div class="bg-white p-5 rounded-xl border border-slate-200 text-center shadow-2xs">
+<div class="text-brand-600 font-bold text-base mb-1">PyMuPDF</div>
+<div class="text-xs text-slate-500">Fast Document Parsing</div>
+</div>
+<div class="bg-white p-5 rounded-xl border border-slate-200 text-center shadow-2xs">
+<div class="text-brand-600 font-bold text-base mb-1">Sentence Transformers</div>
+<div class="text-xs text-slate-500">Semantic Matching</div>
+</div>
+<div class="bg-white p-5 rounded-xl border border-slate-200 text-center shadow-2xs">
+<div class="text-brand-600 font-bold text-base mb-1">FastAPI &amp; Python</div>
+<div class="text-xs text-slate-500">Low-Latency Backend</div>
+</div>
+<div class="bg-white p-5 rounded-xl border border-slate-200 text-center shadow-2xs">
+<div class="text-brand-600 font-bold text-base mb-1">Next.js &amp; React</div>
+<div class="text-xs text-slate-500">Reactive Modern UI</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: TechArchitectureSection -->
+<!-- BEGIN: TestimonialsSection -->
+<section class="py-24 bg-white border-t border-slate-100" data-purpose="testimonials">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center max-w-2xl mx-auto mb-16">
+<span class="text-xs font-bold uppercase tracking-wider text-brand-600 bg-brand-50 px-3 py-1 rounded-full">Real Results</span>
+<h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-4 tracking-tight">Loved by Students, Trusted by Parents</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Testimonial 1: Student -->
+<div class="bg-slate-50 border border-slate-200/80 p-6 rounded-2xl flex flex-col justify-between">
+<p class="text-slate-700 text-sm leading-relaxed mb-6">
+            "Before Adapted AI, I would do 50 practice problems and half were too easy, while the other half made no sense. Now, the questions adjust right to where I'm stumbling. My GPA jumped from 3.1 to 3.8."
+          </p>
+<div class="flex items-center gap-3 pt-4 border-t border-slate-200/60">
+<div class="w-10 h-10 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center font-bold text-sm">AS</div>
+<div>
+<h4 class="text-sm font-bold text-slate-900">Aarav Sharma</h4>
+<p class="text-xs text-slate-500">Engineering Undergraduate</p>
+</div>
+</div>
+</div>
+<!-- Testimonial 2: Parent -->
+<div class="bg-slate-50 border border-slate-200/80 p-6 rounded-2xl flex flex-col justify-between">
+<p class="text-slate-700 text-sm leading-relaxed mb-6">
+            "The Parent Portal is a breath of fresh air. I can see my daughter's actual growth in Physics without hovering over her shoulder. The weekly progress digests show true conceptual mastery."
+          </p>
+<div class="flex items-center gap-3 pt-4 border-t border-slate-200/60">
+<div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-sm">NK</div>
+<div>
+<h4 class="text-sm font-bold text-slate-900">Nandini Kulkarni</h4>
+<p class="text-xs text-slate-500">Parent of High School Junior</p>
+</div>
+</div>
+</div>
+<!-- Testimonial 3: Educator -->
+<div class="bg-slate-50 border border-slate-200/80 p-6 rounded-2xl flex flex-col justify-between">
+<p class="text-slate-700 text-sm leading-relaxed mb-6">
+            "Adapted AI handles the heavy diagnostic lifting. It pinpoints exactly which foundational formula a student is missing so my tutoring sessions can be 100% high-impact intervention."
+          </p>
+<div class="flex items-center gap-3 pt-4 border-t border-slate-200/60">
+<div class="w-10 h-10 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-sm">DM</div>
+<div>
+<h4 class="text-sm font-bold text-slate-900">Dr. Marcus Vance</h4>
+<p class="text-xs text-slate-500">STEM Academic Mentor</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: TestimonialsSection -->
+<!-- BEGIN: CallToActionBanner -->
+<section class="py-20 bg-brand-900 text-white relative overflow-hidden" data-purpose="cta-section" id="pricing">
+<!-- Subtle background circle decorations -->
+<div class="absolute -right-20 -top-20 w-96 h-96 rounded-full bg-brand-800/40 pointer-events-none blur-3xl"></div>
+<div class="absolute -left-20 -bottom-20 w-96 h-96 rounded-full bg-brand-700/30 pointer-events-none blur-3xl"></div>
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+<span class="inline-block px-3 py-1 rounded-full bg-brand-800/80 border border-brand-700 text-brand-200 text-xs font-semibold mb-6">
+        Start Transforming Your Study Sessions
+      </span>
+<h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight">
+        Ready to experience education that adapts to you?
+      </h2>
+<p class="mt-4 text-base sm:text-lg text-brand-200 max-w-2xl mx-auto font-normal">Join thousands of students and parents moving past rigid study schedules. Adapted AI is completely free to use with zero hidden costs or subscriptions.</p>
+<div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+<a class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 text-base font-semibold text-brand-900 bg-white hover:bg-slate-100 rounded-xl shadow-lg transition duration-150" href="#get-started">Get Started Free — 100% Free</a>
+<a class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 text-base font-semibold text-white border border-brand-500 hover:bg-brand-800/60 rounded-xl transition duration-150" href="#demo">
+          Schedule Institutional Demo
+        </a>
+</div>
+<p class="mt-6 text-xs text-brand-300">100% Free Forever • No Subscription • No Credit Card Required • FERPA &amp; Student Data Privacy Compliant</p>
+</div>
+</section>
+<!-- END: CallToActionBanner -->
+<!-- BEGIN: MainFooter -->
+<footer class="bg-white border-t border-slate-200 text-slate-600 text-sm py-16" data-purpose="main-footer">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
+<!-- Brand Summary -->
+<div class="col-span-2 space-y-4">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center text-white font-bold text-base">A</div>
+<span class="text-lg font-bold text-slate-900">Adapted.AI</span>
+</div>
+<p class="text-xs text-slate-500 max-w-sm leading-relaxed">
+            Adapted AI (by SkillMatix) delivers continuous adaptive learning loops powered by generative AI, RAG pipelines, and dynamic knowledge tracing.
+          </p>
+<div class="text-xs text-slate-400">
+            Engineered for high schools, universities, and competitive exams.
+          </div>
+</div>
+<!-- Column 1 -->
+<div>
+<h4 class="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-4">Platform</h4>
+<ul class="space-y-2 text-xs">
+<li class=""><a class="hover:text-brand-600 transition-colors" href="#how-it-works">Adaptive Engine</a></li>
+<li class=""><a class="hover:text-brand-600 transition-colors" href="#features">RAG Lecture Bot</a></li>
+<li class=""><a class="hover:text-brand-600 transition-colors" href="#how-it-works">Diagnostic Tests</a></li>
+<li class=""><a class="hover:text-brand-600 transition-colors" href="#how-it-works">Dynamic Calibration</a></li>
+</ul>
+</div>
+<!-- Column 2 -->
+<div>
+<h4 class="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-4">Solutions</h4>
+<ul class="space-y-2 text-xs">
+<li class=""><a class="hover:text-brand-600 transition-colors" href="#experience">Higher Education</a></li>
+<li class=""><a class="hover:text-brand-600 transition-colors" href="#experience">K-12 STEM Prep</a></li>
+<li class=""><a class="hover:text-brand-600 transition-colors" href="#parent-portal">Parent Portals</a></li>
+<li class=""><a class="hover:text-brand-600 transition-colors" href="#get-started">Free Student &amp; Tutor Access</a></li>
+</ul>
+</div>
+<!-- Column 3 -->
+<div>
+<h4 class="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-4">Company &amp; Legal</h4>
+<ul class="space-y-2 text-xs">
+<li class=""><a class="hover:text-brand-600 transition-colors" href="#">SkillMatix Group</a></li>
+<li class=""><a class="hover:text-brand-600 transition-colors" href="#">Privacy Policy</a></li>
+<li class=""><a class="hover:text-brand-600 transition-colors" href="#">Terms of Service</a></li>
+<li class=""><a class="hover:text-brand-600 transition-colors" href="#">Security Architecture</a></li>
+</ul>
+</div>
+</div>
+<div class="pt-8 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
+<p class="">© 2025 Adapted AI by SkillMatix. All rights reserved.</p>
+<div class="flex items-center space-x-6">
+<a class="hover:text-slate-600" href="#">Privacy</a>
+<a class="hover:text-slate-600" href="#">Terms</a>
+<a class="hover:text-slate-600" href="#">FERPA / COPPA</a>
+<a class="hover:text-slate-600" href="#">System Status</a>
+</div>
+</div>
+</div>
+</footer>
+<!-- END: MainFooter -->
+
+
+</body></html>

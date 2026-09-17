@@ -1163,6 +1163,8 @@ Hour-by-hour assignments: **`docs/02_TEAM_ROLES_AND_TASKS.md`**
 | `docs/04_API_CONTRACT.md` | Before writing any route or any fetch call |
 | `docs/05_ADAPTIVE_ENGINE_SPEC.md` | Implementing mastery / NBLA / path logic |
 | `docs/06_DEMO_SCRIPT.md` | Hour 22 onwards |
+| `Documents/PAGE_BY_PAGE_TEST_GUIDE.md` | **Page-by-page complete testing & QA verification manual** |
+| `Documents/FEATURES.md` | Master list of all 15 features & specifications |
 
 ---
 

@@ -76,13 +76,19 @@ Here is context from the student's own uploaded course materials:
 Generate exactly {count} multiple-choice questions about this topic. 
 IMPORTANT: Base the questions and terminology primarily on the provided course material context. If the context is empty, use general knowledge.
 
-Format your response as a strict JSON array of objects. Do not include markdown fences like ```json.
-Each object must have exactly these keys:
-- "question": string
-- "options": array of exactly 4 strings
-- "correct_index": integer (0 to 3)
-- "explanation": string explaining why the answer is correct
-- "concept_tag": string (a specific sub-concept, e.g. "nested loops" or "variable scope")
+Format your response as a strict JSON object containing a single key "questions" which is an array of objects. Do not include markdown fences like ```json.
+The structure MUST be:
+{{
+  "questions": [
+    {{
+      "question": "string",
+      "options": ["string", "string", "string", "string"],
+      "correct_index": 0,
+      "explanation": "string explaining why the answer is correct",
+      "concept_tag": "string (a specific sub-concept, e.g. nested loops)"
+    }}
+  ]
+}}
 
 Make sure the questions match the requested difficulty.
 """

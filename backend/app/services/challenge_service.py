@@ -25,10 +25,9 @@ def generate_coding_challenge(
     level = profile.academic_level if profile else "Undergraduate"
     goal = profile.goal if profile else "Master core programming concepts"
     
-    # Identify user's weak sub-concepts for this topic
     weak_list = weak_concepts(db, user_id, topic_id=topic_id, limit=3)
-    if not weak_list and profile and profile.recent_mistake_tags:
-        weak_list = profile.recent_mistake_tags[:3]
+    if not weak_list:
+        weak_list = weak_concepts(db, user_id, limit=3)
     
     targeted_weakness = concept_focus or (", ".join(weak_list) if weak_list else f"boundary edge cases, off-by-one errors, and syntax traps in {topic.name}")
 
