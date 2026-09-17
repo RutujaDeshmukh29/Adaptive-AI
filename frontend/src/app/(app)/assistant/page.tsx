@@ -453,34 +453,38 @@ function AssistantContent() {
   });
 
   return (
-    <div className="space-y-6 pb-12 flex flex-col min-h-[calc(100vh-5rem)]">
-      {/* Top Header Strip (Matching Design Template) */}
+    <div className="flex flex-col lg:h-[calc(100vh-8rem)] min-h-[560px] space-y-3">
+      {/* Top Header Strip & Page Title (Streamlined Single Row) */}
       <ScrollReveal pop={false}>
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200/80 dark:border-slate-800 pb-4">
-          <div className="flex items-center gap-3 flex-wrap">
-            <span className="text-[11px] uppercase tracking-wider font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 px-2.5 py-1 rounded-lg border border-indigo-100 dark:border-indigo-900">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 border-b border-slate-200/80 dark:border-slate-800 pb-2.5">
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white mr-1">
+              AI Chat Assistant
+            </h1>
+            <span className="text-[10px] sm:text-[11px] uppercase tracking-wider font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 px-2 py-0.5 rounded-lg border border-indigo-100 dark:border-indigo-900">
               Course RAG
             </span>
-            <span className="text-slate-300 dark:text-slate-700">•</span>
-            <span className="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300">
+            <span className="text-slate-300 dark:text-slate-700 hidden sm:inline">•</span>
+            <span className="text-xs font-semibold text-slate-600 dark:text-slate-400 hidden sm:inline truncate max-w-xs">
               {currentTopicName}
             </span>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-slate-900 rounded-full border border-slate-200/80 dark:border-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 shadow-2xs">
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 px-2.5 py-1 bg-white dark:bg-slate-900 rounded-full border border-slate-200/80 dark:border-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 shadow-2xs">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span>Groq Llama-3.3 70B</span>
+              <span className="hidden xs:inline">Groq Llama-3.3 70B</span>
+              <span className="xs:hidden">70B</span>
             </div>
 
             <Button
               variant="outline"
               size="sm"
               onClick={handleClearChat}
-              className="h-8 text-xs gap-1.5 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+              className="h-7 text-xs gap-1.5 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
             >
-              <RefreshCw className="h-3.5 w-3.5" />
-              <span>Clear Chat</span>
+              <RefreshCw className="h-3 w-3" />
+              <span>Clear</span>
             </Button>
 
             {/* Hide / Unhide Right Rail Button */}
@@ -488,14 +492,14 @@ function AssistantContent() {
               variant="outline"
               size="sm"
               onClick={() => setRightPanelOpen(!rightPanelOpen)}
-              className={`h-8 text-xs gap-1.5 border transition-all ${
+              className={`h-7 text-xs gap-1.5 border transition-all ${
                 rightPanelOpen
                   ? "bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800 font-semibold"
                   : "border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400"
               }`}
               title={rightPanelOpen ? "Hide Knowledge Rail" : "Show Knowledge Rail"}
             >
-              {rightPanelOpen ? <PanelRightClose className="h-3.5 w-3.5" /> : <PanelRight className="h-3.5 w-3.5" />}
+              {rightPanelOpen ? <PanelRightClose className="h-3 w-3" /> : <PanelRight className="h-3 w-3" />}
               <span>{rightPanelOpen ? "Hide Rail" : "Knowledge Rail"}</span>
               {sessions.length > 0 && (
                 <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-indigo-100 dark:bg-indigo-900 font-mono">
@@ -503,20 +507,6 @@ function AssistantContent() {
                 </span>
               )}
             </Button>
-          </div>
-        </div>
-      </ScrollReveal>
-
-      {/* Page Title & Context */}
-      <ScrollReveal pop={false}>
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-              AI Chat Assistant
-            </h1>
-            <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm mt-0.5">
-              Directly grounded in your course notes, slides, and Caliber {caliberScore} curriculum.
-            </p>
           </div>
         </div>
       </ScrollReveal>
@@ -573,13 +563,13 @@ function AssistantContent() {
       </ScrollReveal>
 
       {/* Main Spacious Canvas Grid (8 Cols Wide Chat + 4 Cols Right Rail or Full 12 Cols when collapsed) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start flex-1">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-5 flex-1 min-h-0 items-stretch">
         {/* Primary Wide Chat Section */}
-        <section className={`flex flex-col bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-[0_2px_16px_rgba(15,23,42,0.02)] transition-all flex-1 min-h-[660px] overflow-hidden ${
+        <section className={`flex flex-col bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-[0_2px_16px_rgba(15,23,42,0.02)] transition-all flex-1 min-h-0 overflow-hidden ${
           rightPanelOpen ? "lg:col-span-8" : "lg:col-span-12"
         }`}>
           {/* Persona / Learning Modes Switcher Strip */}
-          <div className="px-5 py-2.5 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40 flex items-center justify-between gap-2 overflow-x-auto scrollbar-none">
+          <div className="px-4 py-2 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40 flex items-center justify-between gap-2 overflow-x-auto scrollbar-none shrink-0">
             <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none">
               <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 shrink-0 mr-1">Persona:</span>
               {LEARNING_MODES.map((mode) => {
@@ -611,7 +601,7 @@ function AssistantContent() {
           {/* Chat Stream (Airy, highly legible, spacious) */}
           <div 
             ref={scrollRef}
-            className="flex-1 p-6 lg:p-8 flex flex-col gap-6 overflow-y-auto max-h-[520px] min-h-[420px] relative scrollbar-thin"
+            className="flex-1 p-5 lg:p-6 flex flex-col gap-5 overflow-y-auto min-h-0 relative scrollbar-thin"
           >
             {loadingHistory && (
               <div className="absolute inset-0 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xs flex items-center justify-center z-10">
@@ -650,78 +640,81 @@ function AssistantContent() {
                         <span className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white">
                           Adapted Tutor
                         </span>
-                        <span className="text-[11px] text-slate-400">{msg.timestamp || "Just now"}</span>
-                        {msg.mode && (
-                          <Badge variant="outline" className="text-[10px] capitalize font-medium py-0 px-1.5 bg-slate-50 dark:bg-slate-800 text-slate-500 border-slate-200 dark:border-slate-700">
-                            {msg.mode}
-                          </Badge>
-                        )}
+                        <span className="text-[11px] text-slate-400 font-mono">
+                          {msg.timestamp || "Just now"}
+                        </span>
                       </div>
 
-                      <div className="flex items-center gap-1 text-slate-400">
+                      {/* Text-to-Speech Toggle */}
+                      {speechSupported && (
                         <button
                           type="button"
-                          onClick={() => handleCopy(msg.id, msg.content)}
-                          className="p-1 hover:text-slate-700 dark:hover:text-white transition-colors"
-                          title="Copy response"
+                          onClick={() => handleSpeak(msg.id, msg.content)}
+                          className={`p-1.5 rounded-lg text-xs transition-colors ${
+                            isSpeaking 
+                              ? "bg-indigo-50 text-indigo-600 dark:bg-indigo-950/80" 
+                              : "text-slate-400 hover:text-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800"
+                          }`}
+                          title={isSpeaking ? "Stop Speaking" : "Read aloud"}
                         >
-                          {isCopied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                          {isSpeaking ? <VolumeX className="w-3.5 h-3.5 text-indigo-600 animate-pulse" /> : <Volume2 className="w-3.5 h-3.5" />}
                         </button>
-                        {speechSupported && (
-                          <button
-                            type="button"
-                            onClick={() => handleSpeak(msg.id, msg.content)}
-                            className={`p-1 transition-colors ${
-                              isSpeaking ? "text-rose-600 animate-pulse" : "hover:text-slate-700 dark:hover:text-white"
-                            }`}
-                            title={isSpeaking ? "Stop speech" : "Read aloud (TTS)"}
-                          >
-                            {isSpeaking ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
-                          </button>
-                        )}
-                      </div>
+                      )}
                     </div>
 
-                    {/* Markdown Body */}
-                    <div className="prose prose-sm dark:prose-invert max-w-none break-words text-slate-800 dark:text-slate-200">
+                    {/* Markdown Rendered Content */}
+                    <div className="prose prose-slate dark:prose-invert max-w-none text-slate-800 dark:text-slate-200 text-sm sm:text-base leading-relaxed break-words">
                       <ReactMarkdown
                         components={{
                           code({ className, children, ...props }: any) {
-                            const match = /language-(\w+)/.exec(className || "");
-                            const lang = match ? match[1] : "";
-                            const rawCode = String(children).replace(/\n$/, "");
-                            
-                            if (lang === "mermaid") {
-                              return <MermaidViewer chart={rawCode} />;
-                            }
-                            
-                            const isMultiLine = rawCode.includes("\n");
-                            if (!isMultiLine && !match) {
+                            const match = /language-(\w+)/.exec(className || '');
+                            const isInline = !match && !String(children).includes('\n');
+                            const codeText = String(children).replace(/\n$/, '');
+
+                            if (!isInline && match && match[1] === 'mermaid') {
                               return (
-                                <code className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 font-mono text-[13px]" {...props}>
-                                  {children}
-                                </code>
+                                <div className="my-3 border border-slate-200/80 dark:border-slate-800 rounded-2xl overflow-hidden bg-slate-50/50 dark:bg-slate-900/50">
+                                  <div className="flex items-center justify-between px-3.5 py-1.5 bg-slate-100/70 dark:bg-slate-800/70 border-b border-slate-200/60 dark:border-slate-800 text-[11px] font-semibold text-slate-600 dark:text-slate-300">
+                                    <div className="flex items-center gap-1.5">
+                                      <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                      <span>Interactive Diagram (Mermaid.js)</span>
+                                    </div>
+                                    <button 
+                                      onClick={() => navigator.clipboard?.writeText(codeText)}
+                                      className="flex items-center gap-1 text-[11px] text-slate-500 hover:text-indigo-600"
+                                    >
+                                      <Copy className="w-3 h-3" />
+                                      <span>Copy Code</span>
+                                    </button>
+                                  </div>
+                                  <div className="p-4 bg-white dark:bg-slate-950 flex justify-center">
+                                    <MermaidViewer chart={codeText} />
+                                  </div>
+                                </div>
                               );
                             }
 
-                            return (
-                              <div className="my-3 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-slate-950 text-slate-100 font-mono text-xs">
-                                <div className="px-3.5 py-1.5 bg-slate-900 border-b border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
-                                  <span className="uppercase font-sans font-semibold">{lang || "code snippet"}</span>
+                            return !isInline ? (
+                              <div className="relative my-3 rounded-2xl overflow-hidden bg-slate-900 dark:bg-slate-950 text-slate-100 text-xs font-mono border border-slate-800">
+                                <div className="flex items-center justify-between px-4 py-1.5 bg-slate-800/80 text-slate-400 text-[11px]">
+                                  <span>{match ? match[1] : 'code'}</span>
                                   <button
                                     type="button"
-                                    onClick={() => navigator.clipboard?.writeText(rawCode)}
-                                    className="hover:text-white transition-colors"
+                                    onClick={() => handleCopy(msg.id, codeText)}
+                                    className="flex items-center gap-1 hover:text-white transition-colors"
                                   >
-                                    Copy
+                                    {isCopied ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                                    <span>{isCopied ? "Copied" : "Copy"}</span>
                                   </button>
                                 </div>
-                                <pre className="p-4 overflow-x-auto text-xs leading-relaxed">
-                                  <code className={className} {...props}>
-                                    {children}
-                                  </code>
+                                <pre className="p-4 overflow-x-auto leading-relaxed">
+                                  <code>{children}</code>
                                 </pre>
                               </div>
+                            ) : (
+                              <code className="bg-indigo-50/80 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 px-1.5 py-0.5 rounded-md font-mono text-[13px]" {...props}>
+                                {children}
+                              </code>
                             );
                           }
                         }}
@@ -730,13 +723,47 @@ function AssistantContent() {
                       </ReactMarkdown>
                     </div>
 
-                    {/* Grounding Reference Badge */}
+                    {/* Formula Pill Block */}
+                    {msg.content.includes("Attention(Q, K, V)") && (
+                      <div className="bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80 rounded-2xl p-3.5 flex flex-col gap-1.5 font-mono text-xs">
+                        <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 text-[11px] font-sans">
+                          <span className="uppercase tracking-wider font-bold text-[10px] text-indigo-600 dark:text-indigo-400">
+                            Canonical Formula
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => handleCopy(msg.id, "Attention(Q, K, V) = softmax((Q K^T) / sqrt(d_k)) * V")}
+                            className="flex items-center gap-1 hover:text-indigo-600 transition-colors"
+                          >
+                            {isCopied ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
+                            <span>{isCopied ? "Copied" : "Copy"}</span>
+                          </button>
+                        </div>
+                        <div className="text-indigo-600 dark:text-indigo-400 font-bold text-sm py-0.5">
+                          Attention(Q, K, V) = softmax((Q K^T) / √d_k) · V
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Grounding Source Citation Badges */}
                     {msg.sources && msg.sources.length > 0 && (
-                      <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 pt-1">
-                        <FileText className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 shrink-0" />
-                        <span>
-                          Grounded in: <strong className="font-semibold text-slate-700 dark:text-slate-300">{msg.sources[0].filename}</strong> (p. {msg.sources[0].page})
-                        </span>
+                      <div className="flex flex-wrap items-center gap-2 pt-1">
+                        {msg.sources.map((source, sIdx) => (
+                          <div
+                            key={sIdx}
+                            className="inline-flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800/80 px-2.5 py-1 rounded-xl border border-slate-200/60 dark:border-slate-700"
+                          >
+                            <FileText className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 shrink-0" />
+                            <span>
+                              Grounded in: <strong className="font-semibold text-slate-900 dark:text-white">{source.filename}</strong> (p. {source.page})
+                            </span>
+                            {source.similarity && (
+                              <span className="text-[10px] px-1.5 py-0.2 rounded bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-300 font-mono">
+                                {(source.similarity * 100).toFixed(0)}%
+                              </span>
+                            )}
+                          </div>
+                        ))}
                       </div>
                     )}
 
@@ -777,8 +804,8 @@ function AssistantContent() {
             )}
           </div>
 
-          {/* Sleek Docked Input Bar at Bottom (Matching Template) */}
-          <div className="p-4 lg:p-6 border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900">
+          {/* Sleek Docked Input Bar at Bottom */}
+          <div className="p-3 lg:p-4 border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shrink-0">
             {/* Active Voice Listening Banner */}
             {isListening && (
               <div className="mb-2 px-3.5 py-1.5 rounded-xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900 flex items-center justify-between text-xs text-rose-700 dark:text-rose-300 animate-pulse">
@@ -798,7 +825,7 @@ function AssistantContent() {
 
             <form 
               onSubmit={(e) => { e.preventDefault(); handleSend(); }}
-              className="bg-slate-50 dark:bg-slate-800/70 border border-slate-200/80 dark:border-slate-700 focus-within:border-indigo-500/80 focus-within:ring-2 focus-within:ring-indigo-500/10 rounded-2xl p-3 transition-all flex flex-col gap-2"
+              className="bg-slate-50 dark:bg-slate-800/70 border border-slate-200/80 dark:border-slate-700 focus-within:border-indigo-500/80 focus-within:ring-2 focus-within:ring-indigo-500/10 rounded-2xl p-2.5 transition-all flex flex-col gap-1.5"
             >
               <textarea
                 ref={textareaRef}
@@ -816,7 +843,7 @@ function AssistantContent() {
                 className="w-full bg-transparent border-none focus:outline-none text-slate-900 dark:text-white placeholder:text-slate-400 text-sm resize-none px-2 py-1 leading-relaxed"
               />
 
-              <div className="flex items-center justify-between pt-1 px-1">
+              <div className="flex items-center justify-between pt-0.5 px-1">
                 <div className="flex items-center gap-2">
                   {speechSupported && (
                     <button
@@ -834,7 +861,7 @@ function AssistantContent() {
                     </button>
                   )}
 
-                  <div className="h-4 w-px bg-slate-200 dark:bg-slate-700"></div>
+                  <div className="h-3.5 w-px bg-slate-200 dark:bg-slate-700"></div>
 
                   <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900 px-2.5 py-0.5 rounded-md border border-slate-200 dark:border-slate-700">
                     Caliber {caliberScore} Depth
@@ -846,7 +873,7 @@ function AssistantContent() {
                   <button
                     type="submit"
                     disabled={isLoading || !input.trim()}
-                    className="w-9 h-9 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white flex items-center justify-center transition-all shadow-xs cursor-pointer"
+                    className="w-8 h-8 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white flex items-center justify-center transition-all shadow-xs cursor-pointer"
                   >
                     <ArrowUp className="w-4 h-4 stroke-[2.5]" />
                   </button>
@@ -858,10 +885,10 @@ function AssistantContent() {
 
         {/* Streamlined Right Rail (Col 4) - Hideable / Unhideable */}
         {rightPanelOpen && (
-          <aside className="lg:col-span-4 flex flex-col gap-5 animate-in fade-in slide-in-from-right-2">
+          <aside className="lg:col-span-4 flex flex-col gap-3.5 h-full lg:overflow-y-auto scrollbar-thin pr-0.5 animate-in fade-in slide-in-from-right-2">
             {/* Section 0: Chat Stats & Counts in Short */}
-            <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs">
-              <div className="flex items-center justify-between mb-3">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4 shadow-xs shrink-0">
+              <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
                   Chat Session Stats
                 </span>
@@ -871,16 +898,16 @@ function AssistantContent() {
               </div>
 
               <div className="grid grid-cols-2 gap-2 text-xs">
-                <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
+                <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
                   <p className="text-[11px] text-slate-400">Saved Chats</p>
-                  <p className="text-lg font-bold text-slate-900 dark:text-white mt-0.5 font-mono">
+                  <p className="text-base font-bold text-slate-900 dark:text-white mt-0.5 font-mono">
                     {sessions.length}
                   </p>
                 </div>
 
-                <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
+                <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
                   <p className="text-[11px] text-slate-400">Messages Exchanged</p>
-                  <p className="text-lg font-bold text-slate-900 dark:text-white mt-0.5 font-mono">
+                  <p className="text-base font-bold text-slate-900 dark:text-white mt-0.5 font-mono">
                     {messages.length}
                   </p>
                 </div>
@@ -888,31 +915,31 @@ function AssistantContent() {
             </div>
 
             {/* Section 1: Referenced Sources (Clean & Minimal) */}
-            <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs">
-              <div className="flex items-center justify-between mb-3.5">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4 shadow-xs shrink-0">
+              <div className="flex items-center justify-between mb-2.5">
                 <div className="flex items-center gap-2">
                   <BookOpen className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
-                  <h2 className="text-sm font-bold text-slate-900 dark:text-white">Referenced Sources</h2>
+                  <h2 className="text-xs font-bold text-slate-900 dark:text-white">Referenced Sources</h2>
                 </div>
                 <span className="text-[11px] text-slate-500 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full font-medium">
                   {activeSources.length > 0 ? `${activeSources.length} Active` : "Indexed"}
                 </span>
               </div>
 
-              <div className="flex flex-col gap-2.5">
+              <div className="flex flex-col gap-2 max-h-[150px] overflow-y-auto scrollbar-thin pr-1">
                 {activeSources.length > 0 ? (
                   activeSources.map((source, idx) => (
                     <div
                       key={idx}
-                      className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer flex items-center justify-between group border border-slate-100 dark:border-slate-800"
+                      className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer flex items-center justify-between group border border-slate-100 dark:border-slate-800"
                     >
-                      <div className="flex items-center gap-2.5 min-w-0">
-                        <FileText className="h-4 w-4 text-indigo-600 dark:text-indigo-400 shrink-0" />
+                      <div className="flex items-center gap-2 min-w-0">
+                        <FileText className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400 shrink-0" />
                         <div className="flex flex-col min-w-0">
                           <span className="text-xs font-semibold text-slate-900 dark:text-slate-100 truncate group-hover:text-indigo-600">
                             {source.filename}
                           </span>
-                          <span className="text-[11px] text-slate-400">
+                          <span className="text-[10px] text-slate-400">
                             Page {source.page} • Grounded
                           </span>
                         </div>
@@ -922,25 +949,25 @@ function AssistantContent() {
                   ))
                 ) : (
                   <>
-                    <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 flex items-center justify-between">
-                      <div className="flex items-center gap-2.5 min-w-0">
-                        <FileText className="h-4 w-4 text-indigo-600 shrink-0" />
+                    <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <FileText className="h-3.5 w-3.5 text-indigo-600 shrink-0" />
                         <div className="flex flex-col min-w-0">
                           <span className="text-xs font-semibold text-slate-900 dark:text-slate-100 truncate">
                             Lecture 04 - Transformers.pdf
                           </span>
-                          <span className="text-[11px] text-slate-400">Page 12 • 84% relevance</span>
+                          <span className="text-[10px] text-slate-400">Page 12 • 84% relevance</span>
                         </div>
                       </div>
                     </div>
-                    <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 flex items-center justify-between">
-                      <div className="flex items-center gap-2.5 min-w-0">
-                        <FileText className="h-4 w-4 text-secondary shrink-0" />
+                    <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <FileText className="h-3.5 w-3.5 text-secondary shrink-0" />
                         <div className="flex flex-col min-w-0">
                           <span className="text-xs font-semibold text-slate-900 dark:text-slate-100 truncate">
                             CS224N_Attention_Notes.pdf
                           </span>
-                          <span className="text-[11px] text-slate-400">Page 4 • Referenced</span>
+                          <span className="text-[10px] text-slate-400">Page 4 • Referenced</span>
                         </div>
                       </div>
                     </div>
@@ -950,10 +977,10 @@ function AssistantContent() {
             </div>
 
             {/* Section 2: Suggested Inquiries (Quiet & Helpful) */}
-            <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs">
-              <div className="flex items-center gap-2 mb-3.5">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4 shadow-xs shrink-0">
+              <div className="flex items-center gap-2 mb-2.5">
                 <Lightbulb className="h-4 w-4 text-amber-500" />
-                <h2 className="text-sm font-bold text-slate-900 dark:text-white">Suggested Inquiries</h2>
+                <h2 className="text-xs font-bold text-slate-900 dark:text-white">Suggested Inquiries</h2>
               </div>
 
               <div className="flex flex-col gap-2">
@@ -965,9 +992,9 @@ function AssistantContent() {
                       setInput(prompt);
                       if (textareaRef.current) textareaRef.current.focus();
                     }}
-                    className="text-left p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-indigo-600 transition-all text-xs text-slate-700 dark:text-slate-300 leading-snug flex items-start gap-2.5 group border border-slate-100 dark:border-slate-800"
+                    className="text-left p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-indigo-600 transition-all text-xs text-slate-700 dark:text-slate-300 leading-snug flex items-start gap-2 group border border-slate-100 dark:border-slate-800"
                   >
-                    <Play className="h-3.5 w-3.5 text-indigo-600 shrink-0 mt-0.5 fill-indigo-600/20" />
+                    <Play className="h-3 w-3 text-indigo-600 shrink-0 mt-0.5 fill-indigo-600/20" />
                     <span>{prompt}</span>
                   </button>
                 ))}
@@ -978,9 +1005,9 @@ function AssistantContent() {
                     setInput("Please draw a clear Mermaid flowchart diagram explaining the attention mechanism forward pass.");
                     if (textareaRef.current) textareaRef.current.focus();
                   }}
-                  className="text-left p-3 rounded-2xl bg-emerald-50/60 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-950 text-emerald-900 dark:text-emerald-300 transition-all text-xs leading-snug flex items-start gap-2.5 group border border-emerald-200/60 dark:border-emerald-900 font-medium"
+                  className="text-left p-2.5 rounded-xl bg-emerald-50/60 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-950 text-emerald-900 dark:text-emerald-300 transition-all text-xs leading-snug flex items-start gap-2 group border border-emerald-200/60 dark:border-emerald-900 font-medium"
                 >
-                  <Network className="h-3.5 w-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                  <Network className="h-3 w-3 text-emerald-600 shrink-0 mt-0.5" />
                   <span>Generate Mermaid Architecture Diagram</span>
                 </button>
               </div>
