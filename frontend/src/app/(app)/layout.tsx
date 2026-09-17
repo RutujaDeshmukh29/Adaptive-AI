@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { isAuthenticated } from "@/lib";
+import Link from "next/link";
+import { isAuthenticated, fetchApi } from "@/lib";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Search, Clock, Bell, Sun, Moon } from "lucide-react";
 
@@ -10,6 +11,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [isDark, setIsDark] = useState(false);
+  const [userName, setUserName] = useState("Aarav Sharma");
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -26,6 +29,31 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     } else {
       document.documentElement.classList.remove("dark");
     }
+
+    function refreshProfile() {
+      const av = localStorage.getItem("user_avatar");
+      if (av) setAvatarUrl(av);
+      const name = localStorage.getItem("user_name");
+      if (name) setUserName(name);
+
+      fetchApi<any>("/api/profile")
+        .then((data) => {
+          if (data?.user?.name) {
+            setUserName(data.user.name);
+            localStorage.setItem("user_name", data.user.name);
+          }
+          const cloudAv = data?.preferences?.avatar_url || localStorage.getItem("user_avatar");
+          if (cloudAv) {
+            setAvatarUrl(cloudAv);
+            localStorage.setItem("user_avatar", cloudAv);
+          }
+        })
+        .catch(() => {});
+    }
+
+    refreshProfile();
+    window.addEventListener("profile-updated", refreshProfile);
+    return () => window.removeEventListener("profile-updated", refreshProfile);
   }, [router]);
 
   const toggleTheme = () => {
@@ -103,9 +131,23 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             </div>
 
             {/* User Avatar Circle */}
-            <div className="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-xs shadow-xs">
-              A
-            </div>
+            <Link
+              href="/profile"
+              className="relative group cursor-pointer focus:outline-none"
+              title="View & Edit Learner Profile"
+            >
+              {avatarUrl ? (
+                <img
+                  src={avatarUrl}
+                  alt={userName}
+                  className="w-8 h-8 rounded-full object-cover ring-2 ring-indigo-500/30 group-hover:ring-indigo-600 group-hover:scale-105 transition-all shadow-xs"
+                />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-xs shadow-xs group-hover:scale-105 transition-all">
+                  {userName.charAt(0) || "A"}
+                </div>
+              )}
+            </Link>
 
           </div>
 

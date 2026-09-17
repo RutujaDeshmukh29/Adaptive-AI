@@ -65,13 +65,34 @@ def update_user_profile(data: ProfileUpdateRequest, current_user: User = Depends
     if not profile:
         raise HTTPException(status_code=404, detail="Profile not found")
         
+    if data.name:
+        current_user.name = data.name.strip()
     if data.goal:
         profile.goal = data.goal
-    if data.study_time_minutes:
+    if data.study_time_minutes is not None:
         profile.study_time_minutes = data.study_time_minutes
     if data.experience_level:
         profile.experience_level = data.experience_level
+    if data.academic_level:
+        profile.academic_level = data.academic_level
+    if data.subject and data.subject != profile.subject:
+        profile.subject = data.subject
+        # Seed topic masteries for new subject if not yet seeded
+        existing_m = db.query(TopicMastery).join(Topic).filter(
+            TopicMastery.user_id == current_user.id,
+            Topic.subject == data.subject
+        ).first()
+        if not existing_m:
+            new_topics = db.query(Topic).filter(Topic.subject == data.subject).all()
+            for t in new_topics:
+                db.add(TopicMastery(user_id=current_user.id, topic_id=t.id, mastery_score=0.0, attempts=0))
+    if data.preferences is not None:
+        merged_prefs = dict(profile.preferences or {})
+        merged_prefs.update(data.preferences)
+        profile.preferences = merged_prefs
         
     db.commit()
+    db.refresh(current_user)
+    db.refresh(profile)
     
     return build_snapshot(db, current_user.id)

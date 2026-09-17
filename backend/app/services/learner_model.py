@@ -117,4 +117,5 @@ def build_snapshot(db: Session, user_id: int) -> LearnerSnapshot:
         streak_days=compute_streak(db, user_id),
         total_quizzes=db.query(QuizAttempt).filter(QuizAttempt.user_id == user_id).count(),
         materials_count=count_materials(db, user_id),
+        preferences=profile.preferences or {},
     )

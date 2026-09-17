@@ -33,11 +33,16 @@ class LearnerSnapshot(BaseModel):
     streak_days: int
     total_quizzes: int
     materials_count: int
+    preferences: Optional[Dict[str, Any]] = None
 
 class ProfileUpdateRequest(BaseModel):
+    name: Optional[str] = None
+    academic_level: Optional[str] = None
+    subject: Optional[str] = None
     goal: Optional[str] = None
     study_time_minutes: Optional[int] = None
     experience_level: Optional[str] = None
+    preferences: Optional[Dict[str, Any]] = None
 
 class OnboardingRequest(BaseModel):
     academic_level: str

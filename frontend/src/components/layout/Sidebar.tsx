@@ -15,21 +15,45 @@ export function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const [userName, setUserName] = useState("Aarav Sharma");
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [competency, setCompetency] = useState(84);
   const [level, setLevel] = useState("Level 4: Advanced Learner");
 
   useEffect(() => {
-    async function loadUserData() {
-      try {
-        const data = await fetchApi<any>("/api/profile");
-        if (data?.user?.name) setUserName(data.user.name);
-        if (data?.overall_mastery) setCompetency(Math.round(data.overall_mastery));
-        if (data?.academic_level) setLevel(data.academic_level);
-      } catch (err) {
-        // Fallback to defaults
-      }
+    function refreshUserData() {
+      const savedAvatar = localStorage.getItem("user_avatar");
+      if (savedAvatar) setAvatarUrl(savedAvatar);
+      const savedName = localStorage.getItem("user_name");
+      if (savedName) setUserName(savedName);
+      const savedDegree = localStorage.getItem("user_degree");
+      if (savedDegree) setLevel(savedDegree);
+
+      fetchApi<any>("/api/profile")
+        .then((data) => {
+          if (data?.user?.name) {
+            setUserName(data.user.name);
+            localStorage.setItem("user_name", data.user.name);
+          }
+          if (data?.overall_mastery !== undefined) {
+            setCompetency(Math.round(data.overall_mastery));
+          }
+          const av = data?.preferences?.avatar_url || localStorage.getItem("user_avatar");
+          if (av) {
+            setAvatarUrl(av);
+            localStorage.setItem("user_avatar", av);
+          }
+          const sub = data?.preferences?.degree_standard || data?.preferences?.stream || data?.academic_level;
+          if (sub) {
+            setLevel(sub);
+            localStorage.setItem("user_degree", sub);
+          }
+        })
+        .catch(() => {});
     }
-    loadUserData();
+
+    refreshUserData();
+    window.addEventListener("profile-updated", refreshUserData);
+    return () => window.removeEventListener("profile-updated", refreshUserData);
   }, []);
   
   const navItems = [
@@ -101,9 +125,17 @@ export function Sidebar() {
         <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800 flex flex-col gap-3">
           
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shrink-0">
-              {userName.charAt(0) || "A"}
-            </div>
+            {avatarUrl ? (
+              <img
+                src={avatarUrl}
+                alt={userName}
+                className="w-9 h-9 rounded-full object-cover shrink-0 ring-2 ring-indigo-500/20"
+              />
+            ) : (
+              <div className="w-9 h-9 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shrink-0">
+                {userName.charAt(0) || "A"}
+              </div>
+            )}
             <div className="flex flex-col min-w-0 flex-1">
               <span className="text-sm font-bold text-slate-900 dark:text-white truncate">{userName}</span>
               <span className="text-[11px] text-slate-500 dark:text-slate-400 truncate">{level}</span>
