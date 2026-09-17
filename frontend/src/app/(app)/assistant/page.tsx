@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { 
   Send, FileText, Loader2, Sparkles, Brain, 
   HelpCircle, Baby, GraduationCap, Code2, Briefcase, 
-  ArrowRight, Lightbulb, Network 
+  ArrowRight, Lightbulb, Network, Mic, MicOff, Volume2, VolumeX 
 } from "lucide-react";
 import { fetchApi } from "@/lib";
 import { ChatResponse, ChatSource, LearningMode } from "@/lib/types";
@@ -137,21 +137,76 @@ interface Message {
   learnerContext?: any;
 }
 
+function cleanMarkdownForSpeech(text: string): string {
+  return text
+    .replace(/```mermaid[\s\S]*?```/gi, " [diagram omitted] ")
+    .replace(/```[\s\S]*?```/gi, " [code snippet omitted] ")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/[*_~#>-]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 export default function AssistantPage() {
   const [selectedMode, setSelectedMode] = useState<LearningMode>("adaptive");
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "init",
       role: "assistant",
-      content: "Hello! I'm your adaptive AI tutor. Select any of the **6 Learning Modes** above to switch my teaching persona, or ask anything about your uploaded syllabus.",
+      content: "Hello! I'm your adaptive AI tutor. Select any of the **6 Learning Modes** above to switch my teaching persona, click the **microphone** to ask by voice, or ask for a **Mermaid diagram** of any topic!",
       mode: "adaptive"
     }
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [speechSupported, setSpeechSupported] = useState(false);
+  const [currentlySpeakingId, setCurrentlySpeakingId] = useState<string | null>(null);
+  
   const scrollRef = useRef<HTMLDivElement>(null);
+  const recognitionRef = useRef<any>(null);
 
   const activeModeConfig = LEARNING_MODES.find(m => m.id === selectedMode) || LEARNING_MODES[0];
+
+  // Initialize Speech Recognition & TTS cleanup
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        setSpeechSupported(true);
+        const recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = "en-US";
+
+        recognition.onresult = (event: any) => {
+          const transcript = event.results[0]?.[0]?.transcript;
+          if (transcript) {
+            setInput(prev => (prev ? `${prev} ${transcript}` : transcript));
+          }
+          setIsListening(false);
+        };
+
+        recognition.onerror = (err: any) => {
+          console.warn("Speech recognition error:", err);
+          setIsListening(false);
+        };
+
+        recognition.onend = () => {
+          setIsListening(false);
+        };
+
+        recognitionRef.current = recognition;
+      }
+    }
+
+    return () => {
+      if (typeof window !== "undefined" && window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -159,9 +214,69 @@ export default function AssistantPage() {
     }
   }, [messages, isLoading]);
 
+  const toggleListening = () => {
+    if (!speechSupported || !recognitionRef.current) {
+      alert("Voice input is not supported in this browser. Please use Google Chrome or Microsoft Edge.");
+      return;
+    }
+
+    if (isListening) {
+      try {
+        recognitionRef.current.stop();
+      } catch (e) {
+        console.warn("Stop speech error:", e);
+      }
+      setIsListening(false);
+    } else {
+      try {
+        recognitionRef.current.start();
+        setIsListening(true);
+      } catch (err) {
+        console.error("Failed to start speech recognition:", err);
+        setIsListening(false);
+      }
+    }
+  };
+
+  const handleSpeak = (msgId: string, content: string) => {
+    if (typeof window === "undefined" || !window.speechSynthesis) {
+      alert("Text-to-speech audio is not supported in this browser.");
+      return;
+    }
+
+    if (currentlySpeakingId === msgId) {
+      window.speechSynthesis.cancel();
+      setCurrentlySpeakingId(null);
+      return;
+    }
+
+    window.speechSynthesis.cancel();
+    const cleanText = cleanMarkdownForSpeech(content);
+    if (!cleanText) return;
+
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+
+    utterance.onend = () => {
+      setCurrentlySpeakingId(null);
+    };
+    utterance.onerror = () => {
+      setCurrentlySpeakingId(null);
+    };
+
+    setCurrentlySpeakingId(msgId);
+    window.speechSynthesis.speak(utterance);
+  };
+
   const handleSend = async (messageText?: string) => {
     const textToSend = (messageText || input).trim();
     if (!textToSend || isLoading) return;
+
+    if (isListening && recognitionRef.current) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    }
 
     const userMessage: Message = { 
       id: Date.now().toString(), 
@@ -217,11 +332,11 @@ export default function AssistantPage() {
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 flex items-center gap-2">
               Adaptive Tutor
               <Badge variant="outline" className="text-xs font-normal bg-primary/5 text-primary border-primary/20">
-                RAG + Local ChromaDB
+                Voice + Diagrams + RAG
               </Badge>
             </h1>
             <p className="mt-1 text-xs sm:text-sm text-slate-500">
-              Grounded in your uploaded course materials with 6 distinct pedagogical personas.
+              Grounded in your uploaded course materials with 6 distinct pedagogical personas and voice assistant.
             </p>
           </div>
         </div>
@@ -278,6 +393,7 @@ export default function AssistantPage() {
           {messages.map((msg) => {
             const messageMode = LEARNING_MODES.find(m => m.id === msg.mode) || activeModeConfig;
             const ModeIcon = messageMode.icon;
+            const isSpeaking = currentlySpeakingId === msg.id;
 
             return (
               <div key={msg.id} className={`flex gap-3 ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
@@ -356,6 +472,30 @@ export default function AssistantPage() {
                           {s.filename} (p. {s.page})
                         </Badge>
                       ))}
+
+                      {/* Voice TTS Listen/Stop button */}
+                      <button
+                        type="button"
+                        onClick={() => handleSpeak(msg.id, msg.content)}
+                        className={`text-[11px] px-2 py-0.5 rounded-md flex items-center gap-1 transition-colors border ${
+                          isSpeaking 
+                            ? "bg-rose-50 text-rose-700 border-rose-200 font-medium animate-pulse"
+                            : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
+                        }`}
+                        title={isSpeaking ? "Stop reading aloud" : "Read explanation aloud (TTS)"}
+                      >
+                        {isSpeaking ? (
+                          <>
+                            <VolumeX className="h-3 w-3 text-rose-600" />
+                            <span>Stop</span>
+                          </>
+                        ) : (
+                          <>
+                            <Volume2 className="h-3 w-3 text-slate-500" />
+                            <span>Listen</span>
+                          </>
+                        )}
+                      </button>
                     </div>
                   )}
                 </div>
@@ -381,6 +521,23 @@ export default function AssistantPage() {
         
         {/* Input Bar & Mode Prompts */}
         <div className="p-3 bg-white border-t border-slate-100">
+          {/* Active Voice Listening Banner */}
+          {isListening && (
+            <div className="mb-2 px-3 py-1.5 rounded-lg bg-rose-50 border border-rose-200 flex items-center justify-between text-xs text-rose-700 animate-pulse">
+              <div className="flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-rose-500 animate-ping" />
+                <span className="font-medium">Listening to your voice... Speak your question clearly!</span>
+              </div>
+              <button
+                type="button"
+                onClick={toggleListening}
+                className="text-xs font-semibold text-rose-800 underline hover:text-rose-950"
+              >
+                Cancel
+              </button>
+            </div>
+          )}
+
           {/* Starter Prompt Pills for Active Mode */}
           <div className="mb-2 flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
             <span className="text-[11px] text-slate-400 font-medium flex items-center gap-1 shrink-0">
@@ -414,8 +571,25 @@ export default function AssistantPage() {
             onSubmit={(e) => { e.preventDefault(); handleSend(); }}
             className="flex items-center gap-2"
           >
+            {speechSupported && (
+              <Button
+                type="button"
+                variant={isListening ? "destructive" : "outline"}
+                size="icon"
+                onClick={toggleListening}
+                disabled={isLoading}
+                className={`shrink-0 transition-all ${
+                  isListening 
+                    ? "animate-pulse ring-2 ring-rose-400 bg-rose-500 text-white" 
+                    : "text-slate-600 hover:text-primary hover:border-primary/40"
+                }`}
+                title={isListening ? "Listening... click to stop" : "Voice question (Speech-to-Text)"}
+              >
+                {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+              </Button>
+            )}
             <Input 
-              placeholder={`Ask in ${activeModeConfig.name} mode (grounded in your uploaded PDFs)...`}
+              placeholder={`Ask in ${activeModeConfig.name} mode (or click mic to speak)...`}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               disabled={isLoading}
