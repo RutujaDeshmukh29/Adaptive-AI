@@ -18,6 +18,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
 import { MermaidViewer } from "@/components/ui/mermaid-viewer";
 import Link from "next/link";
 
@@ -152,6 +155,21 @@ function cleanMarkdownForSpeech(text: string): string {
     .replace(/[*_~#>-]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+function preprocessMarkdown(text: string): string {
+  if (!text) return "";
+  let res = text;
+
+  // Convert raw display math notation like `[\text{...}]` or `\[...\]` into `$$...$$`
+  res = res.replace(/\\\[([\s\S]*?)\\\]/g, '\n\n$$$$1$$\n\n');
+  res = res.replace(/(^|\n)\[(\\text\{[\s\S]*?\])\]/g, '$1\n\n$$$2$$\n\n');
+  res = res.replace(/(^|\n)\[(\s*\\frac\{[\s\S]*?)\]/g, '$1\n\n$$$2$$\n\n');
+
+  // Fix single-line markdown tables where rows were stuck together
+  res = res.replace(/\|\s*\|\s*([^|\n]+)/g, '|\n| $1');
+
+  return res;
 }
 
 function AssistantContent() {
@@ -665,7 +683,142 @@ function AssistantContent() {
                     {/* Markdown Rendered Content */}
                     <div className="prose prose-slate dark:prose-invert max-w-none text-slate-800 dark:text-slate-200 text-sm sm:text-base leading-relaxed break-words">
                       <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
                         components={{
+                          table({ children }: any) {
+                            return (
+                              <div className="my-4 overflow-x-auto rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-2xs bg-white dark:bg-slate-900/80">
+                                <table className="w-full text-left border-collapse text-xs sm:text-sm">
+                                  {children}
+                                </table>
+                              </div>
+                            );
+                          },
+                          thead({ children }: any) {
+                            return (
+                              <thead className="bg-slate-100/80 dark:bg-slate-800/90 text-slate-900 dark:text-white font-bold border-b border-slate-200/80 dark:border-slate-700">
+                                {children}
+                              </thead>
+                            );
+                          },
+                          th({ children }: any) {
+                            return (
+                              <th className="px-4 py-2.5 font-bold text-slate-900 dark:text-slate-100 text-xs tracking-wide">
+                                {children}
+                              </th>
+                            );
+                          },
+                          td({ children }: any) {
+                            return (
+                              <td className="px-4 py-2.5 border-t border-slate-100 dark:border-slate-800/60 text-slate-700 dark:text-slate-300 text-xs sm:text-sm leading-relaxed">
+                                {children}
+                              </td>
+                            );
+                          },
+                          tr({ children }: any) {
+                            return (
+                              <tr className="hover:bg-indigo-50/30 dark:hover:bg-indigo-950/20 transition-colors">
+                                {children}
+                              </tr>
+                            );
+                          },
+                          h1({ children }: any) {
+                            return (
+                              <h1 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white mt-4 mb-2 pb-1 border-b border-slate-200/60 dark:border-slate-800">
+                                {children}
+                              </h1>
+                            );
+                          },
+                          h2({ children }: any) {
+                            return (
+                              <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mt-4 mb-2 flex items-center gap-2">
+                                <span className="w-1.5 h-4 rounded-full bg-indigo-600 inline-block"></span>
+                                <span>{children}</span>
+                              </h2>
+                            );
+                          },
+                          h3({ children }: any) {
+                            return (
+                              <h3 className="text-sm sm:text-base font-bold text-indigo-600 dark:text-indigo-400 mt-3 mb-1.5">
+                                {children}
+                              </h3>
+                            );
+                          },
+                          strong({ children }: any) {
+                            return (
+                              <strong className="font-bold text-slate-900 dark:text-white bg-indigo-50/80 dark:bg-indigo-950/60 px-1 py-0.5 rounded text-indigo-950 dark:text-indigo-200">
+                                {children}
+                              </strong>
+                            );
+                          },
+                          ul({ children }: any) {
+                            return (
+                              <ul className="list-disc pl-5 space-y-2 my-2 text-slate-800 dark:text-slate-200">
+                                {children}
+                              </ul>
+                            );
+                          },
+                          ol({ children }: any) {
+                            return (
+                              <ol className="list-decimal pl-5 space-y-2.5 my-2.5 text-slate-800 dark:text-slate-200 font-medium">
+                                {children}
+                              </ol>
+                            );
+                          },
+                          li({ children }: any) {
+                            return (
+                              <li className="text-sm sm:text-base leading-relaxed text-slate-800 dark:text-slate-200 font-normal">
+                                {children}
+                              </li>
+                            );
+                          },
+                          blockquote({ children }: any) {
+                            return (
+                              <blockquote className="border-l-4 border-indigo-500 bg-indigo-50/40 dark:bg-indigo-950/30 pl-4 pr-3 py-2 rounded-r-xl my-2 text-sm italic text-slate-700 dark:text-slate-300">
+                                {children}
+                              </blockquote>
+                            );
+                          },
+                          p({ children }: any) {
+                            if (typeof children === 'string') {
+                              const trimmed = children.trim();
+                              if (
+                                (trimmed.startsWith('$$') && trimmed.endsWith('$$')) ||
+                                (trimmed.startsWith('\\[') && trimmed.endsWith('\\]')) ||
+                                (trimmed.startsWith('[\\text{') && trimmed.endsWith(']'))
+                              ) {
+                                const mathStr = trimmed
+                                  .replace(/^\$\$/, '')
+                                  .replace(/\$\$$/, '')
+                                  .replace(/^\\\[/, '')
+                                  .replace(/\\\]$/, '')
+                                  .replace(/^\[/, '')
+                                  .replace(/\]$/, '')
+                                  .trim();
+                                try {
+                                  const html = katex.renderToString(mathStr, {
+                                    throwOnError: false,
+                                    displayMode: true,
+                                  });
+                                  return (
+                                    <div className="my-3 p-3.5 rounded-2xl bg-indigo-50/40 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/60 overflow-x-auto shadow-2xs">
+                                      <div
+                                        dangerouslySetInnerHTML={{ __html: html }}
+                                        className="text-slate-900 dark:text-white flex justify-center text-sm sm:text-base"
+                                      />
+                                    </div>
+                                  );
+                                } catch {
+                                  return <div className="font-mono text-xs my-2 text-indigo-600 dark:text-indigo-400">{trimmed}</div>;
+                                }
+                              }
+                            }
+                            return (
+                              <p className="text-slate-800 dark:text-slate-200 leading-relaxed text-sm sm:text-base my-2">
+                                {children}
+                              </p>
+                            );
+                          },
                           code({ className, children, ...props }: any) {
                             const match = /language-(\w+)/.exec(className || '');
                             const isInline = !match && !String(children).includes('\n');
@@ -719,7 +872,7 @@ function AssistantContent() {
                           }
                         }}
                       >
-                        {msg.content}
+                        {preprocessMarkdown(msg.content)}
                       </ReactMarkdown>
                     </div>
 

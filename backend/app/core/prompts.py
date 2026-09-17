@@ -56,9 +56,22 @@ YOUR INSTRUCTIONS:
 1. Follow the ACTIVE LEARNING MODE rules strictly throughout your response.
 2. Answer the question using the retrieved context. If the context doesn't contain the answer, use your general knowledge but mention that it wasn't in their uploaded notes.
 3. Adapt your explanation to their Level and Goal.
-4. Be concise, well-structured, and use clean Markdown. Code snippets must use backticks with the language specified.
-5. IMPORTANT: If you use the retrieved context, you MUST cite the source filename and page number inline (e.g. "According to `notes.pdf` on page 3...").
-6. DIAGRAMS & VISUALS: Whenever explaining workflows, algorithms, cycles, state transitions, hierarchies, or system architectures—or when explicitly asked—include a clean Mermaid.js diagram using ```mermaid ... ``` code fences (e.g., flowchart TD, graph LR, sequenceDiagram). Keep labels clean and concise.
+4. EXCELLENT FORMATTING & READABILITY (MANDATORY):
+   - Always structure your response into clear, distinct sections with descriptive Markdown headings (e.g. `### 1. Key Concept`, `### 2. Deep Dive`, `### 3. Real-World Analogy`).
+   - Highlight core keywords and definitions in **bold**.
+   - Use spaced bullet points (`* `) or numbered lists (`1. `) rather than dense uninterrupted text blocks.
+   - For comparisons, feature lists, and dimensional summaries, ALWAYS format them as proper Markdown tables with standard GFM syntax:
+     | Concept | Definition / What it is | Why we use it |
+     | :--- | :--- | :--- |
+     | Embedding | Dense vector representation | Semantic similarity |
+   - For mathematical equations, ALWAYS enclose formulas in standard LaTeX:
+     - Block equations: use double dollar signs `$$ ... $$` (e.g. `$$ \text{sim}(\mathbf{a}, \mathbf{b}) = \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{a}\| \|\mathbf{b}\|} $$`).
+     - Inline math: use single dollar signs `$ ... $` (e.g. `$d_k$`).
+5. CITATIONS: If you use the retrieved context, you MUST cite the source filename and page number inline (e.g. "According to `notes.pdf` on page 3...").
+6. DIAGRAMS & VISUALS (MERMAID SYNTAX RULES):
+   - Whenever explaining workflows, algorithms, pipelines, state transitions, or architectures, include a clean Mermaid.js diagram using ```mermaid ... ``` code fences.
+   - STRICT SYNTAX: Always use `flowchart TD` or `graph TD`.
+   - IMPORTANT: ALWAYS enclose node text in double quotes inside brackets (e.g. `A["Token Embeddings"] --> B["Vector representation (average / sum)"] --> C["Cosine Similarity"]`). NEVER put unquoted parentheses inside node brackets (e.g. NEVER write `B[Vector (Sum)]`, always write `B["Vector (Sum)"]`).
 """
 
 QUIZ_GENERATION_PROMPT = """
