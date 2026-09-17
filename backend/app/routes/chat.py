@@ -7,7 +7,7 @@ from app.schemas.chat import ChatMessageRequest, ChatResponse
 from app.services.learner_model import build_snapshot
 from app.services.rag_service import search
 from app.services.llm_service import generate_chat_response
-from app.core.prompts import ADAPTIVE_TUTOR_PROMPT
+from app.core.prompts import ADAPTIVE_TUTOR_PROMPT, LEARNING_MODES
 from app.services.adaptive_engine import next_best_action
 
 router = APIRouter(prefix="/api/chat", tags=["chat"])
@@ -15,6 +15,8 @@ router = APIRouter(prefix="/api/chat", tags=["chat"])
 @router.post("", response_model=ChatResponse)
 def send_message(req: ChatMessageRequest, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     question = req.message
+    selected_mode = (req.mode or "adaptive").lower()
+    mode_info = LEARNING_MODES.get(selected_mode, LEARNING_MODES["adaptive"])
     
     # 1. Build profile snapshot
     snapshot = build_snapshot(db, current_user.id)
@@ -32,6 +34,7 @@ def send_message(req: ChatMessageRequest, current_user: User = Depends(get_curre
         weaknesses=", ".join(snapshot.weaknesses) if snapshot.weaknesses else "None yet",
         recent_trend=snapshot.recent_trend,
         recent_mistakes=", ".join(snapshot.recent_mistake_tags) if snapshot.recent_mistake_tags else "None yet",
+        mode_instruction=mode_info["instruction"],
         question=question,
         rag_context=rag_text if rag_text else "No uploaded documents found."
     )
@@ -51,7 +54,9 @@ def send_message(req: ChatMessageRequest, current_user: User = Depends(get_curre
             "goal": snapshot.goal,
             "topic": snapshot.current_topic["name"] if snapshot.current_topic else None,
             "mastery": snapshot.overall_mastery,
-            "adaptation": "Tuned based on level and recent trend"
+            "mode": selected_mode,
+            "mode_name": mode_info["name"],
+            "adaptation": f"{mode_info['name']} mode · Tuned for {snapshot.academic_level}"
         },
         next_action=nba,
         message_id=1

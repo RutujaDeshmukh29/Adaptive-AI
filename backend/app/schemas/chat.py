@@ -3,6 +3,7 @@ from typing import List, Dict, Any, Optional
 
 class ChatMessageRequest(BaseModel):
     message: str
+    mode: Optional[str] = "adaptive"
     
 class ChatResponse(BaseModel):
     answer: str

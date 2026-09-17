@@ -119,6 +119,13 @@ export interface QuizSubmitResponse {
   next_action: NextAction;
 }
 
+export type LearningMode = "adaptive" | "socratic" | "eli5" | "exam" | "code" | "interview";
+
+export interface ChatMessageRequest {
+  message: string;
+  mode?: LearningMode;
+}
+
 export interface ChatSource {
   material_id: number;
   filename: string;
@@ -136,6 +143,8 @@ export interface ChatResponse {
     topic: string | null;
     mastery: number | null;
     adaptation: string;
+    mode?: LearningMode;
+    mode_name?: string;
   };
   next_action: NextAction;
   message_id: number;
