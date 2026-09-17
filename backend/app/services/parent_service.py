@@ -112,7 +112,7 @@ def generate_parent_report(db: Session, student_id: int) -> Dict[str, Any]:
     # Get recent quizzes
     recent_quizzes = (
         db.query(QuizAttempt)
-        .filter(QuizAttempt.user_id == student_id)
+        .filter(QuizAttempt.user_id == student_id, QuizAttempt.score != None)
         .order_by(desc(QuizAttempt.created_at))
         .limit(5)
         .all()
@@ -122,10 +122,10 @@ def generate_parent_report(db: Session, student_id: int) -> Dict[str, Any]:
     for q in recent_quizzes:
         quiz_history.append({
             "id": q.id,
-            "score": q.score,
+            "score": float(q.score) if q.score is not None else 0.0,
             "difficulty": q.difficulty,
-            "mastery_before": q.mastery_before,
-            "mastery_after": q.mastery_after,
+            "mastery_before": q.mastery_before or 0.0,
+            "mastery_after": q.mastery_after or 0.0,
             "date": q.created_at.strftime("%b %d, %Y") if q.created_at else "Recently"
         })
 

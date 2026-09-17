@@ -126,8 +126,11 @@ function PracticeContent() {
         }
 
         const report = await fetchApi<any>("/api/parent/report");
-        if (report?.quiz_history && report.quiz_history.length > 0) {
-          setRecentSessions(report.quiz_history.slice(0, 4));
+        if (report?.quiz_history && Array.isArray(report.quiz_history)) {
+          const valid = report.quiz_history
+            .filter((h: any) => h && h.score !== null && h.score !== undefined)
+            .slice(0, 4);
+          setRecentSessions(valid);
         }
       } catch (err) {
         console.warn("Failed to load user stats for practice:", err);
@@ -188,8 +191,11 @@ function PracticeContent() {
       // Refresh recent sessions after submission
       try {
         const report = await fetchApi<any>("/api/parent/report");
-        if (report?.quiz_history) {
-          setRecentSessions(report.quiz_history.slice(0, 4));
+        if (report?.quiz_history && Array.isArray(report.quiz_history)) {
+          const valid = report.quiz_history
+            .filter((h: any) => h && h.score !== null && h.score !== undefined)
+            .slice(0, 4);
+          setRecentSessions(valid);
         }
       } catch {}
     } catch (err: any) {
@@ -816,9 +822,9 @@ function PracticeContent() {
                           <p className="truncate font-medium">{t.name}</p>
                           <span className="text-[10px] text-slate-400 capitalize">{t.status?.replace("_", " ") || "Available"}</span>
                         </div>
-                        {t.mastery !== undefined && (
+                        {t.mastery !== undefined && t.mastery !== null && (
                           <Badge variant="secondary" className="text-[10px] font-mono shrink-0">
-                            {t.mastery.toFixed(0)}%
+                            {Number(t.mastery).toFixed(0)}%
                           </Badge>
                         )}
                       </button>
@@ -937,9 +943,15 @@ function PracticeContent() {
                       </p>
                     </div>
                     <span className={`text-xs sm:text-sm font-bold ${
-                      session.score >= 80 ? "text-emerald-600 dark:text-emerald-400" : session.score >= 60 ? "text-amber-600 dark:text-amber-400" : "text-rose-600 dark:text-rose-400"
+                      (session.score ?? 0) >= 80 
+                        ? "text-emerald-600 dark:text-emerald-400" 
+                        : (session.score ?? 0) >= 60 
+                        ? "text-amber-600 dark:text-amber-400" 
+                        : "text-rose-600 dark:text-rose-400"
                     }`}>
-                      {session.score.toFixed(0)}%
+                      {session.score !== null && session.score !== undefined 
+                        ? `${Number(session.score).toFixed(0)}%` 
+                        : "Completed"}
                     </span>
                   </div>
                 ))

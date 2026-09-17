@@ -801,9 +801,9 @@ function ChallengesContent() {
                           <p className="truncate font-medium">{t.name}</p>
                           <span className="text-[10px] text-slate-400 capitalize">{t.status?.replace("_", " ") || "Available"}</span>
                         </div>
-                        {t.mastery !== undefined && (
+                        {t.mastery !== undefined && t.mastery !== null && (
                           <Badge variant="secondary" className="text-[10px] shrink-0 font-mono">
-                            {t.mastery.toFixed(0)}%
+                            {Number(t.mastery).toFixed(0)}%
                           </Badge>
                         )}
                       </button>
