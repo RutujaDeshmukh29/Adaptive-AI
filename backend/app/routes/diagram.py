@@ -52,3 +52,45 @@ def generate_diagram(
     except Exception as e:
         logger.error(f"Diagram generation error: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to generate diagram.")
+
+class DiagramExportRequest(BaseModel):
+    svg: str
+    format: str = "png"
+    is_dark: bool = False
+
+@router.post("/export")
+def export_diagram(
+    req: DiagramExportRequest,
+    current_user: User = Depends(get_current_user)
+):
+    try:
+        from fastapi.responses import Response
+        import pymupdf
+
+        fmt = req.format.lower().strip()
+        if fmt in ["jpg", "jpeg"]:
+            target_fmt = "jpeg"
+            media_type = "image/jpeg"
+            ext = "jpg"
+        else:
+            target_fmt = "png"
+            media_type = "image/png"
+            ext = "png"
+
+        # Open and render the SVG in-memory with PyMuPDF
+        doc = pymupdf.open(stream=req.svg.encode("utf-8"), filetype="svg")
+        page = doc[0]
+        # Crisp 2x Retina equivalent (192 DPI)
+        pix = page.get_pixmap(dpi=192)
+        img_bytes = pix.tobytes(target_fmt)
+
+        return Response(
+            content=img_bytes,
+            media_type=media_type,
+            headers={
+                "Content-Disposition": f'attachment; filename="adapted-ai-diagram.{ext}"'
+            }
+        )
+    except Exception as e:
+        logger.error(f"Diagram export error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to export diagram: {str(e)}")
