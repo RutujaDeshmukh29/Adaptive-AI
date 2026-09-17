@@ -4,10 +4,14 @@ import { useState, useRef, useEffect } from "react";
 import { 
   Send, FileText, Loader2, Sparkles, Brain, 
   HelpCircle, Baby, GraduationCap, Code2, Briefcase, 
-  ArrowRight, Lightbulb, Network, Mic, MicOff, Volume2, VolumeX 
+  ArrowRight, Lightbulb, Network, Mic, MicOff, Volume2, VolumeX,
+  History, Plus, Trash2, PanelLeft, PanelLeftClose, Clock, MessageSquare
 } from "lucide-react";
 import { fetchApi } from "@/lib";
-import { ChatResponse, ChatSource, LearningMode } from "@/lib/types";
+import { 
+  ChatResponse, ChatSource, LearningMode, 
+  ChatSessionSummary, ChatSessionsResponse, ChatHistoryResponse 
+} from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar } from "@/components/ui/avatar";
@@ -150,6 +154,11 @@ function cleanMarkdownForSpeech(text: string): string {
 
 export default function AssistantPage() {
   const [selectedMode, setSelectedMode] = useState<LearningMode>("adaptive");
+  const [sessionId, setSessionId] = useState<string>(() => `sess_${Date.now()}`);
+  const [sessions, setSessions] = useState<ChatSessionSummary[]>([]);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [loadingSessions, setLoadingSessions] = useState(false);
+  const [loadingHistory, setLoadingHistory] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "init",
@@ -168,6 +177,76 @@ export default function AssistantPage() {
   const recognitionRef = useRef<any>(null);
 
   const activeModeConfig = LEARNING_MODES.find(m => m.id === selectedMode) || LEARNING_MODES[0];
+
+  // Fetch session history list
+  const loadSessions = async () => {
+    try {
+      setLoadingSessions(true);
+      const res = await fetchApi<ChatSessionsResponse>("/api/chat/sessions");
+      if (res && res.sessions) {
+        setSessions(res.sessions);
+      }
+    } catch (e) {
+      console.warn("Failed to load chat sessions:", e);
+    } finally {
+      setLoadingSessions(false);
+    }
+  };
+
+  useEffect(() => {
+    loadSessions();
+  }, []);
+
+  const selectSession = async (targetSessionId: string) => {
+    if (loadingHistory || targetSessionId === sessionId) return;
+    try {
+      setLoadingHistory(true);
+      const res = await fetchApi<ChatHistoryResponse>(`/api/chat/history?session_id=${encodeURIComponent(targetSessionId)}`);
+      if (res && res.messages && res.messages.length > 0) {
+        setMessages(res.messages.map(m => ({
+          id: m.id.toString(),
+          role: m.role,
+          content: m.content,
+          sources: m.sources,
+          mode: selectedMode
+        })));
+        setSessionId(targetSessionId);
+      }
+    } catch (e) {
+      console.error("Failed to load session history:", e);
+    } finally {
+      setLoadingHistory(false);
+    }
+  };
+
+  const handleNewChat = () => {
+    const newId = `sess_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+    setSessionId(newId);
+    setMessages([
+      {
+        id: "init",
+        role: "assistant",
+        content: "Hello! I'm your adaptive AI tutor. Select any of the **6 Learning Modes** above to switch my teaching persona, click the **microphone** to ask by voice, or ask for a **Mermaid diagram** of any topic!",
+        mode: selectedMode
+      }
+    ]);
+  };
+
+  const handleDeleteSession = async (e: React.MouseEvent, targetSessionId: string) => {
+    e.stopPropagation();
+    if (!confirm("Are you sure you want to delete this chat session?")) return;
+    try {
+      await fetchApi(`/api/chat/clear?session_id=${encodeURIComponent(targetSessionId)}`, {
+        method: "DELETE"
+      });
+      setSessions(prev => prev.filter(s => s.session_id !== targetSessionId));
+      if (sessionId === targetSessionId) {
+        handleNewChat();
+      }
+    } catch (err) {
+      console.error("Failed to delete session:", err);
+    }
+  };
 
   // Initialize Speech Recognition & TTS cleanup
   useEffect(() => {
@@ -294,7 +373,8 @@ export default function AssistantPage() {
         method: "POST",
         body: JSON.stringify({ 
           message: userMessage.content,
-          mode: selectedMode 
+          mode: selectedMode,
+          session_id: sessionId
         }),
       });
 
@@ -308,6 +388,10 @@ export default function AssistantPage() {
       };
       
       setMessages(prev => [...prev, assistantMessage]);
+      if (data.session_id) {
+        setSessionId(data.session_id);
+      }
+      loadSessions();
     } catch (err: any) {
       setMessages(prev => [
         ...prev, 
@@ -338,6 +422,35 @@ export default function AssistantPage() {
             <p className="mt-1 text-xs sm:text-sm text-slate-500">
               Grounded in your uploaded course materials with 6 distinct pedagogical personas and voice assistant.
             </p>
+          </div>
+
+          <div className="flex items-center gap-2 self-start sm:self-auto">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setSidebarOpen(prev => !prev)}
+              className="text-xs gap-1.5 h-8 border-slate-200 text-slate-700 hover:bg-slate-100"
+              title={sidebarOpen ? "Hide session history" : "Show session history"}
+            >
+              {sidebarOpen ? <PanelLeftClose className="h-3.5 w-3.5" /> : <PanelLeft className="h-3.5 w-3.5" />}
+              <span>{sidebarOpen ? "Hide History" : "History"}</span>
+              {sessions.length > 0 && (
+                <Badge variant="secondary" className="px-1.5 py-0 text-[10px] h-4 bg-slate-100 font-mono">
+                  {sessions.length}
+                </Badge>
+              )}
+            </Button>
+            <Button
+              type="button"
+              variant="default"
+              size="sm"
+              onClick={handleNewChat}
+              className="text-xs gap-1.5 h-8"
+            >
+              <Plus className="h-3.5 w-3.5" />
+              <span>New Chat</span>
+            </Button>
           </div>
         </div>
 
@@ -384,12 +497,95 @@ export default function AssistantPage() {
         </div>
       </div>
       
-      {/* Chat Container */}
-      <Card className="flex flex-col flex-1 overflow-hidden shadow-sm border-slate-200">
-        <div 
-          ref={scrollRef}
-          className="flex-1 p-4 overflow-y-auto space-y-5"
-        >
+      {/* Chat Container with Sidebar */}
+      <Card className="flex flex-1 overflow-hidden shadow-sm border-slate-200 relative">
+        {/* Session History Sidebar */}
+        {sidebarOpen && (
+          <aside className="w-64 sm:w-72 border-r border-slate-200 bg-slate-50/75 flex flex-col shrink-0">
+            <div className="p-3 border-b border-slate-200/80 flex items-center justify-between bg-slate-50">
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-700">
+                <History className="h-3.5 w-3.5 text-primary" />
+                <span>Conversations</span>
+              </div>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={handleNewChat}
+                className="h-6 px-1.5 text-[11px] gap-1 hover:bg-white text-slate-600"
+              >
+                <Plus className="h-3 w-3 text-primary" />
+                <span>New</span>
+              </Button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-2 space-y-1.5 scrollbar-thin">
+              {loadingSessions ? (
+                <div className="p-4 text-center text-xs text-slate-400 flex items-center justify-center gap-2">
+                  <Loader2 className="h-3.5 w-3.5 animate-spin text-primary" />
+                  <span>Loading history...</span>
+                </div>
+              ) : sessions.length === 0 ? (
+                <div className="p-4 text-center text-xs text-slate-400">
+                  <MessageSquare className="h-6 w-6 mx-auto mb-1.5 opacity-30 text-slate-400" />
+                  <span>No saved chats yet. Send a message to start!</span>
+                </div>
+              ) : (
+                sessions.map((s) => {
+                  const isActive = s.session_id === sessionId;
+                  return (
+                    <div
+                      key={s.session_id}
+                      onClick={() => selectSession(s.session_id)}
+                      className={`group relative p-2.5 rounded-lg text-xs cursor-pointer transition-all border ${
+                        isActive
+                          ? "bg-white border-primary/40 shadow-xs text-slate-900 font-medium"
+                          : "border-transparent hover:bg-slate-100/80 text-slate-600 hover:text-slate-900"
+                      }`}
+                    >
+                      <div className="flex items-start justify-between gap-1">
+                        <p className="line-clamp-2 leading-snug break-words pr-2">
+                          {s.title || "Conversation"}
+                        </p>
+                        <button
+                          type="button"
+                          onClick={(e) => handleDeleteSession(e, s.session_id)}
+                          className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-rose-600 p-0.5 rounded transition-opacity shrink-0"
+                          title="Delete session"
+                        >
+                          <Trash2 className="h-3 w-3" />
+                        </button>
+                      </div>
+                      <div className="mt-1.5 flex items-center justify-between text-[10px] text-slate-400">
+                        <span className="flex items-center gap-1">
+                          <Clock className="h-2.5 w-2.5" />
+                          {s.last_active}
+                        </span>
+                        <span className="bg-slate-100 group-hover:bg-white px-1.5 py-0.2 rounded border border-slate-200/50 font-mono">
+                          {s.message_count} msgs
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          </aside>
+        )}
+
+        {/* Main Chat Area */}
+        <div className="flex flex-col flex-1 min-w-0 bg-white">
+          <div 
+            ref={scrollRef}
+            className="flex-1 p-4 overflow-y-auto space-y-5 relative"
+          >
+            {loadingHistory && (
+              <div className="absolute inset-0 bg-white/70 backdrop-blur-xs flex items-center justify-center z-10">
+                <div className="flex items-center gap-2 text-xs font-medium text-slate-600 bg-white px-3 py-2 rounded-lg shadow-sm border border-slate-200">
+                  <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                  <span>Loading conversation...</span>
+                </div>
+              </div>
+            )}
           {messages.map((msg) => {
             const messageMode = LEARNING_MODES.find(m => m.id === msg.mode) || activeModeConfig;
             const ModeIcon = messageMode.icon;
@@ -600,6 +796,7 @@ export default function AssistantPage() {
               <span className="hidden sm:inline">Send</span>
             </Button>
           </form>
+        </div>
         </div>
       </Card>
     </div>

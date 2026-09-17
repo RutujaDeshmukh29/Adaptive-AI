@@ -130,6 +130,7 @@ export type LearningMode = "adaptive" | "socratic" | "eli5" | "exam" | "code" | 
 export interface ChatMessageRequest {
   message: string;
   mode?: LearningMode;
+  session_id?: string;
 }
 
 export interface ChatSource {
@@ -154,6 +155,31 @@ export interface ChatResponse {
   };
   next_action: NextAction;
   message_id: number;
+  session_id?: string;
+}
+
+export interface ChatSessionSummary {
+  session_id: string;
+  title: string;
+  last_active: string;
+  message_count: number;
+}
+
+export interface ChatSessionsResponse {
+  sessions: ChatSessionSummary[];
+}
+
+export interface ChatHistoryMessage {
+  id: number;
+  role: "user" | "assistant";
+  content: string;
+  sources?: ChatSource[];
+  session_id?: string;
+  created_at?: string;
+}
+
+export interface ChatHistoryResponse {
+  messages: ChatHistoryMessage[];
 }
 
 export interface PathItem {
