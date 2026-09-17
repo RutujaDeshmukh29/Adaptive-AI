@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    @layer base { 
+      html, body { margin: 0; padding: 0; } 
+      body { overscroll-behavior: none; } 
+    } 
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #dce9ff; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #b4c5ff; }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-surface": "#213145",
+            "inverse-primary": "#c3c0ff",
+            "on-tertiary-fixed-variant": "#5516be",
+            "surface-dim": "#cbdbf5",
+            "background": "#f8f9ff",
+            "primary-fixed": "#e2dfff",
+            "on-background": "#0b1c30",
+            "on-secondary-container": "#fefcff",
+            "on-error-container": "#93000a",
+            "on-tertiary-container": "#e3d5ff",
+            "tertiary-fixed-dim": "#d0bcff",
+            "on-secondary-fixed": "#00174b",
+            "on-error": "#ffffff",
+            "surface-container": "#e5eeff",
+            "secondary-container": "#316bf3",
+            "on-secondary-fixed-variant": "#003ea8",
+            "tertiary-fixed": "#e9ddff",
+            "surface-container-high": "#dce9ff",
+            "tertiary-container": "#6f3dd9",
+            "error-container": "#ffdad6",
+            "error": "#ba1a1a",
+            "secondary-fixed": "#dbe1ff",
+            "secondary-fixed-dim": "#b4c5ff",
+            "inverse-on-surface": "#eaf1ff",
+            "surface-container-lowest": "#ffffff",
+            "tertiary": "#571ac0",
+            "surface-variant": "#d3e4fe",
+            "primary-fixed-dim": "#c3c0ff",
+            "on-surface-variant": "#464555",
+            "surface-tint": "#4d44e3",
+            "on-primary-container": "#dad7ff",
+            "primary": "#3525cd",
+            "on-tertiary-fixed": "#23005c",
+            "surface-container-low": "#eff4ff",
+            "on-secondary": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "outline-variant": "#c7c4d8",
+            "on-surface": "#0b1c30",
+            "secondary": "#0051d5",
+            "surface-container-highest": "#d3e4fe",
+            "on-primary": "#ffffff",
+            "on-primary-fixed": "#0f0069",
+            "surface-bright": "#f8f9ff",
+            "outline": "#777587",
+            "on-primary-fixed-variant": "#3323cc",
+            "primary-container": "#4f46e5",
+            "surface": "#f8f9ff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "3xl": "1.5rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2rem",
+            "margin": "2rem",
+            "margin-lg": "3rem"
+          },
+          "fontFamily": {
+            "sans": ["Inter", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-[#f8f9ff] font-sans text-on-surface antialiased flex min-h-screen">
+<!-- Minimal Desktop Sidebar Matching Minimal Learning Path & Practice -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-lowest z-50 flex flex-col justify-between border-r border-surface-container-high/60 shadow-[0_1px_6px_rgba(0,0,0,0.02)]">
+<div class="flex flex-col p-space-md">
+<!-- Logo & Brand -->
+<div class="flex items-center gap-2.5 pb-space-lg px-space-xs pt-1">
+<img alt="Adapted AI Logo" class="h-7 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAU8D6Az0lPo07wlAui5OPd2vHbKmaRirvW7DfxQJxCOcrv9JkA5jKvAMBwed8bvlowG7tQWex3faYjA0Babe1kosGkNrvSi8ut-ZkcMFKTeQH2yHQNIcRrschW2wpPa7YP4_1KDHVcSmdxBmSTml9N5ChRi6olI43OXk8ezy6L3_EFCQKOheYxK8MxBBtavf6jsZuSFdcczbervrrpn5gQi6ll7bBeUy7Eb8utboqvSFspFSSDMSZVw"/>
+<div class="flex flex-col leading-tight">
+<div class="flex items-center gap-1.5">
+<span class="text-[15px] font-bold text-on-surface tracking-tight">Adapted AI</span>
+</div>
+<span class="text-[11px] text-on-surface-variant">by SkillMatix</span>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex flex-col gap-1.5">
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all text-sm font-medium" data-path="dashboard" href="#">
+<span class="material-symbols-outlined text-[20px]">space_dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all text-sm font-medium" data-path="dynamic-learner-profile" href="#">
+<span class="material-symbols-outlined text-[20px]">person_outline</span>
+<span>Learner Profile</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all text-sm font-medium" data-path="adaptive-practice" href="#">
+<span class="material-symbols-outlined text-[20px]">model_training</span>
+<span>Adaptive Practice</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all text-sm font-medium" data-path="learning-path" href="#">
+<span class="material-symbols-outlined text-[20px]">alt_route</span>
+<span>Learning Path</span>
+</a>
+<!-- Active Nav Item -->
+<a aria-current="page" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-primary-container text-white font-semibold shadow-sm transition-all text-sm" data-path="ai-chat-assistant" href="#">
+<span class="material-symbols-outlined text-[20px]">smart_toy</span>
+<span>AI Assistant</span>
+</a>
+</nav>
+</div>
+<!-- Clean Bottom User Profile Pill (Noisy continuous loop removed) -->
+<div class="p-space-md border-t border-surface-container/60">
+<div class="p-3 rounded-xl bg-surface-container-low/70 flex items-center justify-between">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-8 h-8 rounded-full bg-primary-container text-white flex items-center justify-center font-bold text-xs shrink-0">
+            AS
+          </div>
+<div class="flex flex-col min-w-0">
+<span class="text-xs font-semibold text-on-surface truncate">Aarav Sharma</span>
+<span class="text-[11px] text-on-surface-variant truncate">Level 4 Learner</span>
+</div>
+</div>
+<a class="text-on-surface-variant hover:text-error transition-colors p-1" data-path="login" href="#" title="Log out">
+<span class="material-symbols-outlined text-[18px]">logout</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Container with Left Offset for Sidebar -->
+<div class="pl-64 flex-1 flex flex-col min-h-screen">
+<!-- Clean Minimalist Header -->
+<header class="h-16 bg-surface-container-lowest/80 backdrop-blur-md border-b border-surface-container/60 sticky top-0 z-40 px-space-xl flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="text-xs uppercase tracking-wider font-semibold text-primary bg-primary-fixed/40 px-2 py-0.5 rounded-md">Course RAG</span>
+<span class="text-on-surface-variant/40">•</span>
+<span class="text-xs font-medium text-on-surface-variant">Module 4: Transformers &amp; Attention</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-1.5 px-3 py-1 bg-surface-container-low rounded-full text-xs font-medium text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<span>Gemini 1.5 Pro</span>
+</div>
+<button class="flex items-center gap-1.5 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low px-3 py-1.5 rounded-lg text-xs font-medium transition-colors" id="clearChatBtn">
+<span class="material-symbols-outlined text-[16px]">restart_alt</span>
+<span>Clear Chat</span>
+</button>
+</div>
+</header>
+<!-- Content Workspace -->
+<main class="flex-1 flex flex-col max-w-7xl w-full mx-auto p-space-lg lg:p-space-xl">
+<!-- Page Title Strip -->
+<div class="mb-6 flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
+<div>
+<h1 class="text-2xl font-bold text-on-surface tracking-tight">AI Chat Assistant</h1>
+<p class="text-sm text-on-surface-variant mt-0.5">Directly grounded in your course notes, slides, and Caliber 3.2 curriculum.</p>
+</div>
+</div>
+<!-- Spacious Two-Column Layout: Wide Airy Chat (Primary) + Streamlined Utility Rail (Secondary) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start flex-1">
+<!-- Wide Chat Canvas (Col 8) -->
+<section class="lg:col-span-8 flex flex-col bg-surface-container-lowest rounded-2xl border border-surface-container-high/60 shadow-[0_2px_12px_rgba(0,0,0,0.02)] min-h-[640px]">
+<!-- Chat Conversation Scroll Area -->
+<div class="flex-1 p-6 lg:p-8 flex flex-col gap-6 overflow-y-auto max-h-[580px]" id="chatStream">
+<!-- User Message (Clean & Elegant) -->
+<div class="flex justify-end w-full">
+<div class="max-w-xl bg-primary-container text-white px-5 py-3.5 rounded-2xl rounded-tr-xs shadow-xs text-[14px] leading-relaxed">
+                Can you explain why scaled dot-product attention divides by the square root of <span class="font-mono bg-white/20 px-1 py-0.5 rounded text-[13px]">d_k</span>, and how that relates to softmax gradients?
+              </div>
+</div>
+<!-- AI Response (Airy, highly legible, calm layout) -->
+<div class="flex items-start gap-4 max-w-2xl w-full">
+<div class="w-8 h-8 rounded-full bg-primary-fixed text-primary flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">
+<span class="material-symbols-outlined text-[18px]">neurology</span>
+</div>
+<div class="flex flex-col gap-3.5 text-on-surface text-[14px] leading-relaxed flex-1">
+<div class="flex items-center gap-2">
+<span class="font-semibold text-xs text-on-surface">Adapted Tutor</span>
+<span class="text-[11px] text-on-surface-variant">10:25 AM</span>
+</div>
+<p class="text-on-surface/90">
+                  When the key vector dimension <code class="bg-surface-container px-1.5 py-0.5 rounded text-primary font-mono text-[12.5px]">d_k</code> is large, the magnitude of the dot products grows substantially. Larger values push the standard softmax function into regions where gradients are extremely tiny (vanishing gradient problem), slowing or stalling training.
+                </p>
+<p class="text-on-surface/90">
+                  Assuming independent components with zero mean and unit variance, their dot product has mean 0 and variance <code class="bg-surface-container px-1.5 py-0.5 rounded text-primary font-mono text-[12.5px]">d_k</code>. Dividing by <code class="bg-surface-container px-1.5 py-0.5 rounded text-primary font-mono text-[12.5px]">√d_k</code> scales the variance strictly back to 1.
+                </p>
+<!-- Subtle Clean Formula Block -->
+<div class="bg-surface-container-low border border-surface-container rounded-xl p-3.5 flex flex-col gap-1.5 font-mono text-xs text-on-surface">
+<div class="flex items-center justify-between text-on-surface-variant text-[11px]">
+<span class="font-sans uppercase tracking-wider font-semibold text-[10px]">Canonical Formula</span>
+<button class="flex items-center gap-1 hover:text-primary transition-colors font-sans" onclick="navigator.clipboard?.writeText('Attention(Q, K, V) = softmax((Q K^T) / sqrt(d_k)) * V'); this.innerHTML='&lt;span class=\'material-symbols-outlined text-[13px]\'&gt;check&lt;/span&gt; Copied!';">
+<span class="material-symbols-outlined text-[14px]">content_copy</span>
+<span>Copy</span>
+</button>
+</div>
+<div class="text-primary font-semibold text-[13px] py-0.5">
+                    Attention(Q, K, V) = softmax((Q K^T) / √d_k) · V
+                  </div>
+</div>
+<!-- Grounding Reference -->
+<div class="flex items-center gap-2 text-xs text-on-surface-variant pt-0.5">
+<span class="material-symbols-outlined text-[16px] text-primary">description</span>
+<span>Grounded in: <strong class="font-medium text-on-surface">Lecture 04 - Transformers &amp; Self-Attention.pdf</strong> (p. 12)</span>
+</div>
+<!-- Minimal Interactive Pill Buttons -->
+<div class="flex items-center gap-2 pt-1">
+<button class="inline-flex items-center gap-1.5 text-xs text-on-surface-variant hover:text-primary hover:bg-surface-container px-2.5 py-1 rounded-lg border border-surface-container transition-colors" onclick="window.populatePrompt('Give me a quick 2-question drill on dot product scaling.')">
+<span class="material-symbols-outlined text-[15px] text-primary">quiz</span>
+<span>Practice Drill</span>
+</button>
+<button class="inline-flex items-center gap-1.5 text-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-2.5 py-1 rounded-lg border border-surface-container transition-colors">
+<span class="material-symbols-outlined text-[15px]">bookmark_border</span>
+<span>Save Note</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Dynamic Chat Container -->
+<div class="flex flex-col gap-6" id="dynamicResponses"></div>
+</div>
+<!-- Sleek Modern Floating/Docked Input Bar -->
+<div class="p-4 lg:p-6 border-t border-surface-container/60 bg-surface-container-lowest rounded-b-2xl">
+<form class="bg-surface-container-low/70 border border-surface-container focus-within:border-primary/50 focus-within:ring-2 focus-within:ring-primary/10 rounded-2xl p-2.5 transition-all flex flex-col gap-2" id="chatForm" onsubmit="event.preventDefault(); window.handleSendMessage();">
+<textarea class="w-full bg-transparent border-0 focus:ring-0 text-on-surface placeholder:text-on-surface-variant/50 text-sm resize-none px-2 py-1 leading-relaxed" id="chatInput" placeholder="Ask a question or request a derivation from your notes..." rows="2"></textarea>
+<div class="flex items-center justify-between pt-1 px-1">
+<div class="flex items-center gap-2">
+<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors" title="Attach file or formula" type="button">
+<span class="material-symbols-outlined text-[18px]">attach_file</span>
+</button>
+<div class="h-4 w-px bg-surface-container-high"></div>
+<span class="text-[11px] font-medium text-on-surface-variant bg-surface-container-lowest px-2 py-0.5 rounded-md border border-surface-container">Caliber 3.2 Depth</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="hidden sm:inline text-[11px] text-on-surface-variant/60">Press ↵ to send</span>
+<button class="w-8 h-8 rounded-xl bg-primary-container hover:bg-primary text-white flex items-center justify-center transition-all shadow-xs" id="sendBtn" type="submit">
+<span class="material-symbols-outlined text-[17px]">arrow_upward</span>
+</button>
+</div>
+</div>
+</form>
+</div>
+</section>
+<!-- Streamlined Right Rail (Col 4) - Pure, Calm & Lightweight -->
+<aside class="lg:col-span-4 flex flex-col gap-5">
+<!-- Section 1: Referenced Sources (Clean & Minimal) -->
+<div class="bg-surface-container-lowest rounded-2xl border border-surface-container-high/60 p-5 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
+<div class="flex items-center justify-between mb-3.5">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-primary">menu_book</span>
+<h2 class="text-sm font-semibold text-on-surface">Referenced Sources</h2>
+</div>
+<span class="text-[11px] text-on-surface-variant bg-surface-container-low px-2 py-0.5 rounded-full font-medium">2 Active</span>
+</div>
+<div class="flex flex-col gap-2.5">
+<div class="p-3 rounded-xl bg-surface-container-low/50 hover:bg-surface-container transition-colors cursor-pointer flex items-center justify-between group">
+<div class="flex items-center gap-2.5 min-w-0">
+<span class="material-symbols-outlined text-[18px] text-primary shrink-0">picture_as_pdf</span>
+<div class="flex flex-col min-w-0">
+<span class="text-xs font-semibold text-on-surface truncate group-hover:text-primary transition-colors">Lecture 04 - Transformers.pdf</span>
+<span class="text-[11px] text-on-surface-variant">Page 12 • 84% relevance</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant group-hover:translate-x-0.5 transition-transform">chevron_right</span>
+</div>
+<div class="p-3 rounded-xl bg-surface-container-low/50 hover:bg-surface-container transition-colors cursor-pointer flex items-center justify-between group">
+<div class="flex items-center gap-2.5 min-w-0">
+<span class="material-symbols-outlined text-[18px] text-secondary shrink-0">description</span>
+<div class="flex flex-col min-w-0">
+<span class="text-xs font-semibold text-on-surface truncate group-hover:text-primary transition-colors">CS224N_Attention_Notes.pdf</span>
+<span class="text-[11px] text-on-surface-variant">Page 4 • Referenced</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant group-hover:translate-x-0.5 transition-transform">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Section 2: Clean Suggested Questions (Quiet & Helpful) -->
+<div class="bg-surface-container-lowest rounded-2xl border border-surface-container-high/60 p-5 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
+<div class="flex items-center gap-2 mb-3.5">
+<span class="material-symbols-outlined text-[18px] text-tertiary">lightbulb</span>
+<h2 class="text-sm font-semibold text-on-surface">Suggested Inquiries</h2>
+</div>
+<div class="flex flex-col gap-2">
+<button class="text-left p-3 rounded-xl bg-surface-container-low/50 hover:bg-surface-container hover:text-primary transition-colors text-xs text-on-surface leading-snug flex items-start gap-2 group" onclick="window.populatePrompt('Walk through multi-head projection step by step with dimensional matrices.')">
+<span class="material-symbols-outlined text-[15px] text-primary shrink-0 mt-0.5">play_arrow</span>
+<span>Walk through multi-head projection step by step with dimensions</span>
+</button>
+<button class="text-left p-3 rounded-xl bg-surface-container-low/50 hover:bg-surface-container hover:text-primary transition-colors text-xs text-on-surface leading-snug flex items-start gap-2 group" onclick="window.populatePrompt('Where in my notes is causal masking explained?')">
+<span class="material-symbols-outlined text-[15px] text-primary shrink-0 mt-0.5">play_arrow</span>
+<span>Where in my notes is causal masking explained?</span>
+</button>
+<button class="text-left p-3 rounded-xl bg-surface-container-low/50 hover:bg-surface-container hover:text-primary transition-colors text-xs text-on-surface leading-snug flex items-start gap-2 group" onclick="window.populatePrompt('Give me a 2-question conceptual quiz on self-attention.')">
+<span class="material-symbols-outlined text-[15px] text-primary shrink-0 mt-0.5">play_arrow</span>
+<span>Give me a 2-question conceptual quiz on self-attention</span>
+</button>
+</div>
+</div>
+</aside>
+</div>
+</main>
+</div>
+<script>
+    window.populatePrompt = function(text) {
+      const input = document.getElementById('chatInput');
+      if (input) {
+        input.value = text;
+        input.focus();
+      }
+    };
+
+    window.handleSendMessage = function() {
+      const input = document.getElementById('chatInput');
+      const container = document.getElementById('dynamicResponses');
+      const stream = document.getElementById('chatStream');
+      
+      if (!input || !input.value.trim() || !container) return;
+
+      const userText = input.value.trim();
+      input.value = '';
+
+      // Clean User Message
+      const userMsg = document.createElement('div');
+      userMsg.className = 'flex justify-end w-full';
+      userMsg.innerHTML = `
+        <div class="max-w-xl bg-primary-container text-white px-5 py-3.5 rounded-2xl rounded-tr-xs shadow-xs text-[14px] leading-relaxed">
+          ${userText.replace(/</g, "&lt;").replace(/>/g, "&gt;")}
+        </div>
+      `;
+      container.appendChild(userMsg);
+
+      // Clean AI Loading Indicator
+      const aiPlaceholder = document.createElement('div');
+      aiPlaceholder.className = 'flex items-center gap-3 text-xs text-on-surface-variant py-2';
+      aiPlaceholder.innerHTML = `
+        <div class="w-6 h-6 rounded-full bg-surface-container flex items-center justify-center text-primary animate-spin">
+          <span class="material-symbols-outlined text-[14px]">sync</span>
+        </div>
+        <span>Searching indexed notes...</span>
+      `;
+      container.appendChild(aiPlaceholder);
+      
+      stream.scrollTop = stream.scrollHeight;
+
+      setTimeout(() => {
+        aiPlaceholder.outerHTML = `
+          <div class="flex items-start gap-4 max-w-2xl w-full">
+            <div class="w-8 h-8 rounded-full bg-primary-fixed text-primary flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">
+              <span class="material-symbols-outlined text-[18px]">neurology</span>
+            </div>
+            
+            <div class="flex flex-col gap-3 text-on-surface text-[14px] leading-relaxed flex-1">
+              <div class="flex items-center gap-2">
+                <span class="font-semibold text-xs text-on-surface">Adapted Tutor</span>
+                <span class="text-[11px] text-on-surface-variant">Just now</span>
+              </div>
+
+              <p class="text-on-surface/90">
+                Here is the concise breakdown based on your course materials: Multi-head projection projects input representations into multiple representation subspaces simultaneously:
+              </p>
+
+              <div class="bg-surface-container-low border border-surface-container rounded-xl p-3 font-mono text-xs text-primary font-semibold">
+                head_i = Attention(Q · W_i^Q, K · W_i^K, V · W_i^V)
+              </div>
+
+              <div class="flex items-center gap-2 text-xs text-on-surface-variant">
+                <span class="material-symbols-outlined text-[15px] text-primary">check_circle</span>
+                <span>Mastery checkpoint recorded for Aarav Sharma (Caliber 3.2).</span>
+              </div>
+            </div>
+          </div>
+        `;
+        stream.scrollTop = stream.scrollHeight;
+      }, 750);
+    };
+
+    const resetBtn = document.getElementById('clearChatBtn');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        const container = document.getElementById('dynamicResponses');
+        if (container) container.innerHTML = '';
+      });
+    }
+  </script>
+</body></html>

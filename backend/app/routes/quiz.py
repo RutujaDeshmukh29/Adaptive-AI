@@ -4,6 +4,7 @@ from app.database import get_db
 from app.models.user import User
 from app.models.quiz import QuizAttempt, QuizQuestion
 from app.models.learner_profile import LearnerProfile
+from app.models.topic import Topic
 from app.deps import get_current_user
 from app.schemas.quiz import QuizGenerateRequest, QuizGenerateResponse, QuizSubmitRequest
 from app.services.quiz_engine import generate_quiz
@@ -81,11 +82,32 @@ def submit_quiz(attempt_id: int, req: QuizSubmitRequest, current_user: User = De
     
     # Update Mastery Math
     updated_attempt = update_mastery(db, current_user.id, attempt_id)
-    
+
+    # Fetch actual topic
+    topic_record = db.query(Topic).filter(Topic.id == updated_attempt.topic_id).first()
+    topic_name = topic_record.name if topic_record else f"Topic {updated_attempt.topic_id}"
+
+    # Extract weak concepts from questions answered incorrectly
+    weak_concepts = list({q.concept_tag for q in questions if not q.is_correct and q.concept_tag})
+
+    # Determine adaptive next action
+    if updated_attempt.score >= 70.0:
+        action_type = "advance"
+        action_reason = f"Excellent! You scored {updated_attempt.score:.0f}% on {topic_name}. Ready to advance!"
+    elif updated_attempt.score >= 50.0:
+        action_type = "practice_medium"
+        action_reason = f"Good effort on {topic_name}. Practice a few more medium questions to solidify."
+    else:
+        action_type = "revise"
+        action_reason = f"Review foundational concepts in {topic_name} and try again."
+
+    band_after = "mastered" if updated_attempt.mastery_after >= 70 else "competent" if updated_attempt.mastery_after >= 50 else "developing" if updated_attempt.mastery_after >= 30 else "struggling"
+    band_before = "mastered" if updated_attempt.mastery_before >= 70 else "competent" if updated_attempt.mastery_before >= 50 else "developing" if updated_attempt.mastery_before >= 30 else "struggling"
+
     return {
         "attempt_id": updated_attempt.id,
         "topic_id": updated_attempt.topic_id,
-        "topic": "Topic Name", # Could be joined
+        "topic": topic_name,
         "difficulty": updated_attempt.difficulty,
         "score": updated_attempt.score,
         "correct_count": updated_attempt.correct_count,
@@ -93,17 +115,17 @@ def submit_quiz(attempt_id: int, req: QuizSubmitRequest, current_user: User = De
         "mastery_before": updated_attempt.mastery_before,
         "mastery_after": updated_attempt.mastery_after,
         "mastery_delta": updated_attempt.mastery_after - updated_attempt.mastery_before,
-        "band_before": "developing", # Placeholder
-        "band_after": "competent", # Placeholder
+        "band_before": band_before,
+        "band_after": band_after,
         "review": review_items,
-        "weak_concepts": [],
+        "weak_concepts": weak_concepts,
         "path_changed": False,
         "path_changes": [],
         "next_action": {
-            "action_type": "learn",
+            "action_type": action_type,
             "topic_id": updated_attempt.topic_id,
-            "topic": "Variables",
-            "difficulty": "medium",
-            "reason": "Good job! Keep learning."
+            "topic": topic_name,
+            "difficulty": updated_attempt.difficulty,
+            "reason": action_reason
         }
     }

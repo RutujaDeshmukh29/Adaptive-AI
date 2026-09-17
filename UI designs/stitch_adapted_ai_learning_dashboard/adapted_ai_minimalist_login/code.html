@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-[#f8f9ff]" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Adapted AI — Sign In</title>
+<!-- Tailwind CSS CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script data-purpose="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              800: '#3730a3',
+              900: '#312e81',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+<!-- Typography & Base Custom CSS -->
+<style data-purpose="typography">
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    body {
+      font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    }
+  </style>
+<!-- Component & Focus Styles -->
+<style data-purpose="custom-ui">
+    .focus-ring {
+      transition: all 0.15s ease-in-out;
+    }
+    .focus-ring:focus {
+      outline: none;
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+    }
+  </style>
+</head>
+<body class="min-h-full font-sans text-slate-900 antialiased selection:bg-indigo-100 selection:text-indigo-900 flex flex-col justify-between">
+<!-- BEGIN: Centered Auth Container -->
+<main class="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 py-12 sm:py-16">
+<div class="w-full max-w-md mx-auto">
+<!-- Brand Identifier Header (Centered Above Card) -->
+<div class="flex flex-col items-center justify-center mb-8 text-center" data-purpose="brand-header">
+<div class="w-12 h-12 rounded-2xl bg-brand-600 flex items-center justify-center text-white shadow-md shadow-indigo-200 mb-3.5 transition-transform hover:scale-105 duration-200">
+<!-- Geometric Spark/Neural Icon matching Adapted AI mark -->
+<svg class="w-6 h-6 fill-current" viewbox="0 0 24 24">
+<path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"></path>
+</svg>
+</div>
+<div class="flex items-center justify-center space-x-2">
+<span class="text-xl font-bold tracking-tight text-slate-900">Adapted AI</span>
+<span class="text-[11px] px-2 py-0.5 rounded-full bg-indigo-50/80 text-brand-700 font-medium border border-indigo-100/80">by SkillMatix</span>
+</div>
+</div>
+<!-- Main Clean Card -->
+<div class="bg-white rounded-3xl border border-slate-200/70 p-8 sm:p-10 shadow-[0_4px_30px_rgba(0,0,0,0.03)]" data-purpose="login-card">
+<!-- Card Header -->
+<div class="text-center mb-7">
+<h1 class="text-2xl font-bold tracking-tight text-slate-900">Sign in</h1>
+<p class="text-sm text-slate-500 mt-1.5 font-normal">Continue to your adaptive learning workspace</p>
+</div>
+<!-- Single Google SSO Button -->
+<div data-purpose="sso-actions">
+<button class="w-full flex items-center justify-center space-x-3 px-4 py-2.5 rounded-xl border border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-sm font-medium transition duration-150 focus:outline-none focus:ring-2 focus:ring-slate-200" type="button">
+<!-- Google G Logo -->
+<svg class="w-4 h-4" viewbox="0 0 24 24">
+<path d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z" fill="#4285F4"></path>
+<path d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z" fill="#34A853"></path>
+<path d="M5.28 14.27A7.16 7.16 0 0 1 4.9 12c0-.79.14-1.57.38-2.27V6.58H1.25A11.97 11.97 0 0 0 0 12c0 1.92.45 3.74 1.25 5.42l4.03-3.15z" fill="#FBBC05"></path>
+<path d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15C6.23 6.85 8.88 4.75 12 4.75z" fill="#EA4335"></path>
+</svg>
+<span>Continue with Google</span>
+</button>
+</div>
+<!-- Subtle Divider -->
+<div class="relative my-6 flex items-center justify-center">
+<div class="w-full border-t border-slate-200/70"></div>
+<span class="absolute px-3 bg-white text-xs text-slate-400 font-normal">or sign in with email</span>
+</div>
+<!-- Form Fields -->
+<form action="#" class="space-y-4" method="POST" onsubmit="event.preventDefault();">
+<!-- Email Input -->
+<div data-purpose="form-group-email">
+<label class="block text-xs font-semibold text-slate-700 mb-1.5 uppercase tracking-wide" for="email">Email address</label>
+<div class="relative">
+<input class="w-full px-3.5 py-2.5 bg-slate-50/50 hover:bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 focus-ring" id="email" name="email" placeholder="name@university.edu" required="" type="email" value="aarav@university.edu"/>
+</div>
+</div>
+<!-- Password Input -->
+<div data-purpose="form-group-password">
+<div class="flex items-center justify-between mb-1.5">
+<label class="block text-xs font-semibold text-slate-700 uppercase tracking-wide" for="password">Password</label>
+<a class="text-xs font-medium text-brand-600 hover:text-brand-700 transition" href="#">Forgot password?</a>
+</div>
+<div class="relative">
+<input class="w-full px-3.5 py-2.5 bg-slate-50/50 hover:bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 focus-ring pr-10" id="password" name="password" placeholder="••••••••••••" required="" type="password"/>
+<!-- Toggle Visibility Button -->
+<button aria-label="Toggle password visibility" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600" id="togglePassword" type="button">
+<svg class="w-4 h-4" fill="none" id="eyeIcon" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</div>
+</div>
+<!-- Submit CTA -->
+<div class="pt-2">
+<button class="w-full flex items-center justify-center space-x-2 py-2.5 px-4 rounded-xl bg-brand-600 hover:bg-brand-700 active:bg-brand-800 text-white font-medium text-sm transition-all duration-150 shadow-sm shadow-indigo-200 focus:outline-none focus:ring-2 focus:ring-brand-600 focus:ring-offset-2" type="submit">
+<span>Sign in</span>
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</div>
+</form>
+<!-- Sign Up / Request Access Link -->
+<div class="mt-6 pt-5 border-t border-slate-100 text-center">
+<p class="text-xs text-slate-500">
+            Don't have an account?
+            <a class="font-semibold text-brand-600 hover:text-brand-700 ml-1 transition" href="#">Request access</a>
+</p>
+</div>
+</div>
+</div>
+</main>
+<!-- END: Centered Auth Container -->
+<!-- BEGIN: Minimal Page Footer -->
+<footer class="w-full py-6 px-4 text-center">
+<div class="max-w-md mx-auto flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 space-y-2 sm:space-y-0">
+<span>© 2025 Adapted AI</span>
+<div class="flex items-center space-x-4 text-slate-400">
+<a class="hover:text-slate-600 transition" href="#">Privacy</a>
+<span>•</span>
+<a class="hover:text-slate-600 transition" href="#">Terms</a>
+<span>•</span>
+<a class="hover:text-slate-600 transition" href="#">Contact</a>
+</div>
+</div>
+</footer>
+<!-- END: Minimal Page Footer -->
+<!-- Interactive behavior for password toggle -->
+<script data-purpose="toggle-password-visibility">
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggleBtn = document.getElementById('togglePassword');
+      const passwordInput = document.getElementById('password');
+
+      if (toggleBtn && passwordInput) {
+        toggleBtn.addEventListener('click', () => {
+          const isPassword = passwordInput.getAttribute('type') === 'password';
+          passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+          toggleBtn.classList.toggle('text-brand-600', isPassword);
+        });
+      }
+    });
+  </script>
+</body></html>

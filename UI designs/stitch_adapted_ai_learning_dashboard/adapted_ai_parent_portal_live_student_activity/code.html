@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "on-error": "#ffffff",
+          "inverse-on-surface": "#eaf1ff",
+          "on-error-container": "#93000a",
+          "outline-variant": "#c7c4d8",
+          "inverse-primary": "#c3c0ff",
+          "on-primary-fixed-variant": "#3323cc",
+          "surface-container-highest": "#d3e4fe",
+          "surface": "#f8f9ff",
+          "on-secondary-fixed": "#00174b",
+          "surface-container-lowest": "#ffffff",
+          "primary-fixed": "#e2dfff",
+          "background": "#f8f9ff",
+          "on-tertiary-fixed": "#23005c",
+          "tertiary-fixed": "#e9ddff",
+          "outline": "#777587",
+          "surface-tint": "#4d44e3",
+          "on-surface": "#0b1c30",
+          "secondary": "#0051d5",
+          "on-primary-fixed": "#0f0069",
+          "surface-dim": "#cbdbf5",
+          "secondary-fixed": "#dbe1ff",
+          "on-tertiary-container": "#e3d5ff",
+          "primary-fixed-dim": "#c3c0ff",
+          "tertiary-fixed-dim": "#d0bcff",
+          "inverse-surface": "#213145",
+          "tertiary": "#571ac0",
+          "primary": "#3525cd",
+          "on-secondary-container": "#fefcff",
+          "secondary-container": "#316bf3",
+          "surface-container-high": "#dce9ff",
+          "surface-variant": "#d3e4fe",
+          "on-secondary-fixed-variant": "#003ea8",
+          "secondary-fixed-dim": "#b4c5ff",
+          "on-primary-container": "#dad7ff",
+          "tertiary-container": "#6f3dd9",
+          "on-tertiary-fixed-variant": "#5516be",
+          "on-tertiary": "#ffffff",
+          "on-background": "#0b1c30",
+          "error-container": "#ffdad6",
+          "on-surface-variant": "#464555",
+          "error": "#ba1a1a",
+          "surface-container-low": "#eff4ff",
+          "on-secondary": "#ffffff",
+          "surface-bright": "#f8f9ff",
+          "on-primary": "#ffffff",
+          "surface-container": "#e5eeff",
+          "primary-container": "#4f46e5"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.25rem",
+          "lg": "0.5rem",
+          "xl": "0.75rem",
+          "full": "9999px"
+        },
+        "spacing": {
+          "space-xl": "2rem",
+          "gutter-lg": "2rem",
+          "margin": "2rem",
+          "space-sm": "0.5rem",
+          "space-lg": "1.5rem",
+          "space-xs": "0.25rem",
+          "margin-lg": "3rem",
+          "gutter-sm": "1rem",
+          "gutter": "1.5rem",
+          "space-md": "1rem",
+          "margin-sm": "1rem"
+        },
+        "fontFamily": {
+          "headline-lg-mobile": [
+            "Inter"
+          ],
+          "title-lg": [
+            "Inter"
+          ],
+          "body-md": [
+            "Inter"
+          ],
+          "label-sm": [
+            "Inter"
+          ],
+          "label-lg": [
+            "Inter"
+          ],
+          "headline-sm": [
+            "Inter"
+          ],
+          "body-lg": [
+            "Inter"
+          ],
+          "body-sm": [
+            "Inter"
+          ],
+          "display-lg": [
+            "Inter"
+          ],
+          "label-md": [
+            "Inter"
+          ],
+          "title-md": [
+            "Inter"
+          ],
+          "headline-lg": [
+            "Inter"
+          ],
+          "headline-md": [
+            "Inter"
+          ],
+          "display-lg-mobile": [
+            "Inter"
+          ],
+          "stat-metric": [
+            "Inter"
+          ]
+        },
+        "fontSize": {
+          "headline-lg-mobile": [
+            "24px",
+            {
+              "lineHeight": "32px",
+              "letterSpacing": "-0.015em",
+              "fontWeight": "600"
+            }
+          ],
+          "title-lg": [
+            "18px",
+            {
+              "lineHeight": "26px",
+              "letterSpacing": "-0.01em",
+              "fontWeight": "600"
+            }
+          ],
+          "body-md": [
+            "14px",
+            {
+              "lineHeight": "22px",
+              "letterSpacing": "0",
+              "fontWeight": "400"
+            }
+          ],
+          "label-sm": [
+            "11px",
+            {
+              "lineHeight": "14px",
+              "letterSpacing": "0.03em",
+              "fontWeight": "600"
+            }
+          ],
+          "label-lg": [
+            "14px",
+            {
+              "lineHeight": "20px",
+              "letterSpacing": "0.01em",
+              "fontWeight": "500"
+            }
+          ],
+          "headline-sm": [
+            "20px",
+            {
+              "lineHeight": "28px",
+              "letterSpacing": "-0.01em",
+              "fontWeight": "600"
+            }
+          ],
+          "body-lg": [
+            "16px",
+            {
+              "lineHeight": "26px",
+              "letterSpacing": "0",
+              "fontWeight": "400"
+            }
+          ],
+          "body-sm": [
+            "13px",
+            {
+              "lineHeight": "18px",
+              "letterSpacing": "0.005em",
+              "fontWeight": "400"
+            }
+          ],
+          "display-lg": [
+            "40px",
+            {
+              "lineHeight": "48px",
+              "letterSpacing": "-0.02em",
+              "fontWeight": "700"
+            }
+          ],
+          "label-md": [
+            "12px",
+            {
+              "lineHeight": "16px",
+              "letterSpacing": "0.02em",
+              "fontWeight": "500"
+            }
+          ],
+          "title-md": [
+            "16px",
+            {
+              "lineHeight": "24px",
+              "letterSpacing": "-0.005em",
+              "fontWeight": "600"
+            }
+          ],
+          "headline-lg": [
+            "32px",
+            {
+              "lineHeight": "40px",
+              "letterSpacing": "-0.02em",
+              "fontWeight": "600"
+            }
+          ],
+          "headline-md": [
+            "24px",
+            {
+              "lineHeight": "32px",
+              "letterSpacing": "-0.015em",
+              "fontWeight": "600"
+            }
+          ],
+          "display-lg-mobile": [
+            "30px",
+            {
+              "lineHeight": "38px",
+              "letterSpacing": "-0.02em",
+              "fontWeight": "700"
+            }
+          ],
+          "stat-metric": [
+            "28px",
+            {
+              "lineHeight": "32px",
+              "letterSpacing": "-0.02em",
+              "fontWeight": "700"
+            }
+          ]
+        }
+      },
+    },
+  }</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-lowest z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex flex-col"><div class="px-space-lg pt-space-lg pb-space-md"><div class="flex items-center justify-between mb-space-xs"><div class="flex items-center gap-space-xs"><div class="w-7 h-7 rounded-lg bg-primary-container flex items-center justify-center text-on-primary font-headline-sm text-headline-sm">A</div><span class="font-title-md text-title-md text-on-surface tracking-tight font-bold">Adapted AI</span></div><span class="px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-sm text-label-sm uppercase tracking-wider">Parent</span></div><p class="font-label-sm text-label-sm text-on-surface-variant pl-8">by SkillMatix</p></div><nav class="flex flex-col gap-space-xs px-space-md mt-space-md" data-active-classes="bg-primary-container text-on-primary font-title-md"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface font-body-md text-body-md transition-colors" data-path="overview-and-progress" href="#"><span class="material-symbols-outlined text-[20px]">insights</span><span>Overview &amp; Progress</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface font-body-md text-body-md transition-colors" data-path="mastery-and-diagnostics" href="#"><span class="material-symbols-outlined text-[20px]">auto_graph</span><span>Mastery &amp; Diagnostics</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface font-body-md text-body-md transition-colors" data-path="study-habits-and-time" href="#"><span class="material-symbols-outlined text-[20px]">schedule</span><span>Study Habits &amp; Time</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface font-body-md text-body-md transition-colors" data-path="tutor-ai-insights" href="#"><span class="material-symbols-outlined text-[20px]">psychology</span><span>Tutor AI Insights</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface font-body-md text-body-md transition-colors" data-path="settings-and-alerts" href="#"><span class="material-symbols-outlined text-[20px]">tune</span><span>Settings &amp; Alerts</span></a></nav></div><div class="p-space-md m-space-md rounded-xl bg-surface-container-low"><div class="flex items-start gap-space-sm mb-space-sm"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><div class="min-w-0 flex-1"><p class="font-title-md text-title-md text-on-surface truncate">Rajesh Sharma</p><p class="font-label-sm text-label-sm text-on-surface-variant truncate">Parent of Aarav Sharma</p><span class="inline-block mt-0.5 px-1.5 py-0.2 rounded bg-surface-container-highest text-on-surface-variant font-label-sm text-[10px]">Level 4 Learner</span></div></div><div class="flex items-center justify-between pt-space-xs"><a class="font-label-sm text-label-sm text-primary hover:text-on-primary-fixed-variant flex items-center gap-1 transition-colors" href="#"><span class="material-symbols-outlined text-[14px]">swap_horiz</span>Switch Student</a><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-error flex items-center transition-colors" href="#" title="Sign out"><span class="material-symbols-outlined text-[16px]">logout</span></a></div></div></aside><div class="pl-72 min-h-screen flex flex-col"><header class="fixed top-0 left-72 right-0 h-16 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-lg"><div class="relative flex items-center gap-2 bg-surface-container-lowest px-3 py-1 rounded-full shadow-[0_1px_4px_rgba(0,0,0,0.03)] cursor-pointer hover:bg-surface-container-low transition-colors"><div class="relative w-8 h-8 rounded-full overflow-hidden flex-shrink-0 bg-primary-fixed"><img alt="Aarav" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_xuhIMQhkeaKQQYbHqTvix3OErmOjEqnSnfIxoV__rd7K24F627nP6qrxGTwFvGIvSdBLx5Tiqm1hNzBdChpQDH_6gaFLqp_N6d37dyJYoOYl-QUlK6shqkQa0UjrmRjd_nW3oNbCPnknXxpITuagrxXIOh4mFfpFVidfNEKVknbkBCZlyrZFBe5-Hk9gslkB1xjHevO3cIA-PeQEKzLEwzWQIXbkX2DtEyY3vv6fGnjJjDOEVa6-LQ"/><span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-[#16a34a] border-2 border-white"></span></div><div class="flex flex-col text-left"><div class="flex items-center gap-1.5"><span class="font-title-md text-title-md text-on-surface font-semibold text-[13px] leading-tight">Aarav Sharma</span><span class="px-1.5 py-0.2 rounded-full bg-emerald-50 text-[#16a34a] text-[10px] font-bold tracking-wide uppercase inline-flex items-center gap-0.5"><span class="w-1.5 h-1.5 rounded-full bg-[#16a34a] animate-pulse"></span>Active Now</span></div><span class="font-label-sm text-[11px] text-on-surface-variant leading-none">Grade 11 ML &amp; CS Track • Switch to Ananya (Gr 8)</span></div><span class="material-symbols-outlined text-on-surface-variant text-[18px] ml-1">unfold_more</span></div><div class="flex items-center gap-space-md"><button class="flex items-center gap-space-xs px-space-md py-1.5 rounded-lg bg-surface-container-lowest hover:bg-surface-container text-on-surface font-label-lg text-label-lg shadow-[0_1px_4px_rgba(0,0,0,0.03)] transition-all" type="button"><span class="material-symbols-outlined text-primary-container text-[18px]">download</span><span>Weekly Summary</span></button><button class="w-9 h-9 rounded-full bg-surface-container-lowest hover:bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface relative shadow-[0_1px_4px_rgba(0,0,0,0.03)] transition-all" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary-container"></span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="relative pt-16 w-full px-space-lg py-space-lg bg-surface flex-1"><div class="flex flex-col w-full">
+<!-- Hero / Child Profile Summary Banner -->
+<section class="relative w-full rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm overflow-hidden mb-space-lg">
+<!-- Ambient Accent Glow behind header -->
+<div class="absolute -top-24 -right-20 w-96 h-96 rounded-full bg-primary-fixed/40 blur-3xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-space-lg">
+<div class="flex flex-col max-w-2xl">
+<div class="flex items-center gap-2 mb-space-xs">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></span>
+            Weekly Synthesis Active
+          </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Cycle 18 • Nov 18 – Nov 24</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Welcome back, Rajesh</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-1">
+          Here is Aarav's weekly learning progression, adaptive mastery, and AI tutor engagement.
+        </p>
+</div>
+<!-- Quick Action CTAs -->
+<div class="flex flex-wrap items-center gap-space-sm self-start lg:self-center">
+<button class="group flex items-center gap-2 px-space-md py-2.5 rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface font-label-lg text-label-lg transition-all shadow-sm" type="button">
+<span class="material-symbols-outlined text-primary text-[20px] transition-transform group-hover:-translate-y-0.5">download</span>
+<span>Download Weekly Report (PDF)</span>
+</button>
+<button class="flex items-center gap-2 px-space-md py-2.5 rounded-xl bg-primary-container hover:bg-primary text-on-primary font-label-lg text-label-lg transition-all shadow-sm" type="button">
+<span class="material-symbols-outlined text-[20px]">share</span>
+<span>Share with Mentor</span>
+</button>
+</div>
+</div>
+<!-- Student Key Status Strip -->
+<div class="mt-space-lg pt-space-lg grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md bg-surface-container-low/60 p-space-md rounded-xl">
+<div class="flex items-center gap-3">
+<div class="relative w-12 h-12 rounded-xl overflow-hidden shadow-sm flex-shrink-0 bg-primary-fixed">
+<img class="w-full h-full object-cover" data-alt="Warm studio photographic portrait of a thoughtful high school teenage student named Aarav wearing a clean navy hoodie, soft diffuse natural window lighting, friendly intellectual expression, clean neutral background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_xuhIMQhkeaKQQYbHqTvix3OErmOjEqnSnfIxoV__rd7K24F627nP6qrxGTwFvGIvSdBLx5Tiqm1hNzBdChpQDH_6gaFLqp_N6d37dyJYoOYl-QUlK6shqkQa0UjrmRjd_nW3oNbCPnknXxpITuagrxXIOh4mFfpFVidfNEKVknbkBCZlyrZFBe5-Hk9gslkB1xjHevO3cIA-PeQEKzLEwzWQIXbkX2DtEyY3vv6fGnjJjDOEVa6-LQ"/>
+</div>
+<div class="min-w-0">
+<p class="font-title-md text-title-md text-on-surface truncate">Aarav Sharma</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant truncate">Grade 11 ML &amp; CS Track</p>
+</div>
+</div>
+<div class="flex flex-col justify-center px-space-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Cognitive Caliber</span>
+<div class="flex items-baseline gap-2 mt-0.5">
+<span class="font-stat-metric text-stat-metric text-on-surface">Level 3.2</span>
+<span class="inline-flex items-center gap-0.5 font-label-sm text-label-sm text-primary font-semibold">
+<span class="material-symbols-outlined text-[14px]">bolt</span> Dynamic
+          </span>
+</div>
+</div>
+<div class="flex flex-col justify-center px-space-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Overall Mastery</span>
+<div class="flex items-baseline gap-2 mt-0.5">
+<span class="font-stat-metric text-stat-metric text-on-surface">78%</span>
+<span class="inline-flex items-center font-label-sm text-label-sm text-secondary-container font-semibold">
+            +4.2% this week
+          </span>
+</div>
+</div>
+<div class="flex flex-col justify-center px-space-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Weekly Pace</span>
+<div class="flex items-baseline gap-2 mt-0.5">
+<span class="font-stat-metric text-stat-metric text-on-surface">4.5 hrs</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">/ 5.0h target</span>
+</div>
+</div>
+</div>
+</section><!-- Live Study Activity / What Aarav is Doing Right Now Banner -->
+<section class="w-full bg-gradient-to-r from-surface-container-lowest via-surface-container-low/40 to-surface-container-lowest rounded-2xl p-space-lg border-2 border-primary/20 shadow-sm mb-space-lg relative overflow-hidden">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md pb-space-md border-b border-surface-container">
+<div class="flex items-center gap-3">
+<div class="relative flex items-center justify-center w-10 h-10 rounded-xl bg-emerald-50 text-[#16a34a]">
+<span class="material-symbols-outlined text-[24px]">sensors</span>
+<span class="absolute -top-1 -right-1 flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#16a34a] opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-[#16a34a]"></span>
+</span>
+</div>
+<div>
+<div class="flex items-center gap-2 flex-wrap">
+<h2 class="font-title-lg text-title-lg text-on-surface font-bold">Live Study Activity • What Aarav is Doing Right Now</h2>
+<span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-[#166534] font-label-sm text-label-sm font-semibold inline-flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-[#16a34a] animate-pulse"></span> Active Session (Started 34m ago)
+          </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Direct telemetry stream from Aarav's active Adapted AI learning workspace</p>
+</div>
+</div>
+<div class="flex items-center gap-2 flex-wrap">
+<button class="inline-flex items-center gap-1.5 px-space-md py-2 rounded-xl bg-primary-fixed hover:bg-primary-fixed-dim text-on-primary-fixed font-label-md text-label-md font-semibold transition-all shadow-sm" type="button">
+<span class="material-symbols-outlined text-[16px]">thumb_up</span>
+<span>Send Quick Encouragement 👍</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-space-md py-2 rounded-xl bg-surface-container-lowest hover:bg-surface text-on-surface font-label-md text-label-md font-semibold shadow-sm transition-all border border-surface-container" type="button">
+<span class="material-symbols-outlined text-primary text-[16px]">forum</span>
+<span>View Active Chat Thread</span>
+</button>
+</div>
+</div>
+<!-- Live Status Details Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md mt-space-md">
+<div class="p-space-md rounded-xl bg-surface-container-lowest border border-surface-container-high/60">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-semibold">Current Activity</span>
+<span class="material-symbols-outlined text-primary text-[18px]">psychology</span>
+</div>
+<p class="font-title-md text-title-md text-on-surface font-semibold leading-tight">Engaged with AI Tutor on Attention Mechanisms</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1.5 leading-relaxed">
+        Exploring scaled dot-product attention formulation and dimensionality tradeoffs in multi-head setups.
+      </p>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-lowest border border-surface-container-high/60">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-semibold">Last Interaction (2m ago)</span>
+<span class="material-symbols-outlined text-secondary text-[18px]">chat_bubble</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface font-medium italic bg-surface-container-low/60 p-2.5 rounded-lg">
+        "Why is the scale factor 1/√(d_k) specifically needed before applying softmax in dot-product attention?"
+      </p>
+<span class="inline-block mt-2 font-label-sm text-label-sm text-emerald-700 font-semibold">AI Tutor answered with interactive matrix graph</span>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-lowest border border-surface-container-high/60 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-semibold">Real-time Focus Metric</span>
+<span class="material-symbols-outlined text-[#16a34a] text-[18px]">vital_signs</span>
+</div>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-headline-md text-headline-md font-bold text-on-surface">94%</span>
+<span class="font-label-md text-label-md text-[#16a34a] font-semibold">Deep Focus</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+          Zero tab switches or idle pauses detected in the past 30 minutes.
+        </p>
+</div>
+<div class="w-full bg-surface-container rounded-full h-2 mt-2 overflow-hidden">
+<div class="bg-[#16a34a] h-2 rounded-full" style="width: 94%;"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Today's Activity Timeline & All Enrolled Courses Mastery -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg mb-space-lg">
+<!-- Enrolled Subjects Mastery (7 cols) -->
+<div class="lg:col-span-7 bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<div>
+<h2 class="font-title-lg text-title-lg text-on-surface font-bold">Enrolled Courses &amp; Progress Mastery</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Active track curriculum breakdown for Grade 11 ML &amp; CS</p>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-surface-container font-label-sm text-label-sm text-on-surface-variant font-semibold">3 Active Courses</span>
+</div>
+<div class="space-y-space-md mt-space-md">
+<!-- Course 1 -->
+<div class="p-space-sm rounded-xl bg-surface-container-low/50 hover:bg-surface-container-low transition-colors">
+<div class="flex items-center justify-between mb-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">memory</span>
+<span class="font-title-md text-title-md text-on-surface font-semibold">Machine Learning Foundations</span>
+</div>
+<span class="font-title-md text-title-md text-primary font-bold">82%</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-2 mt-1 overflow-hidden">
+<div class="bg-primary-container h-2 rounded-full" style="width: 82%;"></div>
+</div>
+<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant mt-1.5">
+<span>Module 4 of 6 • Transformers &amp; Attention</span>
+<span class="text-primary font-medium">Projected completion: Dec 8</span>
+</div>
+</div>
+<!-- Course 2 -->
+<div class="p-space-sm rounded-xl bg-surface-container-low/50 hover:bg-surface-container-low transition-colors">
+<div class="flex items-center justify-between mb-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-[20px]">calculate</span>
+<span class="font-title-md text-title-md text-on-surface font-semibold">Linear Algebra for AI</span>
+</div>
+<span class="font-title-md text-title-md text-tertiary text-[16px] font-bold">90%</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-2 mt-1 overflow-hidden">
+<div class="bg-tertiary-container h-2 rounded-full" style="width: 90%;"></div>
+</div>
+<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant mt-1.5">
+<span>Module 5 of 5 • Eigendecomposition &amp; SVD</span>
+<span class="text-tertiary font-medium">Exam Ready • 92% Diagnostic</span>
+</div>
+</div>
+<!-- Course 3 -->
+<div class="p-space-sm rounded-xl bg-surface-container-low/50 hover:bg-surface-container-low transition-colors">
+<div class="flex items-center justify-between mb-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">code</span>
+<span class="font-title-md text-title-md text-on-surface font-semibold">Python &amp; Data Structures</span>
+</div>
+<span class="font-title-md text-title-md text-secondary font-bold">74%</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-2 mt-1 overflow-hidden">
+<div class="bg-secondary-container h-2 rounded-full" style="width: 74%;"></div>
+</div>
+<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant mt-1.5">
+<span>Module 3 of 5 • Binary Trees &amp; Graph Traversals</span>
+<span class="text-secondary font-medium">Pacing On-Track</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-space-md pt-space-xs border-t border-surface-container flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span>Curriculum standard: National AI &amp; CS Foundation</span>
+<span class="font-semibold text-on-surface">Next Sync Assessment: Nov 28</span>
+</div>
+</div>
+<!-- Today's Session Timeline & Daily Stats (5 cols) -->
+<div class="lg:col-span-5 bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<h2 class="font-title-lg text-title-lg text-on-surface font-bold">Today's Study Timeline</h2>
+<div class="flex items-center gap-1 bg-emerald-50 px-2 py-0.5 rounded-full text-[#166534] font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">timer</span> 1h 15m today
+        </div>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-space-md">Detailed chronological session events logged today</p>
+<!-- Chronological Timeline -->
+<div class="relative pl-4 space-y-4 before:content-[''] before:absolute before:left-1.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-surface-container-high">
+<!-- Event 1 -->
+<div class="relative flex items-start gap-3">
+<span class="absolute -left-4 mt-1.5 w-2.5 h-2.5 rounded-full bg-surface-container-highest border-2 border-white"></span>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">4:30 PM – 5:05 PM (35m)</span>
+<p class="font-title-md text-title-md text-on-surface font-semibold text-[13px]">Vector Embeddings Practice Quiz</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant text-[12px]">Scored 92% (9/10 correct) on cosine similarity and dot product geometry.</p>
+</div>
+</div>
+<!-- Event 2 -->
+<div class="relative flex items-start gap-3">
+<span class="absolute -left-4 mt-1.5 w-2.5 h-2.5 rounded-full bg-surface-container-highest border-2 border-white"></span>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">5:08 PM – 5:22 PM (14m)</span>
+<p class="font-title-md text-title-md text-on-surface font-semibold text-[13px]">RAG Pipeline Concept Review</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant text-[12px]">Reviewed instructor transcript notes on retriever chunking and latency.</p>
+</div>
+</div>
+<!-- Event 3 (Active) -->
+<div class="relative flex items-start gap-3">
+<span class="absolute -left-4 mt-1.5 w-2.5 h-2.5 rounded-full bg-[#16a34a] border-2 border-white animate-pulse"></span>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-label-sm text-label-sm text-[#16a34a] font-bold">5:25 PM – Present (Active)</span>
+<span class="px-1.5 py-0.2 rounded bg-emerald-100 text-[#166534] text-[9px] font-bold uppercase">Live</span>
+</div>
+<p class="font-title-md text-title-md text-on-surface font-semibold text-[13px]">AI Tutor Session on Self-Attention</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant text-[12px]">Deep dive into query, key, value projections and softmax calibration.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Summary metric pill -->
+<div class="mt-space-md p-space-sm bg-surface-container-low rounded-xl flex items-center justify-between text-label-sm text-label-sm">
+<div class="flex items-center gap-1.5 text-on-surface font-medium">
+<span class="material-symbols-outlined text-primary text-[18px]">local_fire_department</span>
+<span>7-day active study streak</span>
+</div>
+<span class="font-semibold text-primary">5.7 hrs / 5.0h weekly target</span>
+</div>
+</div>
+</section>
+<!-- 3 High-Level Metric Cards -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-space-lg mb-space-lg">
+<!-- Card 1: Curriculum Pace -->
+<div class="flex flex-col justify-between bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm hover:shadow-md transition-all">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-semibold">Curriculum Pace</span>
+<span class="px-2.5 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-sm text-label-sm font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> Ahead
+          </span>
+</div>
+<div class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">82% Milestone</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+          Next Target: Attention Decoders due Nov 28. Projected 3 days early based on current velocity.
+        </p>
+</div>
+<!-- Linear progress bar -->
+<div class="mt-space-md pt-space-xs">
+<div class="w-full bg-surface-container rounded-full h-2 overflow-hidden">
+<div class="bg-primary-container h-2 rounded-full transition-all duration-700" style="width: 82%;"></div>
+</div>
+<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant mt-2">
+<span>Encoder Architecture</span>
+<span class="font-semibold text-on-surface">82% Complete</span>
+</div>
+</div>
+</div>
+<!-- Card 2: Practice Accuracy -->
+<div class="flex flex-col justify-between bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm hover:shadow-md transition-all">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-semibold">Practice Accuracy</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm font-medium">5 Quizzes</span>
+</div>
+<div class="flex items-baseline gap-2">
+<div class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">84%</div>
+<span class="font-label-sm text-label-sm text-primary font-semibold">+6% vs last week</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+          Strong performance on Bayesian formulation and forward-pass derivations.
+        </p>
+</div>
+<!-- Mini Sparkline inline visual -->
+<div class="mt-space-md pt-space-xs flex items-end justify-between gap-1 h-8">
+<div class="w-1/5 bg-surface-container-high rounded-t-sm h-[65%]" title="Quiz 1: 76%"></div>
+<div class="w-1/5 bg-surface-container-high rounded-t-sm h-[75%]" title="Quiz 2: 80%"></div>
+<div class="w-1/5 bg-surface-container-high rounded-t-sm h-[70%]" title="Quiz 3: 78%"></div>
+<div class="w-1/5 bg-primary-fixed-dim rounded-t-sm h-[90%]" title="Quiz 4: 92%"></div>
+<div class="w-1/5 bg-primary-container rounded-t-sm h-[95%]" title="Quiz 5: 95%"></div>
+</div>
+</div>
+<!-- Card 3: AI Tutor Assistance -->
+<div class="flex flex-col justify-between bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm hover:shadow-md transition-all">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-semibold">AI Tutor Assistance</span>
+<span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface font-label-sm text-label-sm font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-primary text-[14px]">check_circle</span> Grounded
+          </span>
+</div>
+<div class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">18 Doubts Resolved</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+          Every response grounded in syllabus lecture transcripts. 0 flagged concept roadblocks.
+        </p>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center gap-2">
+<div class="flex -space-x-1.5 overflow-hidden">
+<span class="inline-block w-6 h-6 rounded-full bg-primary-fixed text-on-primary-fixed-variant text-center leading-6 text-[10px] font-bold">Q1</span>
+<span class="inline-block w-6 h-6 rounded-full bg-primary-container text-on-primary text-center leading-6 text-[10px] font-bold">Q2</span>
+<span class="inline-block w-6 h-6 rounded-full bg-secondary text-on-secondary text-center leading-6 text-[10px] font-bold">Q3</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Avg latency 1.4s with multimodal graphs</span>
+</div>
+</div>
+</section>
+<!-- Split Grid: Adaptive Intelligence Insights & Study Activity Consistency -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg mb-space-lg">
+<!-- Left 7 cols: Adaptive Intelligence Insights -->
+<div class="lg:col-span-7 flex flex-col bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm">
+<div class="flex items-center justify-between mb-space-md">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">psychology</span>
+</div>
+<div>
+<h2 class="font-title-lg text-title-lg text-on-surface font-bold">Adaptive Intelligence Insights</h2>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Real-time Bayesian difficulty mapping &amp; dynamic RAG interventions</p>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm font-semibold">Active Engine</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-space-md">
+        Adapted AI continuously calibrates challenge depth to keep Aarav in his optimal learning zone—preventing both cognitive fatigue and conceptual frustration.
+      </p>
+<div class="space-y-space-md flex-1">
+<!-- Diagnostic Gap / Targeted Focus Area -->
+<div class="p-space-md rounded-xl bg-surface-container-low transition-all hover:bg-surface-container">
+<div class="flex items-start justify-between gap-2 mb-1">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+<span class="font-label-sm text-label-sm font-semibold uppercase tracking-wider text-secondary-container">Active Remediation Drill</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Caliber Gap: -0.3</span>
+</div>
+<p class="font-title-md text-title-md text-on-surface font-semibold">Attention Mechanisms &amp; Multi-Head Self-Attention</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 leading-relaxed">
+            AI detected a temporary variance gap on query-key projection dimension calculations. It auto-scheduled 2 micro-practice interactive drills before proceeding to Cross-Attention.
+          </p>
+<div class="flex items-center gap-3 mt-space-sm pt-space-xs">
+<span class="inline-flex items-center gap-1 font-label-sm text-label-sm text-primary font-semibold">
+<span class="material-symbols-outlined text-[16px]">schedule</span> 2 drills (8 mins total)
+            </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">• Next up today</span>
+</div>
+</div>
+<!-- Strong Foundation / Accelerated Track -->
+<div class="p-space-md rounded-xl bg-surface-container-low transition-all hover:bg-surface-container">
+<div class="flex items-start justify-between gap-2 mb-1">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+<span class="font-label-sm text-label-sm font-semibold uppercase tracking-wider text-primary font-semibold">Demonstrated Mastery • 92%</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-semibold">Advanced to Level 3.8</span>
+</div>
+<p class="font-title-md text-title-md text-on-surface font-semibold">Vector Embeddings &amp; Cosine Distance Geometry</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 leading-relaxed">
+            Aarav demonstrated swift synthetic intuition with high dimensional vector spaces. The Bayesian engine escalated challenge depth to advanced hierarchical indexing problems.
+          </p>
+<div class="flex items-center gap-3 mt-space-sm pt-space-xs">
+<span class="inline-flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant font-medium">
+<span class="material-symbols-outlined text-[16px] text-primary">verified</span> Milestone achieved 4 days early
+            </span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right 5 cols: Study Activity & Weekly Consistency Chart -->
+<div class="lg:col-span-5 flex flex-col justify-between bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm">
+<div>
+<div class="flex items-center justify-between mb-space-xs">
+<h2 class="font-title-lg text-title-lg text-on-surface font-bold">Weekly Consistency</h2>
+<span class="font-headline-sm text-headline-sm text-primary font-bold">5.7 hrs</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-space-lg">Logged over 7 consecutive active study days</p>
+<!-- Daily Bar Graph Visualizer -->
+<div class="grid grid-cols-7 gap-2 items-end h-44 pb-2">
+<!-- Mon -->
+<div class="flex flex-col items-center gap-2 h-full justify-end group">
+<span class="font-label-sm text-label-sm text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">45m</span>
+<div class="w-full bg-primary-fixed rounded-lg transition-all group-hover:bg-primary-container" style="height: 60%;"></div>
+<span class="font-label-sm text-label-sm text-on-surface font-medium">Mon</span>
+</div>
+<!-- Tue -->
+<div class="flex flex-col items-center gap-2 h-full justify-end group">
+<span class="font-label-sm text-label-sm text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">60m</span>
+<div class="w-full bg-primary-fixed rounded-lg transition-all group-hover:bg-primary-container" style="height: 80%;"></div>
+<span class="font-label-sm text-label-sm text-on-surface font-medium">Tue</span>
+</div>
+<!-- Wed -->
+<div class="flex flex-col items-center gap-2 h-full justify-end group">
+<span class="font-label-sm text-label-sm text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">50m</span>
+<div class="w-full bg-primary-fixed rounded-lg transition-all group-hover:bg-primary-container" style="height: 66%;"></div>
+<span class="font-label-sm text-label-sm text-on-surface font-medium">Wed</span>
+</div>
+<!-- Thu -->
+<div class="flex flex-col items-center gap-2 h-full justify-end group">
+<span class="font-label-sm text-label-sm text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">30m</span>
+<div class="w-full bg-surface-container rounded-lg transition-all group-hover:bg-primary-container" style="height: 40%;"></div>
+<span class="font-label-sm text-label-sm text-on-surface font-medium">Thu</span>
+</div>
+<!-- Fri (Peak) -->
+<div class="flex flex-col items-center gap-2 h-full justify-end group">
+<span class="font-label-sm text-label-sm text-primary font-bold opacity-0 group-hover:opacity-100 transition-opacity">75m</span>
+<div class="w-full bg-primary-container rounded-lg transition-all shadow-sm" style="height: 100%;"></div>
+<span class="font-label-sm text-label-sm text-primary font-bold">Fri</span>
+</div>
+<!-- Sat -->
+<div class="flex flex-col items-center gap-2 h-full justify-end group">
+<span class="font-label-sm text-label-sm text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">60m</span>
+<div class="w-full bg-primary-fixed rounded-lg transition-all group-hover:bg-primary-container" style="height: 80%;"></div>
+<span class="font-label-sm text-label-sm text-on-surface font-medium">Sat</span>
+</div>
+<!-- Sun -->
+<div class="flex flex-col items-center gap-2 h-full justify-end group">
+<span class="font-label-sm text-label-sm text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">20m</span>
+<div class="w-full bg-surface-container rounded-lg transition-all group-hover:bg-primary-container" style="height: 26%;"></div>
+<span class="font-label-sm text-label-sm text-on-surface font-medium">Sun</span>
+</div>
+</div>
+</div>
+<!-- Cognitive Window Callout -->
+<div class="mt-space-md p-space-sm bg-surface-container-low rounded-xl flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-surface-container-lowest flex items-center justify-center flex-shrink-0 text-primary">
+<span class="material-symbols-outlined text-[20px]">routine</span>
+</div>
+<div class="min-w-0">
+<p class="font-title-md text-title-md text-on-surface font-semibold text-[13px] leading-tight">Optimal Focus Window: 4:30 PM – 6:00 PM</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Demonstrating consistent rhythm and balanced cognitive stamina.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Recent Diagnostic Milestones & Topics Covered -->
+<section class="w-full bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm mb-space-lg">
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-space-sm mb-space-md">
+<div>
+<h2 class="font-title-lg text-title-lg text-on-surface font-bold">Recent Diagnostic Milestones &amp; Topics</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Continuous evaluation outcomes mapped to the National CS &amp; AI Framework</p>
+</div>
+<a class="inline-flex items-center gap-1 font-label-lg text-label-lg text-primary hover:text-on-primary-fixed-variant transition-colors self-start sm:self-auto font-medium" href="#">
+<span>View Full Learning Transcript</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+<!-- Diagnostic List Items -->
+<div class="space-y-space-xs">
+<!-- Item 1 -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between p-space-md rounded-xl hover:bg-surface-container-low transition-colors gap-space-sm">
+<div class="flex items-start sm:items-center gap-space-md min-w-0">
+<div class="w-10 h-10 rounded-xl bg-primary-fixed flex items-center justify-center flex-shrink-0 text-primary">
+<span class="material-symbols-outlined text-[22px]">account_tree</span>
+</div>
+<div class="min-w-0">
+<div class="flex items-center gap-2 flex-wrap">
+<p class="font-title-md text-title-md text-on-surface font-semibold">Transformers &amp; RAG Pipeline Integration</p>
+<span class="px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant font-label-sm text-label-sm font-medium">Module 4.2</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate mt-0.5">Evaluated tokenization limits, retriever context windows, and hallucination reduction.</p>
+</div>
+</div>
+<div class="flex items-center gap-space-md flex-shrink-0 pl-14 sm:pl-0">
+<div class="text-left sm:text-right">
+<div class="flex items-center sm:justify-end gap-1.5">
+<span class="font-title-md text-title-md text-on-surface font-bold">80%</span>
+<span class="font-label-sm text-label-sm text-primary font-semibold">Caliber +0.4</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Completed Yesterday</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px] hidden sm:inline">chevron_right</span>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between p-space-md rounded-xl hover:bg-surface-container-low transition-colors gap-space-sm">
+<div class="flex items-start sm:items-center gap-space-md min-w-0">
+<div class="w-10 h-10 rounded-xl bg-primary-fixed flex items-center justify-center flex-shrink-0 text-primary">
+<span class="material-symbols-outlined text-[22px]">dataset</span>
+</div>
+<div class="min-w-0">
+<div class="flex items-center gap-2 flex-wrap">
+<p class="font-title-md text-title-md text-on-surface font-semibold">Vector Embeddings &amp; ChromaDB Storage</p>
+<span class="px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant font-label-sm text-label-sm font-medium">Module 4.1</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate mt-0.5">Flawless execution on cosine similarity matrices, Euclidean distance indices, and batch insertion.</p>
+</div>
+</div>
+<div class="flex items-center gap-space-md flex-shrink-0 pl-14 sm:pl-0">
+<div class="text-left sm:text-right">
+<div class="flex items-center sm:justify-end gap-1.5">
+<span class="font-title-md text-title-md text-primary font-bold">100%</span>
+<span class="font-label-sm text-label-sm text-primary font-semibold">Caliber +0.6</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">3 days ago</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px] hidden sm:inline">chevron_right</span>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between p-space-md rounded-xl hover:bg-surface-container-low transition-colors gap-space-sm">
+<div class="flex items-start sm:items-center gap-space-md min-w-0">
+<div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center flex-shrink-0 text-on-surface-variant">
+<span class="material-symbols-outlined text-[22px]">calculate</span>
+</div>
+<div class="min-w-0">
+<div class="flex items-center gap-2 flex-wrap">
+<p class="font-title-md text-title-md text-on-surface font-semibold">Backpropagation &amp; Gradients Calculus</p>
+<span class="px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant font-label-sm text-label-sm font-medium">Module 3.8</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate mt-0.5">Chain rule applications in multi-layer perceptrons and stochastic gradient descent optimization.</p>
+</div>
+</div>
+<div class="flex items-center gap-space-md flex-shrink-0 pl-14 sm:pl-0">
+<div class="text-left sm:text-right">
+<div class="flex items-center sm:justify-end gap-1.5">
+<span class="font-title-md text-title-md text-on-surface font-bold">88%</span>
+<span class="font-label-sm text-label-sm text-primary font-semibold">Caliber +0.2</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">5 days ago</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px] hidden sm:inline">chevron_right</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Parental Controls & Quiet Advisory Footer -->
+<footer class="w-full bg-surface-container-low rounded-2xl p-space-lg flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<!-- WhatsApp / SMS Notification Toggle -->
+<div class="flex items-center gap-space-md">
+<div class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" id="smsToggle" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+</div>
+<label class="cursor-pointer select-none" for="smsToggle">
+<p class="font-title-md text-title-md text-on-surface font-semibold text-[14px]">Weekly SMS &amp; WhatsApp digests</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Direct snapshot sent every Sunday at 7:00 PM IST</p>
+</label>
+</div>
+<!-- Quick Academic Advisor Link -->
+<div class="flex items-center gap-space-md">
+<a class="inline-flex items-center gap-2 px-space-md py-2 rounded-xl bg-surface-container-lowest hover:bg-surface text-on-surface font-label-lg text-label-lg shadow-sm transition-all" href="#">
+<span class="material-symbols-outlined text-primary text-[18px]">support_agent</span>
+<span>Schedule 1-on-1 with Academic Advisor</span>
+</a>
+</div>
+</footer>
+</div>
+<script>
+  // Clean UI Micro-Interaction for the SMS/WhatsApp Digest Toggle
+  const toggle = document.getElementById('smsToggle');
+  if (toggle) {
+    toggle.addEventListener('change', function() {
+      const state = this.checked ? 'enabled' : 'disabled';
+      console.log('Parental notification preferences updated: Weekly digests ' + state);
+    });
+  }
+</script></main></div></body></html>

@@ -7,6 +7,8 @@ from app.services.rag_service import search
 
 def generate_quiz(db: Session, user_id: int, topic_id: int, difficulty: str, level: str, goal: str, count: int = 5):
     topic = db.query(Topic).filter(Topic.id == topic_id).first()
+    if not topic:
+        raise ValueError(f"Topic with id {topic_id} not found")
     
     # RAG search for the topic
     rag_results = search(user_id, topic.name, k=3)

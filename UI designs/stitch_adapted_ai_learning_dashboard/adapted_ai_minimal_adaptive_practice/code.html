@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-dim": "#cbdbf5",
+            "on-tertiary": "#ffffff",
+            "secondary-fixed": "#dbe1ff",
+            "on-secondary": "#ffffff",
+            "error-container": "#ffdad6",
+            "surface-bright": "#f8f9ff",
+            "on-primary": "#ffffff",
+            "surface-container-low": "#eff4ff",
+            "on-background": "#0b1c30",
+            "tertiary-fixed-dim": "#d0bcff",
+            "secondary-fixed-dim": "#b4c5ff",
+            "primary": "#3525cd",
+            "secondary": "#0051d5",
+            "surface-container": "#e5eeff",
+            "surface-tint": "#4d44e3",
+            "error": "#ba1a1a",
+            "tertiary-container": "#6f3dd9",
+            "on-tertiary-container": "#e3d5ff",
+            "on-primary-fixed-variant": "#3323cc",
+            "on-tertiary-fixed-variant": "#5516be",
+            "surface-variant": "#d3e4fe",
+            "tertiary-fixed": "#e9ddff",
+            "on-secondary-fixed": "#00174b",
+            "inverse-surface": "#213145",
+            "inverse-primary": "#c3c0ff",
+            "inverse-on-surface": "#eaf1ff",
+            "on-tertiary-fixed": "#23005c",
+            "on-secondary-fixed-variant": "#003ea8",
+            "surface": "#f8f9ff",
+            "on-error-container": "#93000a",
+            "primary-fixed": "#e2dfff",
+            "on-primary-fixed": "#0f0069",
+            "surface-container-highest": "#d3e4fe",
+            "tertiary": "#571ac0",
+            "outline-variant": "#e2e8f0",
+            "surface-container-high": "#dce9ff",
+            "on-surface-variant": "#64748b",
+            "on-secondary-container": "#fefcff",
+            "primary-container": "#4f46e5",
+            "outline": "#94a3b8",
+            "on-primary-container": "#dad7ff",
+            "on-surface": "#0f172a",
+            "background": "#f8f9ff",
+            "primary-fixed-dim": "#c3c0ff",
+            "secondary-container": "#316bf3",
+            "on-error": "#ffffff",
+            "surface-container-lowest": "#ffffff"
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-surface font-sans text-on-surface antialiased">
+<!-- Sidebar -->
+<aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-lowest z-50 flex flex-col justify-between border-r border-slate-100 shadow-[0_1px_4px_rgba(0,0,0,0.02)] overflow-y-auto">
+<div class="flex flex-col p-6">
+<div class="flex items-center gap-3 pb-6 px-1">
+<img alt="Adapted AI Logo" class="h-8 w-auto object-contain rounded" src="https://lh3.googleusercontent.com/aida/AEtjO1X7QC8zm1H3ovy_YgGFMEZxh30_uNRwwmFVTDvjywoeR1EFJaNB3zfUJASTP5VDn0a8HYNCxBok3c3SY-DFeTtl6qR08jacv44YiIaz6WP4e5YG64yvqEtK3_fFqaPMccY32Zbl0Q-RktwNfYZLThSaA1okh2PiNIisj7sn7nJhf7_zvmIFovgNKWzUIFRxbX5We0ZYFaB93WNJDU9C6IGCe2MV-XyVIY0dCKKG_8XVwcPfQyglXA1s1RSt"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="text-base text-on-surface tracking-tight font-bold">Adapted AI</span>
+<span class="text-[11px] bg-slate-100 text-slate-500 font-medium px-2 py-0.5 rounded-full">SkillMatix</span>
+</div>
+</div>
+</div>
+<nav class="flex flex-col gap-1.5 mt-2">
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-slate-50 hover:text-on-surface transition-colors" data-path="dashboard" href="#">
+<span class="material-symbols-outlined text-[20px]">space_dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-slate-50 hover:text-on-surface transition-colors" data-path="dynamic-learner-profile" href="#">
+<span class="material-symbols-outlined text-[20px]">person_outline</span>
+<span class="text-sm font-medium">Dynamic Learner Profile</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-primary-container text-white font-semibold shadow-sm transition-all" data-path="adaptive-practice" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1">model_training</span>
+<span class="text-sm">Adaptive Practice</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-slate-50 hover:text-on-surface transition-colors" data-path="learning-path" href="#">
+<span class="material-symbols-outlined text-[20px]">alt_route</span>
+<span class="text-sm font-medium">Learning Path</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-slate-50 hover:text-on-surface transition-colors" data-path="ai-chat-assistant" href="#">
+<span class="material-symbols-outlined text-[20px]">smart_toy</span>
+<span class="text-sm font-medium">AI Chat Assistant</span>
+</a>
+</nav>
+</div>
+<!-- Learner Info at Bottom -->
+<div class="p-5 border-t border-slate-100">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-primary-container/10 text-primary flex items-center justify-center font-semibold text-sm">
+          AS
+        </div>
+<div class="flex flex-col min-w-0 flex-1">
+<span class="text-sm text-on-surface font-semibold truncate leading-tight">Aarav Sharma</span>
+<span class="text-xs text-on-surface-variant truncate">Level 4 · Caliber 3.2</span>
+</div>
+<a class="text-slate-400 hover:text-slate-600 transition-colors p-1" data-path="login" href="#" title="Sign Out">
+<span class="material-symbols-outlined text-[18px]">logout</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="pl-72 min-h-screen flex flex-col">
+<!-- Top Header -->
+<header class="h-16 bg-surface/90 backdrop-blur-md border-b border-slate-100 sticky top-0 z-40 flex items-center justify-between px-10">
+<div class="flex items-center gap-3 w-full max-w-md">
+<div class="relative w-full flex items-center">
+<span class="material-symbols-outlined text-slate-400 absolute left-3.5 text-[18px]">search</span>
+<input class="w-full pl-10 pr-10 py-2 bg-white border border-slate-200/70 rounded-xl text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-container/20 focus:border-primary-container transition-all" placeholder="Search concepts, practice history..." type="text"/>
+<span class="absolute right-3 text-[11px] text-slate-400 font-medium">⌘K</span>
+</div>
+</div>
+<div class="flex items-center gap-5">
+<div class="flex items-center gap-2 text-xs text-slate-600 font-medium bg-white px-3 py-1.5 rounded-full border border-slate-100 shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<span>Adaptive Caliber Online</span>
+</div>
+<div class="relative flex items-center justify-center text-slate-500 hover:text-slate-800 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 text-xs font-medium">
+          AS
+        </div>
+</div>
+</header>
+<!-- Main Practice Workspace -->
+<main class="flex-1 px-10 py-10 max-w-6xl w-full mx-auto space-y-10">
+<!-- Title & Context -->
+<div class="flex items-end justify-between border-b border-slate-200/60 pb-6">
+<div>
+<h1 class="text-3xl font-bold tracking-tight text-slate-900">Adaptive Practice</h1>
+<p class="text-slate-500 text-sm mt-1">Calibrated in real-time to your mastery profile and target milestones.</p>
+</div>
+<div class="flex items-center gap-3 text-sm">
+<div class="flex items-center gap-2 bg-white px-3.5 py-1.5 rounded-xl border border-slate-200/70 shadow-sm text-slate-700">
+<span class="material-symbols-outlined text-primary-container text-[18px]">psychology</span>
+<span class="font-medium">Caliber 3.2</span>
+<span class="text-slate-300">|</span>
+<span class="text-xs text-slate-500">Advanced</span>
+</div>
+<div class="flex items-center gap-2 bg-white px-3.5 py-1.5 rounded-xl border border-slate-200/70 shadow-sm text-slate-700">
+<span class="material-symbols-outlined text-amber-500 text-[18px]">local_fire_department</span>
+<span class="font-medium">6 Days</span>
+</div>
+</div>
+</div>
+<!-- Centerpiece Hero: Recommended Session Card -->
+<div class="relative bg-white rounded-3xl p-10 border border-slate-200/70 shadow-[0_4px_24px_rgba(15,23,42,0.03)] overflow-hidden">
+<div class="max-w-2xl space-y-6">
+<div class="inline-flex items-center gap-2 text-xs font-semibold text-primary-container uppercase tracking-wider">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+            Recommended Practice Session
+          </div>
+<div>
+<h2 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight leading-tight">
+              Attention Mechanisms &amp; Multi-Head Projections
+            </h2>
+<p class="text-slate-500 text-base mt-2.5 leading-relaxed">
+              Targeted query/key matrix derivations, scaling dimensions, and tensor projection shapes designed to strengthen transformer fundamentals.
+            </p>
+</div>
+<!-- Session Quick Specs -->
+<div class="flex flex-wrap items-center gap-6 pt-2 text-sm text-slate-600">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400 text-[18px]">timer</span>
+<span>10–12 mins</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400 text-[18px]">help_outline</span>
+<span>5 adaptive questions</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400 text-[18px]">insights</span>
+<span>Caliber Level 3.2</span>
+</div>
+</div>
+<!-- Primary CTA Action -->
+<div class="pt-4 flex items-center gap-4">
+<button class="inline-flex items-center justify-center gap-2.5 bg-primary-container text-white px-8 py-3.5 rounded-xl text-base font-semibold hover:bg-primary transition-all shadow-sm shadow-primary-container/25 active:scale-[0.98] cursor-pointer" id="start-btn">
+<span>Start Practice</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+<button class="inline-flex items-center justify-center text-slate-600 hover:text-slate-900 px-5 py-3.5 rounded-xl text-sm font-medium hover:bg-slate-50 transition-colors cursor-pointer">
+              Preview Topics
+            </button>
+</div>
+</div>
+</div>
+<!-- Secondary Practice Modes & Minimal History -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+<!-- Left 2 Cols: Simplified Secondary Modes -->
+<div class="lg:col-span-2 space-y-4">
+<div class="flex items-center justify-between px-1">
+<h3 class="text-base font-semibold text-slate-900">Alternative Practice Modes</h3>
+<span class="text-xs text-slate-400">Choose your pace</span>
+</div>
+<div class="space-y-3">
+<!-- Mode 1 -->
+<div class="bg-white p-6 rounded-2xl border border-slate-200/70 shadow-sm hover:border-slate-300 transition-all flex items-center justify-between gap-4">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<h4 class="text-base font-semibold text-slate-900">Quick Diagnostic</h4>
+<span class="text-xs text-slate-400 font-medium">· 5 mins · 5 Qs</span>
+</div>
+<p class="text-xs text-slate-500">Rapid conceptual retention check across active machine learning modules.</p>
+</div>
+<button class="shrink-0 text-sm font-medium text-slate-700 hover:text-primary-container px-4 py-2 rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-1">
+<span>Start</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+<!-- Mode 2 -->
+<div class="bg-white p-6 rounded-2xl border border-slate-200/70 shadow-sm hover:border-slate-300 transition-all flex items-center justify-between gap-4">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<h4 class="text-base font-semibold text-slate-900">Deep Focus Review</h4>
+<span class="text-xs text-slate-400 font-medium">· 20 mins · Multi-step</span>
+</div>
+<p class="text-xs text-slate-500">Complex mathematical derivations and multi-step tensor proofs on weak concepts.</p>
+</div>
+<button class="shrink-0 text-sm font-medium text-slate-700 hover:text-primary-container px-4 py-2 rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-1">
+<span>Start</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+<!-- Mode 3 -->
+<div class="bg-white p-6 rounded-2xl border border-slate-200/70 shadow-sm hover:border-slate-300 transition-all flex items-center justify-between gap-4">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<h4 class="text-base font-semibold text-slate-900">Spaced Review</h4>
+<span class="text-xs text-slate-400 font-medium">· 10 mins · Retention</span>
+</div>
+<p class="text-xs text-slate-500">Targeted reinforcement spaced along the forgetting curve for theorem memory.</p>
+</div>
+<button class="shrink-0 text-sm font-medium text-slate-700 hover:text-primary-container px-4 py-2 rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-1">
+<span>Start</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Right 1 Col: Quiet, Minimal History / Progress Widget -->
+<div class="space-y-4">
+<div class="flex items-center justify-between px-1">
+<h3 class="text-base font-semibold text-slate-900">Recent Sessions</h3>
+<span class="text-xs text-slate-400">Past 7 days</span>
+</div>
+<div class="bg-white rounded-2xl border border-slate-200/70 shadow-sm divide-y divide-slate-100">
+<div class="p-4 flex items-center justify-between">
+<div class="min-w-0 pr-3">
+<p class="text-sm font-medium text-slate-800 truncate">Test #04: Transformers &amp; Ingestion</p>
+<p class="text-xs text-slate-400 mt-0.5">2 hours ago · 5 Qs</p>
+</div>
+<span class="text-sm font-semibold text-slate-900">80%</span>
+</div>
+<div class="p-4 flex items-center justify-between">
+<div class="min-w-0 pr-3">
+<p class="text-sm font-medium text-slate-800 truncate">Test #03: Vector Embeddings</p>
+<p class="text-xs text-slate-400 mt-0.5">Yesterday · 10 Qs</p>
+</div>
+<span class="text-sm font-semibold text-slate-900">90%</span>
+</div>
+<div class="p-4 flex items-center justify-between">
+<div class="min-w-0 pr-3">
+<p class="text-sm font-medium text-slate-800 truncate">Test #02: Neural Foundations</p>
+<p class="text-xs text-slate-400 mt-0.5">3 days ago · 5 Qs</p>
+</div>
+<span class="text-sm font-semibold text-slate-900">100%</span>
+</div>
+</div>
+<!-- Subtle Mastery Note -->
+<div class="px-3 py-2 text-xs text-slate-400 flex items-center gap-2">
+<span class="material-symbols-outlined text-[15px] text-slate-400">check_circle</span>
+<span>Accuracy maintained at 84% (+3.2% this week)</span>
+</div>
+</div>
+</div>
+</main>
+</div>
+<script>
+    const btn = document.getElementById('start-btn');
+    btn?.addEventListener('click', () => {
+      btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[18px]">progress_activity</span><span>Preparing Session...</span>';
+      setTimeout(() => {
+        btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">check_circle</span><span>Session Ready</span>';
+      }, 700);
+    });
+  </script>
+</body></html>

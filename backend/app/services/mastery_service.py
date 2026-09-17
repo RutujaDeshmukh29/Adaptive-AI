@@ -11,6 +11,18 @@ def update_mastery(db: Session, user_id: int, attempt_id: int):
         TopicMastery.user_id == user_id, 
         TopicMastery.topic_id == attempt.topic_id
     ).first()
+    if not mastery_record:
+        mastery_record = TopicMastery(
+            user_id=user_id,
+            topic_id=attempt.topic_id,
+            mastery_score=0.0,
+            attempts=0,
+            correct_answers=0,
+            total_questions=0
+        )
+        db.add(mastery_record)
+        db.commit()
+        db.refresh(mastery_record)
     
     correct_count = sum(1 for q in questions if q.is_correct)
     score_pct = (correct_count / len(questions)) * 100.0 if questions else 0.0

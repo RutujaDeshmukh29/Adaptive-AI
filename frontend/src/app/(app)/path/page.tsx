@@ -88,9 +88,16 @@ export default function PathPage() {
                 <CardContent>
                   <p className="text-sm text-slate-600 mb-4">{item.reason}</p>
                   {(item.status === 'current' || item.status === 'in_progress') && (
-                    <Link href={`/practice`}>
+                    <Link href={`/practice?topic_id=${item.topic_id}`}>
                       <Button size="sm" className="w-full sm:w-auto">
                         <GraduationCap className="h-4 w-4 mr-2" /> Study Now
+                      </Button>
+                    </Link>
+                  )}
+                  {item.status === 'done' && (
+                    <Link href={`/practice?topic_id=${item.topic_id}`}>
+                      <Button size="sm" variant="outline" className="w-full sm:w-auto border-green-300 text-green-700 hover:bg-green-100">
+                        <CheckCircle2 className="h-4 w-4 mr-2 text-green-600" /> Review Practice
                       </Button>
                     </Link>
                   )}

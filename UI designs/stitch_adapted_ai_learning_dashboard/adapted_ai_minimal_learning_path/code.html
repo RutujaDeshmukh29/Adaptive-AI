@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-primary": "#ffffff",
+            "surface-container-highest": "#d3e4fe",
+            "secondary": "#0051d5",
+            "on-tertiary-fixed-variant": "#5516be",
+            "primary-fixed": "#e2dfff",
+            "surface-variant": "#d3e4fe",
+            "on-primary-fixed": "#0f0069",
+            "surface-container": "#e5eeff",
+            "secondary-fixed-dim": "#b4c5ff",
+            "primary-container": "#4f46e5",
+            "on-primary-fixed-variant": "#3323cc",
+            "on-tertiary-container": "#e3d5ff",
+            "error": "#ba1a1a",
+            "on-background": "#0b1c30",
+            "tertiary-fixed-dim": "#d0bcff",
+            "surface-container-lowest": "#ffffff",
+            "surface": "#f8fafc",
+            "secondary-fixed": "#dbe1ff",
+            "on-error-container": "#93000a",
+            "on-error": "#ffffff",
+            "on-primary-container": "#dad7ff",
+            "primary-fixed-dim": "#c3c0ff",
+            "background": "#f8fafc",
+            "outline-variant": "#e2e8f0",
+            "surface-dim": "#cbdbf5",
+            "on-surface": "#0f172a",
+            "primary": "#3525cd",
+            "on-secondary-fixed-variant": "#003ea8",
+            "on-secondary-container": "#fefcff",
+            "surface-container-high": "#dce9ff",
+            "tertiary": "#571ac0",
+            "on-surface-variant": "#64748b",
+            "outline": "#94a3b8",
+            "on-secondary-fixed": "#00174b",
+            "inverse-surface": "#213145",
+            "surface-tint": "#4d44e3",
+            "inverse-primary": "#c3c0ff",
+            "on-tertiary-fixed": "#23005c",
+            "tertiary-fixed": "#e9ddff",
+            "on-tertiary": "#ffffff",
+            "secondary-container": "#316bf3",
+            "surface-container-low": "#f1f5f9",
+            "error-container": "#ffdad6",
+            "tertiary-container": "#6f3dd9",
+            "inverse-on-surface": "#eaf1ff",
+            "surface-bright": "#f8fafc",
+            "on-secondary": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.375rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "full": "9999px"
+          },
+          "fontFamily": {
+            "body": ["Inter", "sans-serif"],
+            "heading": ["Inter", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-surface font-body text-slate-800 antialiased min-h-screen">
+<!-- Left Sidebar Navigation -->
+<aside class="fixed left-0 top-0 h-full w-72 bg-white border-r border-slate-100 z-50 flex flex-col justify-between">
+<div class="flex flex-col p-6">
+<!-- Logo -->
+<div class="flex items-center gap-3 pb-8">
+<img alt="Adapted AI Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAU8D6Az0lPo07wlAui5OPd2vHbKmaRirvW7DfxQJxCOcrv9JkA5jKvAMBwed8bvlowG7tQWex3faYjA0Babe1kosGkNrvSi8ut-ZkcMFKTeQH2yHQNIcRrschW2wpPa7YP4_1KDHVcSmdxBmSTml9N5ChRi6olI43OXk8ezy6L3_EFCQKOheYxK8MxBBtavf6jsZuSFdcczbervrrpn5gQi6ll7bBeUy7Eb8utboqvSFspFSSDMSZVw"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="text-base text-slate-900 tracking-tight font-bold">Adapted AI</span>
+<span class="text-[11px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-medium">by SkillMatix</span>
+</div>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex flex-col gap-1.5">
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors text-sm font-medium" data-path="dashboard" href="#">
+<span class="material-symbols-outlined text-[20px]">space_dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors text-sm font-medium" data-path="dynamic-learner-profile" href="#">
+<span class="material-symbols-outlined text-[20px]">person_outline</span>
+<span>Dynamic Learner Profile</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors text-sm font-medium" data-path="adaptive-practice" href="#">
+<span class="material-symbols-outlined text-[20px]">model_training</span>
+<span>Adaptive Practice</span>
+</a>
+<a aria-current="page" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg transition-colors bg-indigo-600 text-white font-medium shadow-sm" data-path="learning-path" href="#">
+<span class="material-symbols-outlined text-[20px]">alt_route</span>
+<span>Learning Path</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors text-sm font-medium" data-path="ai-chat-assistant" href="#">
+<span class="material-symbols-outlined text-[20px]">smart_toy</span>
+<span>AI Chat Assistant</span>
+</a>
+</nav>
+</div>
+<!-- User Profile Footer -->
+<div class="p-6 border-t border-slate-100">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center shrink-0 font-semibold text-sm">
+          AS
+        </div>
+<div class="flex flex-col min-w-0 flex-1">
+<span class="text-sm text-slate-900 font-semibold truncate leading-tight">Aarav Sharma</span>
+<span class="text-xs text-slate-500 truncate leading-tight mt-0.5">Level 4 · Advanced</span>
+</div>
+<a class="text-slate-400 hover:text-slate-600 p-1 transition-colors" data-path="login" href="#" title="Log Out">
+<span class="material-symbols-outlined text-[18px]">logout</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<div class="pl-72">
+<!-- Top Header -->
+<header class="h-16 border-b border-slate-100 bg-white sticky top-0 z-40 flex items-center justify-between px-8">
+<div class="flex items-center gap-4 w-full max-w-md">
+<div class="relative w-full flex items-center">
+<span class="material-symbols-outlined text-slate-400 absolute left-3.5 text-[18px]">search</span>
+<input class="w-full pl-10 pr-10 py-2 bg-slate-50 border-none text-slate-900 placeholder:text-slate-400 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Search concepts, modules, notes..." type="text"/>
+<div class="absolute right-3 px-1.5 py-0.5 bg-slate-200/60 rounded text-[10px] text-slate-500 font-medium">⌘K</div>
+</div>
+</div>
+<div class="flex items-center gap-5">
+<div class="flex items-center gap-2 text-xs font-medium text-slate-600 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<span>Adaptive Caliber Level 3.2</span>
+</div>
+<button class="text-slate-400 hover:text-slate-600 relative transition-colors">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-100 flex items-center justify-center font-medium text-xs">
+          AS
+        </div>
+</div>
+</header>
+<!-- Main Layout Container -->
+<main class="max-w-6xl mx-auto px-8 py-10">
+<div class="flex flex-col gap-10">
+<!-- Page Header -->
+<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+<div>
+<h1 class="text-3xl font-bold text-slate-900 tracking-tight">Learning Path</h1>
+<p class="text-slate-500 text-sm mt-1.5">
+              Personalized curriculum adapting to your mastery level and goals.
+            </p>
+</div>
+<div class="flex items-center gap-2 text-xs font-medium text-slate-600 bg-white border border-slate-200/80 px-3.5 py-2 rounded-lg shadow-xs self-start sm:self-auto">
+<span class="w-2 h-2 rounded-full bg-indigo-600"></span>
+<span>Target: NLP &amp; Transformers · 65% Completed</span>
+</div>
+</div>
+<!-- Current Active Module Banner -->
+<div class="bg-white border border-slate-200/80 rounded-2xl p-8 shadow-xs">
+<div class="flex flex-col gap-6">
+<div class="flex items-center justify-between">
+<span class="text-xs font-semibold uppercase tracking-wider text-indigo-600">
+                Current Module · Step 4 of 6
+              </span>
+<span class="text-xs text-slate-500 font-medium">
+                Estimated 2.5 hrs remaining
+              </span>
+</div>
+<div>
+<h2 class="text-2xl font-bold text-slate-900 tracking-tight">
+                Attention Mechanisms &amp; Transformer Decoders
+              </h2>
+<p class="text-slate-500 text-sm mt-2 max-w-3xl leading-relaxed">
+                Scaled dot-product attention, multi-head projections, and causal masking architecture.
+              </p>
+</div>
+<!-- Progress Bar -->
+<div class="space-y-2">
+<div class="flex justify-between text-xs text-slate-500 font-medium">
+<span>Module Progress</span>
+<span class="text-slate-900 font-semibold">65%</span>
+</div>
+<div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+<div class="bg-indigo-600 h-full rounded-full transition-all duration-300" style="width: 65%;"></div>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex items-center gap-4 pt-1">
+<button class="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors shadow-xs">
+<span>Continue Learning</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+<button class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors px-3 py-2">
+                View Syllabus
+              </button>
+</div>
+</div>
+</div>
+<!-- 2-Column Roadmap Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Left Column: Core Milestones List -->
+<div class="lg:col-span-8 flex flex-col gap-4">
+<h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">
+              Roadmap Milestones
+            </h3>
+<!-- Milestone 1: Completed -->
+<div class="bg-white border border-slate-200/80 rounded-xl p-5 flex items-center justify-between hover:border-slate-300 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+<div>
+<h4 class="text-base font-semibold text-slate-900">Foundations of Deep Learning</h4>
+<span class="text-xs text-slate-500">Completed · 92%</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-300 text-[20px]">chevron_right</span>
+</div>
+<!-- Milestone 2: Completed -->
+<div class="bg-white border border-slate-200/80 rounded-xl p-5 flex items-center justify-between hover:border-slate-300 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+<div>
+<h4 class="text-base font-semibold text-slate-900">Vector Embeddings &amp; Semantic Spaces</h4>
+<span class="text-xs text-slate-500">Completed · 84%</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-300 text-[20px]">chevron_right</span>
+</div>
+<!-- Milestone 3: Current Focus -->
+<div class="bg-white border-2 border-indigo-600 rounded-xl p-5 flex items-center justify-between shadow-xs">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+<span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h4 class="text-base font-semibold text-slate-900">Attention Mechanisms &amp; Transformers</h4>
+<span class="text-[11px] font-medium bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded">Active</span>
+</div>
+<span class="text-xs text-slate-500">In Progress · Current</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-indigo-600 text-[20px]">play_circle</span>
+</div>
+<!-- Milestone 4: Upcoming -->
+<div class="bg-white border border-slate-200/80 rounded-xl p-5 flex items-center justify-between opacity-70">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full bg-slate-50 text-slate-400 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+</div>
+<div>
+<h4 class="text-base font-semibold text-slate-700">Retrieval-Augmented Generation (RAG)</h4>
+<span class="text-xs text-slate-400">Upcoming</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-300 text-[20px]">chevron_right</span>
+</div>
+<!-- Milestone 5: Locked -->
+<div class="bg-white border border-slate-200/80 rounded-xl p-5 flex items-center justify-between opacity-60">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full bg-slate-50 text-slate-400 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+</div>
+<div>
+<h4 class="text-base font-semibold text-slate-700">LLM Fine-Tuning &amp; Evaluation</h4>
+<span class="text-xs text-slate-400">Locked</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-300 text-[20px]">chevron_right</span>
+</div>
+</div>
+<!-- Right Column: Clean Secondary Stats -->
+<div class="lg:col-span-4 flex flex-col gap-6">
+<!-- Milestones & Pace Card -->
+<div class="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
+<h3 class="text-sm font-semibold text-slate-900">Milestones &amp; Pace</h3>
+<div>
+<div class="flex justify-between text-xs text-slate-500 font-medium mb-2">
+<span>Concepts Mastered</span>
+<span class="text-slate-900 font-semibold">13 of 20</span>
+</div>
+<div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+<div class="bg-indigo-600 h-full rounded-full" style="width: 65%;"></div>
+</div>
+</div>
+<p class="text-xs text-slate-500 leading-relaxed">
+                Estimated completion in <span class="font-semibold text-slate-800">~4 weeks</span> at your current 1.4x pace.
+              </p>
+</div>
+<!-- Weekly Goal Card -->
+<div class="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-xs flex flex-col gap-4">
+<h3 class="text-sm font-semibold text-slate-900">Weekly Goal</h3>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-bold text-slate-900 tracking-tight">4.0</span>
+<span class="text-sm text-slate-500">/ 6.0 hrs logged</span>
+</div>
+<div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+<div class="bg-emerald-500 h-full rounded-full" style="width: 66%;"></div>
+</div>
+<p class="text-xs text-slate-500">
+                2.0 hours remaining to achieve your weekly target.
+              </p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

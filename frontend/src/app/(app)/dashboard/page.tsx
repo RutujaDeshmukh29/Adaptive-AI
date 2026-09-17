@@ -58,7 +58,7 @@ export default function Dashboard() {
           <Link href="/materials">
             <Button variant="outline"><BookOpen className="h-4 w-4 mr-2" /> Materials</Button>
           </Link>
-          <Link href="/practice">
+          <Link href={snapshot.current_topic ? `/practice?topic_id=${snapshot.current_topic.id}` : "/practice"}>
             <Button><PenTool className="h-4 w-4 mr-2" /> Practice</Button>
           </Link>
         </div>
@@ -146,9 +146,16 @@ export default function Dashboard() {
           <CardContent className="space-y-5">
             {snapshot.mastery.map((m: TopicMastery) => (
               <div key={m.topic_id} className="space-y-2">
-                <div className="flex justify-between text-sm">
+                <div className="flex justify-between items-center text-sm">
                   <span className="font-medium text-slate-700">{m.topic}</span>
-                  <span className="font-bold">{m.mastery.toFixed(1)}%</span>
+                  <div className="flex items-center gap-3">
+                    <span className="font-bold">{m.mastery.toFixed(1)}%</span>
+                    <Link href={`/practice?topic_id=${m.topic_id}`}>
+                      <Button variant="ghost" size="sm" className="h-7 px-2 text-xs text-primary hover:text-primary hover:bg-primary/10">
+                        Practice →
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
                 <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
                   <div className={`h-full ${getBandColor(m.band)}`} style={{ width: `${m.mastery}%` }}></div>

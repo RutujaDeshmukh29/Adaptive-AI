@@ -75,7 +75,7 @@ export default function Onboarding() {
               <Label>Experience Level</Label>
               <Select 
                 value={formData.experience_level} 
-                onValueChange={v => setFormData({...formData, experience_level: v})}
+                onValueChange={(v) => v && setFormData({...formData, experience_level: v})}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select level" />
