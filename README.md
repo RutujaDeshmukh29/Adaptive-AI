@@ -8,12 +8,13 @@ An AI-powered adaptive learning platform that continuously personalizes a studen
 
 | | |
 |---|---|
-| **Event** | TECHFUSION — 24-hour Hackathon |
-| **College** | MET Bhujbal Knowledge City, Institute of Engineering |
-| **Theme** | Smart Education |
-| **Problem Statement** | PS1 — Personalized AI Learning Assistant |
-| **Team** | SkillMatix |
-| **Members** | Rutuja Deshmukh · Rajshree Patil · Manthan Hingmire · Prathamesh Gadakh |
+| **Project** | **AdaptEd AI** — Personalized AI Learning Assistant |
+| **Domain** | Smart Education / EdTech |
+| **Category** | Software / Full-Stack AI Platform |
+| **Recognition** | 🏆 **AITHON 2.0 National-Level Hackathon 2026 — Grand Finale Finalist** |
+| **Participations** | Tech Fusion 24H Hackathon 2026 · AITHON 2.0 2026 |
+| **Team** | **SkillMatrix** |
+| **Core Stack** | Next.js 16 · FastAPI · Google Gemini API · ChromaDB · PostgreSQL |
 
 ---
 
@@ -41,7 +42,7 @@ An AI-powered adaptive learning platform that continuously personalizes a studen
 20. [Demo Story](#20-demo-story)
 21. [Impact & Benefits](#21-impact--benefits)
 22. [Future Scope](#22-future-scope)
-23. [Team & Roles](#23-team--roles)
+23. [Team & Hackathon Participations](#23-team--hackathon-participations)
 24. [Documentation Index](#24-documentation-index)
 
 ---
@@ -1217,16 +1218,41 @@ Multilingual AI learning · Mobile app · Teacher portal · Institutional dashbo
 
 ---
 
-## 23. Team & Roles
+## 23. Team & Hackathon Participations
 
-| Member | Role | Owns |
-|---|---|---|
-| **Rutuja Deshmukh** | Lead Developer & Architect | All code, architecture, integration, the machine we build on |
-| **Rajshree Patil** | Co-Developer & QA Lead | Pair programming, manual testing, API testing, seed data, takes the keyboard during breaks |
-| **Prathamesh Gadakh** | AI Prompt & Content Lead | All Gemini prompts, question banks, fallback content, test PDFs, demo copy |
-| **Manthan Hingmire** | Project Manager & Demo Lead | Timeline, checklist, blockers, PPT updates, submission, demo narration, judge Q&A |
+<a id="23-team--roles"></a>
 
-Hour-by-hour assignments: **`docs/02_TEAM_ROLES_AND_TASKS.md`**
+## 👥 Team SkillMatrix
+
+| Team Member         | Role                                        | Key Responsibilities                                                                                                     |
+| ------------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| **Rutuja Deshmukh** | **Project Lead & Full-Stack AI Developer**  | Led the project and handled the primary development of the application, including frontend, backend, and AI integration. |
+| **Prathamesh**      | UI Developer                                | Developed the UI pages and contributed to the application's user interface.                                              |
+| **Rajshree**        | UI Development Support                      | Assisted Prathamesh with UI design and implementation.                                                                   |
+| **Aaryan**          | Research & Documentation                    | Contributed to technical research and project documentation.                                                             |
+| **Utkarsha**        | Documentation, Presentation & Poster Design | Contributed to project documentation, presentation preparation, and poster design.                                       |
+
+### 🏆 Hackathon Participations
+
+**Tech Fusion 24H Hackathon 2026**
+
+* Project: AdaptEd AI — Personalized AI Learning Assistant
+* Domain: Smart Education
+* Category: Software
+* Team Members: Rutuja Deshmukh, Rajshree, Prathamesh, Manthan
+* Result: Participation
+
+**AITHON 2.0 — National-Level Hackathon 2026**
+
+* Project: AdaptEd AI — Personalized AI Learning Assistant
+* Domain: Smart Education / EdTech
+* Category: Software
+* Team Members: Rutuja Deshmukh, Rajshree, Prathamesh, Aaryan, Utkarsha
+* Stage: Selected as a Grand Finale finalist
+
+*Update the AITHON result after the finale.*
+
+Detailed role allocations & tasks: **`Documents/02_TEAM_ROLES_AND_TASKS.md`**
 
 ---
 
@@ -1251,6 +1277,6 @@ Hour-by-hour assignments: **`docs/02_TEAM_ROLES_AND_TASKS.md`**
 
 **Same subject ≠ Same learner ≠ Same learning path**
 
-*Built by Team SkillMatix · TECHFUSION*
+*Built with ❤️ by Team SkillMatrix*
 
 </div>

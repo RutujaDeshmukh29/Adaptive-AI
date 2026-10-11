@@ -48,7 +48,7 @@ Replace with the deployed URL if you get one up (Vercel for the frontend, Render
 
 ## 4. Social preview line (for LinkedIn / portfolio)
 
-> **AdaptEd AI** — Built in 24 hours at TECHFUSION. An adaptive learning platform that maintains a live mastery model per student and regenerates their explanations, quiz difficulty and learning path from it. Stack: Next.js · FastAPI · Gemini · ChromaDB · PostgreSQL.
+> **AdaptEd AI** — Multi-hackathon Smart Education platform (AITHON 2.0 Grand Finale Finalist · Tech Fusion 2026). An adaptive learning platform that maintains a live mastery model per student and regenerates their explanations, quiz difficulty and learning path from it. Stack: Next.js · FastAPI · Gemini · ChromaDB · PostgreSQL.
 
 ---
 
@@ -66,8 +66,9 @@ If you ever want a shorter front page than the full `README.md`, use this and mo
 An AI-powered adaptive learning platform that maintains a live model of what each
 student knows and continuously regenerates their learning experience from it.
 
-Built in 24 hours at **TECHFUSION** (Smart Education · PS1) by **Team SkillMatix** —
-MET Bhujbal Knowledge City, Institute of Engineering.
+Developed by **Team SkillMatrix** as an independent, multi-hackathon platform:
+- 🏆 **AITHON 2.0 National-Level Hackathon 2026** — Grand Finale Finalist
+- ⚡ **Tech Fusion 24H Hackathon 2026** — Smart Education
 
 ---
 
@@ -147,9 +148,15 @@ App → http://localhost:3000 · API docs → http://localhost:8000/docs
 | [`docs/05_ADAPTIVE_ENGINE_SPEC.md`](docs/05_ADAPTIVE_ENGINE_SPEC.md) | Mastery maths, Next Best Action, path logic |
 | [`docs/03_SETUP_AND_ENV.md`](docs/03_SETUP_AND_ENV.md) | Keys, database, environment variables |
 
-## Team
+## Team SkillMatrix
 
-Rutuja Deshmukh · Rajshree Patil · Manthan Hingmire · Prathamesh Gadakh
+| Team Member | Role | Key Responsibilities |
+|---|---|---|
+| **Rutuja Deshmukh** | **Project Lead & Full-Stack AI Developer** | Led project and primary development across frontend, backend, and AI integration. |
+| **Prathamesh** | UI Developer | Developed UI pages and user interface components. |
+| **Rajshree** | UI Development Support | Assisted with UI design, implementation, and QA testing. |
+| **Aaryan** | Research & Documentation | Technical research, pedagogy, and architecture documentation. |
+| **Utkarsha** | Documentation, Presentation & Poster Design | Documentation, presentation preparation, and poster design. |
 
 ---
 
@@ -158,14 +165,14 @@ Rutuja Deshmukh · Rajshree Patil · Manthan Hingmire · Prathamesh Gadakh
 
 ---
 
-## 6. Portfolio blurb (for your own site, after the event)
+## 6. Portfolio blurb (for portfolio or LinkedIn)
 
-> **AdaptEd AI** — adaptive learning platform built in a 24-hour hackathon.
+> **AdaptEd AI** — Personalized AI learning platform developed by Team SkillMatrix.
 > Maintains a per-student mastery model updated with a difficulty-weighted
 > exponential moving average, and drives AI tutoring, quiz difficulty and
 > learning-path sequencing from it. Prerequisite gating means poor performance
 > re-locks downstream topics; every recommendation is explained with the
-> underlying data. FastAPI + Next.js + Gemini + ChromaDB.
+> underlying data. Next.js 16 + FastAPI + Gemini + ChromaDB + PostgreSQL.
 
 ---
 

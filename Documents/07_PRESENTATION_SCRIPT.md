@@ -1,8 +1,8 @@
-# 07 — Presentation Script (TECHFUSION Pitch Deck)
+# 07 — Presentation Script (AdaptEd AI Pitch Deck)
 
 **Total run time: ~6 minutes.** Six slides, one story: a struggling student walks in at the start, and by the close, the room understands exactly why that student needed something no other platform gives them.
 
-**Default speaker split:** Prathamesh narrates start to finish, and hands off to Rutuja for Slide 3 only — architecture questions naturally belong to whoever built it, and a voice change at the technical slide quietly tells the judges *this team has real depth, not one spokesperson carrying a script.* If your event wants all four members visibly on stage, swap notes are given under Slides 4 and 5.
+**Default speaker split:** Utkarsha / Prathamesh narrates start to finish, and hands off to Rutuja for Slide 3 (Technical Approach) — architecture questions naturally belong to whoever built it, and a voice change at the technical slide quietly tells the judges *this team has real depth, not one spokesperson carrying a script.* Research, QA, and pedagogical insights are contributed by Aaryan and Rajshree on Slides 4, 5, and 6.
 
 Read the **bold body text** aloud almost verbatim — it's been timed. *Italic lines* are delivery notes, not spoken words.
 
@@ -10,11 +10,11 @@ Read the **bold body text** aloud almost verbatim — it's been timed. *Italic l
 
 ## SLIDE 1 — Title: "ADAPTED AI"
 
-**Speaker: Prathamesh** · *~35 seconds*
+**Speaker: Utkarsha / Prathamesh** · *~35 seconds*
 
 *Stand center. Make eye contact with the panel before your first word — don't start talking while still walking to position.*
 
-> **"Good [morning/afternoon], judges. We are Team SkillMatix, and this is AdaptEd AI — built for the Smart Education theme, under Problem Statement 1: the Personalized AI Learning Assistant. I'm Prathamesh. With me are Rutuja, Rajshree and Manthan, from MET Bhujbal Knowledge City, Institute of Engineering."**
+> **"Good [morning/afternoon], judges. We are Team SkillMatrix, and this is AdaptEd AI — built for the Smart Education theme, under the Personalized AI Learning Assistant problem statement. With us are Rutuja Deshmukh, Prathamesh, Rajshree, Aaryan, and Utkarsha."**
 
 *Pause half a second. Drop your voice slightly — shift from formal introduction into story mode.*
 
@@ -72,7 +72,7 @@ Read the **bold body text** aloud almost verbatim — it's been timed. *Italic l
 
 **Speaker: Prathamesh** (or swap to **Rajshree**, if you want the QA/testing lead to own the risk conversation — she's the one who actually broke things trying to find these gaps) · *~55 seconds*
 
-> **"None of this works if it can't actually be built in the time we have, or run without a server farm behind it. So we were deliberate about staying feasible. Every technology here — Next.js, FastAPI, Gemini, ChromaDB, PostgreSQL — is mature and freely accessible. The architecture is modular by design, so frontend, backend, the AI layer and the learner model can each be built and tested independently — which is exactly what let a four-person team split this work in 24 hours."**
+> **"None of this works if it can't actually be built in the time we have, or run without a server farm behind it. So we were deliberate about staying feasible. Every technology here — Next.js, FastAPI, Gemini, ChromaDB, PostgreSQL — is mature and freely accessible. The architecture is modular by design, so frontend, backend, the AI layer and the learner model can each be built and tested independently — which is exactly what let our team scale development efficiently."**
 
 *Shift tone slightly — slower, more serious. This is the "we thought about what could go wrong" beat, and judges notice when a team volunteers its own risks instead of waiting to be asked.*
 
@@ -84,7 +84,7 @@ Read the **bold body text** aloud almost verbatim — it's been timed. *Italic l
 
 ## SLIDE 5 — Impact and Benefits
 
-**Speaker: Prathamesh** (or swap to **Manthan**, if he's presenting — this slide is the human story, and he's spent the most time thinking about what students actually experience) · *~55 seconds*
+**Speaker: Utkarsha** (or swap to **Aaryan**, who co-authored the educational impact research and human story) · *~55 seconds*
 
 *Callback moment — return to the student from your opening hook.*
 

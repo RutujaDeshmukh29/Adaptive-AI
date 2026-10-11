@@ -10,11 +10,11 @@ Judges see dozens of projects. Most of them will be chatbots. Your entire job is
 
 | Role | Person | Job |
 |---|---|---|
-| Narrator | **Manthan** | Talks. Never touches the laptop. |
-| Driver | **Rutuja** | Clicks. Says nothing unless asked a technical question. |
-| Technical answers | **Rutuja** | Architecture, engine, stack |
-| Content answers | **Prathamesh** | Prompts, question generation |
-| Testing answers | **Rajshree** | Edge cases, validation |
+| Narrator / Pitch Lead | **Utkarsha** | Talks, introduces the narrative, guides judges through the vision. Never touches the laptop. |
+| Driver & Lead Architect | **Rutuja Deshmukh** | Operates the UI. Clicks through the live flows. Answers architecture, backend, and engine questions. |
+| UI & Visualizer Walkthrough | **Prathamesh** | Demonstrates UI components, visualizer modes, and user experience. |
+| QA, Testing & Edge Cases | **Rajshree** | Explains edge-case verification, error handling, and reliability. |
+| Pedagogy & Research Support | **Aaryan** | Backs up learning science, mastery algorithms, and educational impact. |
 
 A silent screen loses the room. Someone must be speaking at all times.
 
@@ -228,7 +228,7 @@ Every team member must be able to say this without thinking:
 
 > **"AdaptEd AI keeps a live model of what each student knows, and generates every explanation, question and recommendation from that model — so when their performance changes, the whole learning journey changes with it."**
 
-Say it out loud tonight. All four of you. Until it's automatic.
+Say it out loud. Everyone on the team. Until it's automatic.
 
 ---
 
