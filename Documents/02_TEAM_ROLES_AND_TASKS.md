@@ -15,6 +15,7 @@ AdaptEd AI is developed by **Team SkillMatrix** as a competitive, multi-hackatho
 | **Rajshree**        | UI Development Support                      | Assisted Prathamesh with UI design and implementation.                                                                   |
 | **Aaryan**          | Research & Documentation                    | Contributed to technical research and project documentation.                                                             |
 | **Utkarsha**        | Documentation, Presentation & Poster Design | Contributed to project documentation, presentation preparation, and poster design.                                       |
+| **Manthan**         | Project Support & Event Coordination (Tech Fusion) | Supported the team with event coordination, presentation updates, and logistics during the Tech Fusion hackathon.        |
 
 ---
 
@@ -133,6 +134,19 @@ AdaptEd AI is developed by **Team SkillMatrix** as a competitive, multi-hackatho
 - **Showcase Materials**:
   - Coordinated submission deliverables, project abstracts, and summary sheets.
   - Prepared judge demonstration walkthrough notes and Q&A talking points.
+
+---
+
+### 📋 Manthan — Project Support & Coordination (Tech Fusion)
+
+**Mandate**: Side role support, event coordination, presentation assistance, and team logistics during the Tech Fusion hackathon.
+
+- **Event Coordination & Logistics**:
+  - Assisted the team with event schedule tracking and time checkpoints during the 24-hour Tech Fusion sprint.
+  - Provided logistics assistance and team support throughout the event.
+- **Presentation Support**:
+  - Assisted with initial slide deck updates and formatting.
+  - Supported preparation for hackathon submission deliverables.
 
 ---
 

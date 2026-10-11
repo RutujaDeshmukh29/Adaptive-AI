@@ -1231,6 +1231,7 @@ Multilingual AI learning · Mobile app · Teacher portal · Institutional dashbo
 | **Rajshree**        | UI Development Support                      | Assisted Prathamesh with UI design and implementation.                                                                   |
 | **Aaryan**          | Research & Documentation                    | Contributed to technical research and project documentation.                                                             |
 | **Utkarsha**        | Documentation, Presentation & Poster Design | Contributed to project documentation, presentation preparation, and poster design.                                       |
+| **Manthan**         | Project Support & Event Coordination (Tech Fusion) | Supported the team with event coordination, presentation updates, and logistics during the Tech Fusion hackathon.        |
 
 ### 🏆 Hackathon Participations
 

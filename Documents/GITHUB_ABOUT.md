@@ -157,6 +157,7 @@ App → http://localhost:3000 · API docs → http://localhost:8000/docs
 | **Rajshree** | UI Development Support | Assisted with UI design, implementation, and QA testing. |
 | **Aaryan** | Research & Documentation | Technical research, pedagogy, and architecture documentation. |
 | **Utkarsha** | Documentation, Presentation & Poster Design | Documentation, presentation preparation, and poster design. |
+| **Manthan** | Project Support & Event Coordination (Tech Fusion) | Supported the team with event coordination, presentation updates, and logistics during the Tech Fusion hackathon. |
 
 ---
 
