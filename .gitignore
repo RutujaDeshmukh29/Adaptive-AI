@@ -81,6 +81,7 @@ adapted.db
 # Model caches (should live in ~/.cache, but just in case)
 .cache/
 !backend/app/models/**
+backend/app/models/**/__pycache__/
 *.bin
 *.safetensors
 *.onnx
