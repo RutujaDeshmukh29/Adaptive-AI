@@ -80,7 +80,7 @@ adapted.db
 
 # Model caches (should live in ~/.cache, but just in case)
 .cache/
-models/
+!backend/app/models/**
 *.bin
 *.safetensors
 *.onnx
