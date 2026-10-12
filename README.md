@@ -2,8 +2,8 @@
 
 > **Not a fixed study plan — a learning journey that adapts to you.**
 
-[![Live App](https://img.shields.io/badge/Live_App-adaptive--ai--seven.vercel.app-0070f3?logo=vercel&logoColor=white)](https://adaptive-ai-seven.vercel.app/)
-[![API Docs](https://img.shields.io/badge/API_Docs-Railway-0B0D0E?logo=railway&logoColor=white)](https://web-production-940d6.up.railway.app/docs)
+<a href="https://adaptive-ai-seven.vercel.app/"><img src="https://img.shields.io/badge/Live_Demo-Vercel-0070f3?logo=vercel&logoColor=white" height="19" alt="Live Demo" /></a>
+<a href="https://web-production-940d6.up.railway.app/docs"><img src="https://img.shields.io/badge/API_Docs-Railway-0B0D0E?logo=railway&logoColor=white" height="19" alt="API Docs" /></a>
 
 **Learn → Measure → Adapt → Improve**
 
