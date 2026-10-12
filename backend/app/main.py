@@ -8,6 +8,15 @@ from app.routes import auth, profile, materials, chat, quiz, path, parent, chall
 # Initialize DB tables
 Base.metadata.create_all(bind=engine)
 
+# Auto-seed initial curriculum topics if database is newly initialized
+try:
+    from app.seed.topics_python import seed_topics
+    from app.database import SessionLocal
+    with SessionLocal() as _db:
+        seed_topics(_db)
+except Exception as _e:
+    print(f"Curriculum auto-seed note: {_e}")
+
 app = FastAPI(
     title=settings.APP_NAME,
     description="Adaptive Learning Platform API",
