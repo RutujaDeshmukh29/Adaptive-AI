@@ -2,12 +2,22 @@
 
 > **Not a fixed study plan — a learning journey that adapts to you.**
 
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://adaptive-ai-seven.vercel.app/)
+[![Backend API](https://img.shields.io/badge/⚡_Backend_API-Railway-0B0D0E?style=for-the-badge&logo=railway&logoColor=white)](https://web-production-940d6.up.railway.app/docs)
+
+🌐 **Live App**: [https://adaptive-ai-seven.vercel.app](https://adaptive-ai-seven.vercel.app/)  
+⚡ **API Docs**: [https://web-production-940d6.up.railway.app/docs](https://web-production-940d6.up.railway.app/docs)
+
+---
+
 **Learn → Measure → Adapt → Improve**
 
 An AI-powered adaptive learning platform that continuously personalizes a student's learning journey based on their knowledge, performance, pace and goals.
 
 | | |
 |---|---|
+| **Live App** | 🌐 [**adaptive-ai-seven.vercel.app**](https://adaptive-ai-seven.vercel.app/) |
+| **API Docs** | ⚡ [**web-production-940d6.up.railway.app/docs**](https://web-production-940d6.up.railway.app/docs) |
 | **Project** | **AdaptEd AI** — Personalized AI Learning Assistant |
 | **Domain** | Smart Education / EdTech |
 | **Category** | Software / Full-Stack AI Platform |
