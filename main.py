@@ -6,10 +6,11 @@ even when the root directory is set to '/' instead of '/backend'.
 import sys
 import os
 
-# Add backend directory to Python system path
+# Add backend directory to Python system path and switch working directory
 backend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "backend"))
 if backend_dir not in sys.path:
     sys.path.insert(0, backend_dir)
+os.chdir(backend_dir)
 
 # Import the FastAPI application
 from app.main import app
